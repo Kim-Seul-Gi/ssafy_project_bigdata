@@ -10,6 +10,7 @@ from api.views import Hcluster_views
 from api.views import EMcluster_views
 
 from api.views import cluster_views
+from api.views import IMDB_views
 urlpatterns = [
     # user 관리
     path('auth/signup-many/', auth_views.signup_many, name='sign_up_many'),
@@ -54,5 +55,5 @@ urlpatterns = [
 
     # cluster 관련 정보를 조회, 변경합니다.
     path('cluster/', cluster_views.cluster, name='cluster'),
-
+    path('imdb/', IMDB_views.getmovies, name='imdb'),
 ]
