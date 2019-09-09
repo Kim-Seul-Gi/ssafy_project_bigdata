@@ -1,0 +1,110 @@
+<template>
+  <v-container class="pa-2" fluid grid-list-md>
+
+    <div v-if="movieListCards.length">
+      {{movieListCards.length}}개가 조회되었습니다.
+      <v-btn @click="seemode_rate = true">평점 순</v-btn>
+      <v-btn @click="seemode_rate = false">조회 순</v-btn>
+    </div>
+
+    <div v-if="!movieListCards.length">
+      영화가 없어요!!!
+    </div>
+    <v-layout column>
+
+      <!-- movieList 설명 -->
+        <!-- 평점순 정렬 : tmp_movieList -->
+        <!-- tmp_movieList : {{tmp_movieList.length}} <br/><br/> -->
+        <!-- 조회순 정렬 : movieListCards -->
+        <!-- movieListCards : {{movieListCards.length}} <br/><br/> -->
+        <!-- {{seemode_rate}} -->
+      <!--  -->
+
+      <!-- movieList를 평점순, 조회순으로 받기 위한 computed 입니다. 있어야합니다. -->
+      {{view_by_averagerate}}
+
+
+      <!-- 처음에 보여주는 것 : 조회수 순 -->
+      <v-flex v-if="!seemode_rate" v-for="(card,i) in movieListCardsSliced" :key="i" pa-2>
+        <!-- {{card.viewCnt}} -->
+        <MovieListCard
+          :id="card.id"
+          :img="card.img"
+          :title="card.title"
+          :genres_array="card.genres_array"
+          :averagerate="card.averagerate"
+          :watch_count="card.watch_count"
+          :score_users="card.score_users"
+        />
+      </v-flex>
+      <!--  -->
+
+      <!-- 선택옵션 - 평점 순 -->
+      <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" pa-2>
+        <MovieListCard
+          :id="card.id"
+          :img="card.img"
+          :title="card.title"
+          :genres_array="card.genres_array"
+          :averagerate="card.averagerate"
+          :watch_count="card.watch_count"
+          :score_users="card.score_users"
+        />
+      </v-flex>
+      <!--  -->
+
+      <v-pagination v-if="maxPages > 1" v-model="page" :length="maxPages" />
+
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+import MovieListCard from "./MovieListCard"
+export default {
+  components: {
+    MovieListCard,
+  },
+  props: {
+    movieListCards: {
+      type: Array,
+      default: () => new Array(),
+    },
+  },
+  data: () => ({
+    cardsPerPage: 10,
+    page: 1,
+    seemode_rate:true,
+    tmp_movieList:[],
+  }),
+  computed: {
+    // pagination related variables
+    movieListEmpty: function() {
+      return this.movieListCards.length === 0;
+    },
+    maxPages: function() {
+      return Math.floor((this.movieListCards.length + this.cardsPerPage - 1) / this.cardsPerPage)
+    },
+    movieListCardsSliced: function() {
+      this.tmp_movieList = JSON.parse(JSON.stringify(this.movieListCards))
+      return this.movieListCards.slice(this.cardsPerPage * (this.page - 1), this.cardsPerPage * this.page)
+    },
+    movieListCardsSliced2: function() {
+      return this.tmp_movieList.slice(this.cardsPerPage * (this.page - 1), this.cardsPerPage * this.page)
+    },
+    view_by_averagerate: function() {
+      // 참조 사이트 : https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+      this.tmp_movieList.sort(function(a, b) {
+        if (a.averagerate > b.averagerate) {
+          return -1;
+        }
+        if (a.averagerate < b.averagerate) {
+          return 1;
+        }
+        return 0;
+      })
+    },
+
+  },
+};
+</script>

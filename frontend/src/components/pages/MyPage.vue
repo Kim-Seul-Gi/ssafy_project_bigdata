@@ -1,0 +1,71 @@
+<template>
+  <v-container grid-list-md text-center>
+    <v-layout justify-center wrap>
+
+      <!-- 검색 폼 by 영화이름-->
+      <v-flex xs6>
+        <div class="display-2 pa-10">아직 만들지 않은 페이지입니다.</div>
+        현재 로그인 한 유저 : {{this.user}} <br>
+        내가 좋아하는 장르들 : 나중에 가져올게요! <br>
+        나와 같은 집단에 속하는 사람들 :
+        <li v-for="person in this.profile_data.slice(1)">
+          <div>{{person}}
+              <v-btn @click="SELECT_UserDetail(person.id, person.username)">놀러가기~</v-btn>
+          </div>
+        </li>
+        <!-- {{this.profile_data.slice(1)}}<br> -->
+      </v-flex>
+
+      <!-- 검색 결과 -->
+      <!-- <v-flex xs7>
+        <MovieList :movie-list-cards="movieList" />
+      </v-flex> -->
+
+    </v-layout>
+  </v-container>
+
+</template>
+
+<script>
+import { mapState, mapActions } from "vuex";
+import router from "../../router";
+import axios from 'axios'
+// import MovieSearchForm from "../searchform/MovieSearchForm";
+// import MovieList from "../MovieList";
+
+export default {
+  components: {
+    // MovieSearchForm,
+    // MovieList,
+  },
+  data: () => ({
+    user: '',
+    profile_data:'',
+    // movielist:[],
+  }),
+  mounted() {
+    this.fetchdata();
+  },
+  computed: {
+    // ...mapState({
+      // movieList: state => state.data.movieSearchList
+    // })
+  },
+  methods: {
+    // ...mapActions("data", ["searchMovies"]),
+    async fetchdata() {
+      this.user = this.$session.get('id')
+      const apiUrl = '/api'
+      const id = this.$session.get('id_number')
+
+      var profile = await axios.get(`${apiUrl}/users/${id}`)
+      this.profile_data = profile.data
+      console.log(profile)
+    },
+    SELECT_UserDetail(id, username) {
+      var user_data = {'id':id, 'username':username}
+      router.push({name:'user-detail', params : {'id':user_data.id, 'user_data':user_data}})
+    }
+  }
+}
+</script>
