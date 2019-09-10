@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=10, default='M')
     age = models.IntegerField(default=25)
     occupation = models.CharField(max_length=200)
+    approval = models.BooleanField(default=False)
+    subscription = models.DateTimeField(default=datetime.datetime.now() - datetime.timedelta(days=1))
 
 #  wrapper for create user Profile
 def create_profile(**kwargs):
@@ -30,7 +33,10 @@ class Movie(models.Model):
     genres = models.CharField(max_length=500)
     watch_count = models.IntegerField(default=0)
     averagerate = models.IntegerField(default=0)
-
+    plot = models.CharField(default='', max_length=1000)
+    url = models.CharField(default='', max_length=500)
+    director = models.CharField(default='', max_length=500)
+    casting = models.CharField(default='', max_length=500)
     score_users = models.ManyToManyField(Profile, through='Rate', related_name='score_movies')
 
     @property
