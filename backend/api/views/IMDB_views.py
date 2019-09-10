@@ -16,13 +16,19 @@ def getmovies(request):
     ia = IMDb()
 
     # setting movies
-    movies = Movie.objects.all()[27:100]
+    movies = Movie.objects.all()[2700:]
     # print(movies)
 
-    a = []
-    cnt = 1
+    nogetmovie = [] # search_movie 불가능 목록
+    notitle = [] 
+    nocasting = []
+    nourl = []
+    nodirector = []
+    noplot = []
+    cnt = 2700
     for mov in movies:
         name = mov.title
+        cnt += 1
         # 뭐든 없는게 있을거다 믿지마라 그러므로 value는 get으로 꺼내자
         getmovie = ia.search_movie(name)
         if getmovie:
@@ -30,30 +36,43 @@ def getmovies(request):
             movie = ia.get_movie(movieid)
             
             title = movie.data.get('original title')
-            print('title : {}'.format(title))
+            if not title:
+                notitle.append([cnt, name])
+            # print('title : {}'.format(title))
 
-            # castings = movie.data.get('cast')
-            # casting = []
-            # for i in castings:
-            #     casting.append(i['name'])
+            castings = movie.data.get('cast')
+            if castings:
+                casting = []
+                for i in castings:
+                    casting.append(i['name'])
+            else:
+                nocasting.append([cnt, name])
             # print('castings : {}'.format(casting))
 
             url = movie.data.get('cover url')
-            print(url)
-            # url = url[:url.index('._V1')] + '._V1_SY1000_SX670_AL_.jpg'
+            if url:
+                url = url[:url.index('._V1')] + '._V1_SY1000_SX670_AL_.jpg'
+                print(cnt,' : ',url)
+            else:
+                nourl.append([cnt, name])
             # print('cover url : {}'.format(url))
             # @._V1_SX101_CR0,0,101,150_.jpg -> @._V1_SY1000_SX670_AL_.jpg
 
-            # director = movie.data.get('directors')
-            # if director:
-            #   direcor = director[0]
+            director = movie.data.get('directors')
+            if director:
+              direcor = director[0]
             # print('director : {}'.format(director))
+            else:
+                nodirector.append([cnt, name])
             # # print(movie.data) # data.get('plot')
-            # plot = movie.data.get('plot')
-            # if plot:
-            #     plot = plot[0]
-            #     if '::' in plot:
-            #         plot = plot[:plot.index('::')]
+
+            plot = movie.data.get('plot')
+            if plot:
+                plot = plot[0]
+                if '::' in plot:
+                    plot = plot[:plot.index('::')]
+            else:
+                noplot.append([cnt, name])
             # print('plot : {}'.format(plot))
 
             # cnt += 1
@@ -63,7 +82,21 @@ def getmovies(request):
             # print()
             # print()
         else:
-            print(name, '999999999999i')
+            nogetmovie.append([cnt, name])
+            # print(name, '999999999999i')
 
+    print('------------------------------nogetmovie')
+    print(nogetmovie) # search_movie 불가능 목록
+    print('------------------------------notitle')
+    print(notitle)
+    print('------------------------------nocasting')
+    print(nocasting)
+    print('------------------------------nourl')
+    print(nourl)
+    print('------------------------------nodirector')
+    print(nodirector)
+    print('------------------------------noplot')
+    print(noplot)
+    print()
     print('끝')
     return Response(status=status.HTTP_200_OK)
