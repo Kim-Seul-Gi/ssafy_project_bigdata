@@ -10,6 +10,7 @@ from api.views import Hcluster_views
 from api.views import EMcluster_views
 
 from api.views import cluster_views
+from api.views import subscription_views
 urlpatterns = [
     # user 관리
     path('auth/signup-many/', auth_views.signup_many, name='sign_up_many'),
@@ -54,5 +55,11 @@ urlpatterns = [
 
     # cluster 관련 정보를 조회, 변경합니다.
     path('cluster/', cluster_views.cluster, name='cluster'),
+
+    # # subscription 관련 정보를 생성, 관리 합니다.
+    # create : 유저가 구독신청하기
+    # apply : 관리자가 구독관련된 것을 적용하기
+    path('subscription/create/', subscription_views.create, name='subscription_create'),
+    path('subscription/manager/', subscription_views.manager, name="subscription_manager"),
 
 ]

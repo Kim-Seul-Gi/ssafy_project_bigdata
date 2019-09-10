@@ -4,6 +4,14 @@
 
       <!-- 검색 폼 by 영화이름-->
       <v-flex xs6>
+        <div>
+          <Subscription
+            :user_data="profile_data[0]"
+            :now_date="now_date"
+            :sub_date="subscription_date"
+          />
+        </div>
+
         <p style="font-size: 3rem;">User Profile</p>
         <p><span style="margin-right: 1rem; font-weight: bold;">name</span><span>{{ user.username }}</span></p>
         <p><span style="margin-right: 1rem; font-weight: bold;">gender</span><span>{{ user.gender }}</span></p>
@@ -29,13 +37,8 @@
             </v-card-text>
           </v-card>
         </div>
-        <!-- {{this.profile_data.slice(1)}}<br> -->
-      </v-flex>
 
-      <!-- 검색 결과 -->
-      <!-- <v-flex xs7>
-        <MovieList :movie-list-cards="movieList" />
-      </v-flex> -->
+      </v-flex>
 
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -87,13 +90,16 @@
 import { mapState, mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
+import Subscription from "../Subscription";
 // import MovieSearchForm from "../searchform/MovieSearchForm";
 // import MovieList from "../MovieList";
+
 
 export default {
   components: {
     // MovieSearchForm,
     // MovieList,
+    Subscription
   },
   data: () => ({
     user: null,
@@ -106,10 +112,13 @@ export default {
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters'
-    ]
+    ],
+    user_data:'',
+    subscription_date:'',
+    now_date:''
     // movielist:[],
   }),
-  mounted() {
+  created() {
     this.fetchdata();
   },
   computed: {
@@ -123,15 +132,37 @@ export default {
       this.user = this.$session.get('id')
       const apiUrl = '/api'
       const id = this.$session.get('id_number')
-
       var profile = await axios.get(`${apiUrl}/users/${id}`)
       this.profile_data = profile.data
+
+      // 구독 날짜 확인하기,
+      // 오늘 날짜 : this.now_date , ex) 20190910
+      // 회원의 구독 날짜 : this.subscription_date, ex) 20190801
+      this.user_data = this.profile_data[0]
+      this.subscription_date = this.user_data.subscription.substring(0, 10).replace(/-/g,'')
+      var now = new Date()
+      var year = now.getFullYear()
+      var month = now.getMonth() + 1
+      var date = now.getDate()
+      if ( month < 10 ) {
+        month = '0' + String(month)
+      } else {
+        month = String(month)
+      }
+      if ( date < 10) {
+        date = '0' + String(date)
+      } else {
+        date = String(date)
+      }
+      this.now_date = String(year)+month+date
+      
       this.user = this.profile_data[0]
       this.username = this.user.username
       this.age = this.user.age
       this.gender = this.user.gender
       this.occupation = this.user.occupation
     },
+
     SELECT_UserDetail(id, username) {
       var user_data = {'id':id, 'username':username}
       router.push({name:'user-detail', params : {'id':user_data.id, 'user_data':user_data}})
