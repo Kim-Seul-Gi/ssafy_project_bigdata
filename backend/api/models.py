@@ -10,6 +10,13 @@ class Profile(models.Model):
     approval = models.BooleanField(default=False)
     subscription = models.DateTimeField(default=datetime.datetime.now() - datetime.timedelta(days=1))
 
+class Subscription_manager(models.Model):
+    Profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_sub")
+    request = models.IntegerField(default=0)
+    approval = models.BooleanField(default=False)
+    request_day = models.DateTimeField(auto_now_add=True)
+    apply_day = models.DateTimeField(auto_now=True)
+
 #  wrapper for create user Profile
 def create_profile(**kwargs):
     user = User.objects.create_user(
