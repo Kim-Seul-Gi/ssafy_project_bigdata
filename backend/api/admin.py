@@ -6,7 +6,7 @@ from .models import User_Cluster_EM, Movie_Cluster_EM
 #
 # Register your models here.
 class ProfileAdmin(admin.ModelAdmin):
-   list_display = ['id', 'user', 'gender', 'age','occupation']
+   list_display = ['id', 'user', 'gender', 'age','occupation', 'approval', 'subscription']
 class MovieAdmin(admin.ModelAdmin):
    list_display = ['id', 'title', 'genres', 'watch_count']
 class RateAdmin(admin.ModelAdmin):
