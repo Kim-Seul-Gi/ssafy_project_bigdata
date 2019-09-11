@@ -16,7 +16,7 @@ def getmovies(request):
     ia = IMDb()
 
     # setting movies
-    movies = Movie.objects.all()[1564:]
+    movies = Movie.objects.all()
     # print(movies)
 
     # nogetmovie = [] # search_movie 불가능 목록

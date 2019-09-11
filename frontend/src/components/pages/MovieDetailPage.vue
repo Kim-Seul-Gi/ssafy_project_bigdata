@@ -10,6 +10,10 @@
         영화 상세 내용<br>
         {{movie_data[0].id}}, {{movie_data[0].title}}
         <br><br>
+        <p>{{movie_data[0].plot}}</p>
+        <img :src="movie_data[0].url"/>
+        <p>{{movie_data[0].director}}</p>
+        <p>{{movie_data[0].casting}}</p>
 
         <v-flex v-for="(movie,i) in movie_data.slice(1)" :key="i" pa-2>
 
@@ -89,7 +93,8 @@ export default {
     },
     SELECT_MovieDetail(movie) {
       var movie_data = {'id':movie.id, 'title':movie.title, 'genres_array':movie.genres_array,
-                  'img':movie.img,'watch_count' : movie.watch_count, 'score_users':movie.score_users, 'averagerate':movie.averagerate}
+                  'img':movie.img,'watch_count' : movie.watch_count, 'score_users':movie.score_users, 'averagerate':movie.averagerate,
+                  'plot':movie.plot,'url':movie.url,'director':movie.director,'casting':movie.casting}
 
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()

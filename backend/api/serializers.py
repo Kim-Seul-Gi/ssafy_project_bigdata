@@ -24,7 +24,7 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate')
+        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director','casting')
 
     def get_averagerate(self, obj):
 
