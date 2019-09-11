@@ -16,19 +16,18 @@ def getmovies(request):
     ia = IMDb()
 
     # setting movies
-    movies = Movie.objects.all()[2700:]
+    movies = Movie.objects.all()[1564:]
     # print(movies)
 
-    nogetmovie = [] # search_movie 불가능 목록
-    notitle = [] 
-    nocasting = []
-    nourl = []
-    nodirector = []
-    noplot = []
-    cnt = 2700
+    # nogetmovie = [] # search_movie 불가능 목록
+    # notitle = [] 
+    # nocasting = []
+    # nourl = []
+    # nodirector = []
+    # noplot = []
+    # cnt = 0
     for mov in movies:
         name = mov.title
-        cnt += 1
         # 뭐든 없는게 있을거다 믿지마라 그러므로 value는 get으로 꺼내자
         getmovie = ia.search_movie(name)
         if getmovie:
@@ -36,8 +35,8 @@ def getmovies(request):
             movie = ia.get_movie(movieid)
             
             title = movie.data.get('original title')
-            if not title:
-                notitle.append([cnt, name])
+            # if not title:
+            #     notitle.append([cnt, name])
             # print('title : {}'.format(title))
 
             castings = movie.data.get('cast')
@@ -45,25 +44,29 @@ def getmovies(request):
                 casting = []
                 for i in castings:
                     casting.append(i['name'])
-            else:
-                nocasting.append([cnt, name])
+                casting = '|'.join(casting)
+                mov.casting = casting
+            # else:
+            #     nocasting.append([cnt, name])
             # print('castings : {}'.format(casting))
 
             url = movie.data.get('cover url')
             if url:
                 url = url[:url.index('._V1')] + '._V1_SY1000_SX670_AL_.jpg'
-                print(cnt,' : ',url)
-            else:
-                nourl.append([cnt, name])
+                mov.url = url
+                # print(cnt,' : ',url)
+            # else:
+            #     nourl.append([cnt, name])
             # print('cover url : {}'.format(url))
             # @._V1_SX101_CR0,0,101,150_.jpg -> @._V1_SY1000_SX670_AL_.jpg
 
             director = movie.data.get('directors')
             if director:
-              direcor = director[0]
+              director = director[0]
+              mov.director = director
             # print('director : {}'.format(director))
-            else:
-                nodirector.append([cnt, name])
+            # else:
+            #     nodirector.append([cnt, name])
             # # print(movie.data) # data.get('plot')
 
             plot = movie.data.get('plot')
@@ -71,32 +74,28 @@ def getmovies(request):
                 plot = plot[0]
                 if '::' in plot:
                     plot = plot[:plot.index('::')]
-            else:
-                noplot.append([cnt, name])
+                mov.plot = plot
+            # else:
+            #     noplot.append([cnt, name])
             # print('plot : {}'.format(plot))
 
-            # cnt += 1
-            # print()
-            # print()
-            # print()
-            # print()
-            # print()
-        else:
-            nogetmovie.append([cnt, name])
+        # else:
+        #     nogetmovie.append([cnt, name])
             # print(name, '999999999999i')
+        mov.save()
 
-    print('------------------------------nogetmovie')
-    print(nogetmovie) # search_movie 불가능 목록
-    print('------------------------------notitle')
-    print(notitle)
-    print('------------------------------nocasting')
-    print(nocasting)
-    print('------------------------------nourl')
-    print(nourl)
-    print('------------------------------nodirector')
-    print(nodirector)
-    print('------------------------------noplot')
-    print(noplot)
-    print()
+    # print('------------------------------nogetmovie')
+    # print(nogetmovie) # search_movie 불가능 목록
+    # print('------------------------------notitle')
+    # print(notitle)
+    # print('------------------------------nocasting')
+    # print(nocasting)
+    # print('------------------------------nourl')
+    # print(nourl)
+    # print('------------------------------nodirector')
+    # print(nodirector)
+    # print('------------------------------noplot')
+    # print(noplot)
+    # print()
     print('끝')
     return Response(status=status.HTTP_200_OK)
