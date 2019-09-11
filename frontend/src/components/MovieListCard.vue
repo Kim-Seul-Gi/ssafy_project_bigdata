@@ -75,6 +75,22 @@ export default {
     score_users: {
       type: Array,
       default: () => new Array()
+    },
+    plot: {
+      type: String,
+      default: ""
+    },
+    url: {
+      type: String,
+      default: ""
+    },
+    director: {
+      type: String,
+      default: ""
+    },
+    casting: {
+      type: String,
+      default: ""
     }
   },
   computed: {
