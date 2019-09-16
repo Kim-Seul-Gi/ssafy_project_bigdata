@@ -66,7 +66,9 @@ export default {
       const apiUrl = '/api'
       var subscription = await axios.post(`${apiUrl}/subscription/create/`, {user : this.$session.get('id'), request:this.picked_amount})
       if (subscription.data) {
+        // 
         alert(subscription.data.message)
+
       }
       this.before_create = false
     },
