@@ -8,7 +8,7 @@ class Profile(models.Model):
     age = models.IntegerField(default=25)
     occupation = models.CharField(max_length=200)
     approval = models.BooleanField(default=False)
-    subscription = models.DateTimeField(default=datetime.datetime.now() - datetime.timedelta(days=1))
+    subscription = models.DateTimeField(default=datetime.datetime(2019, 9, 10, 13, 47, 43, 630123))
 
 class Subscription_manager(models.Model):
     Profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_sub")
