@@ -59,7 +59,7 @@ def create_profile(**kwargs):
     user = User.objects.create_user(
         username=kwargs['username'],
         password=kwargs['password'],
-        is_active=True,
+        is_active=True
     )
 
     profile = Profile.objects.create(
