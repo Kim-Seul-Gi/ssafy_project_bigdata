@@ -11,7 +11,7 @@
     <v-flex v-if="switch1" xs12>
       <p>movie</p>
       <MovieSearchForm :submit="searchMovies_admin" />
-      <v-flex xs12>
+      <v-flex xs4>
         <AdminMovieList :movie-list-cards="movieList" />
       </v-flex>
     </v-flex>

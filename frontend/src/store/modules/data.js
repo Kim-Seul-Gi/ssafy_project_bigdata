@@ -28,7 +28,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
-            score_users: d.score_users
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -43,7 +47,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
-            score_users: d.score_users
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList_admin', movies)
     },
@@ -58,7 +66,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
-            score_users: d.score_users
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -73,6 +85,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -87,6 +104,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -101,6 +123,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
