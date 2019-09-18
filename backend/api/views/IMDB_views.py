@@ -17,7 +17,6 @@ def getmovies(request):
 
     # setting movies
     movies = Movie.objects.all()
-    # print(movies)
 
     # nogetmovie = [] # search_movie 불가능 목록
     # notitle = [] 
