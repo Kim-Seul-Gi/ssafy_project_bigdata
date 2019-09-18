@@ -5,6 +5,7 @@
       <v-layout align-center py-4 pl-4>
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
+            <img :src="url" width="70%">
             <div style="cursor: pointer" @click="SELECT_MovieDetail()">{{title}}</div>
             <div>{{genres_array}}</div>
             <v-btn @click="movie_detail(id); dialog=true">수정</v-btn>
@@ -123,7 +124,8 @@ export default {
   methods: {
     SELECT_MovieDetail() {
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
-                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate}
+                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
+                  'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
     },
     // _init: function() {
