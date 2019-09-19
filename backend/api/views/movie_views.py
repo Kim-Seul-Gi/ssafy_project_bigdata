@@ -102,7 +102,6 @@ def ages(request):
     serializer = Movie_Age_Serializer(rates, many=True)
     
     return Response(data=serializer.data, status=status.HTTP_200_OK)
-    # return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def occupations(request):
