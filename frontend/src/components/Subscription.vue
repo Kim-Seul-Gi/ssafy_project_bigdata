@@ -4,7 +4,7 @@
       <v-flex>
         <h1>구독 관련</h1>
 
-        <div v-if="user_data.approval">
+        <div v-if="this.approval">
           회원님의 구독 유효 기간은 {{sub_date}} 입니다.
 
           <div v-if="before_extend">
@@ -57,7 +57,8 @@ export default {
       type : Object,
     },
     now_date : { type : String },
-    sub_date : { type : String }
+    sub_date : { type : String },
+    approval : { type : Boolean },
   },
   mounted() {
   },
@@ -66,7 +67,7 @@ export default {
       const apiUrl = '/api'
       var subscription = await axios.post(`${apiUrl}/subscription/create/`, {user : this.$session.get('id'), request:this.picked_amount})
       if (subscription.data) {
-        // 
+        //
         alert(subscription.data.message)
 
       }
