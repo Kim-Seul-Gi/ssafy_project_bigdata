@@ -20,7 +20,7 @@ def movies(request):
             movies = movies.filter(pk=id)
         if title:
             movies = movies.filter(title__icontains=title)
-        
+
         serializer = MovieSerializer(movies, many=True)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -45,6 +45,15 @@ def movies(request):
             Movie(id=id, title=title, genres='|'.join(genres)).save()
 
         return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET', 'POST', 'DELETE'])
+def homepage(request):
+
+    movies = Movie.objects.all().order_by('-watch_count')[:30]
+
+    serializer = MovieSerializer(movies, many=True)
+
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def genres(request):
@@ -100,7 +109,7 @@ def ages(request):
     rates = rates.order_by('-MovieID__watch_count')
 
     serializer = Movie_Age_Serializer(rates, many=True)
-    
+
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -122,7 +131,7 @@ def occupations(request):
     rates = rates.order_by('-MovieID__watch_count')
 
     serializer = Movie_Age_Serializer(rates, many=True)
-    
+
     return Response(data=serializer.data, status=status.HTTP_200_OK)
     # return Response(status=status.HTTP_200_OK)
 
@@ -145,7 +154,7 @@ def genders(request):
     rates = rates.order_by('-MovieID__watch_count')
 
     serializer = Movie_Age_Serializer(rates, many=True)
-    
+
     return Response(data=serializer.data, status=status.HTTP_200_OK)
     # return Response(status=status.HTTP_200_OK)
 
@@ -170,7 +179,7 @@ def detail(request, movie_id):
             lists = Movie_Cluster_Hmeans.objects.filter(H6=getMovie.H6)
         elif cluster.n_component == 7:
             lists = Movie_Cluster_Hmeans.objects.filter(H7=getMovie.H7)
-    
+
     # Kmeans clustering
     if cluster.way == 'K':
         getMovie = Movie_Cluster_Kmeans.objects.get(MovieId=movie.id)
@@ -198,13 +207,13 @@ def detail(request, movie_id):
             lists = Movie_Cluster_EM.objects.filter(EM6=getMovie.EM6)
         elif cluster.n_component == 7:
             lists = Movie_Cluster_EM.objects.filter(EM7=getMovie.EM7)
-    
+
     tmp = random.sample(list(lists), 5)
     for t in tmp:
         movie = Movie.objects.get(title=t.MovieId)
         serializer = MovieSerializer(movie)
         result.append(serializer.data)
-    
+
     return Response(data=result, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])

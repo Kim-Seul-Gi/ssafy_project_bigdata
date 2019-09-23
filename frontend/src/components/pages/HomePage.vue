@@ -3,8 +3,6 @@
     <v-layout row wrap>
       <v-flex xs12>
 
-
-
         <!-- <span class="display-3 grey--text">Select menu</span> -->
 
         <!-- Homepage에서 보여주고자 하는 기능들은 아래와 같습니다. -->
@@ -16,9 +14,9 @@
             <!-- (6) MovieBased 영화 추천 -->
 
         <!-- 유저의 상태는 로그인 여부(this.user) / 구독 여부(Subscription) 에서 다룹니다. -->
-            <!-- 1. 로그인 X / 보여줄 기능 : (1) -->
-            <!-- 2. 로그인 O , 구독 X / 보여줄 기능 : (2), (3), (4) -->
-            <!-- 3. 로그인 O , 구독 O / 보여줄 기능 : (2), (3), (4), (5), (6) -->
+            <!-- 1. 로그인 X / 보여줄 기능 : (1), (3) -->
+            <!-- 2. 로그인 O , 구독 X / 보여줄 기능 : (1), (2), (3), (4) -->
+            <!-- 3. 로그인 O , 구독 O / 보여줄 기능 : (1), (2), (3), (4), (5), (6) -->
 
 
         <!-- 1. 로그인 여부 -->
@@ -35,6 +33,7 @@
 
           <!-- 2, 3. 구독 여부 에 따른 (2), (5), (6) -->
           <div>
+            <h1>구독 관련입니다</h1>
             <Subscription
               :user_data="profile_data[0]"
               :now_date="now_date"
@@ -44,17 +43,11 @@
           </div>
 
           <!-- (4) 유사 유저는 여기에서 가져올 수 있네요..?!-->
-          <UserCarousel
-            :users="profile_data.slice(1)"
-          />
-
-
-
-          <!-- 이것은 유저들 가져오는 거 구버젼입니다. -->
-          <!-- <v-layout row wrap>
+          <h1>유사 유저 리스트입니다</h1>
+          <v-layout row wrap>
           <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
 
-              <v-card>
+              <v-card style="margin:10px;">
                   <v-card-text>
                     <v-container>
                       <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
@@ -66,13 +59,29 @@
 
               </v-card>
           </v-flex>
-          </v-layout> -->
+          </v-layout>
 
 
         </div>
 
         <!-- (3) 단순한 영화 나열(조회수, 인기순) -->
+        <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
+        <h1>단순 영화 나열입니다</h1>
+        <v-layout row wrap>
+        <v-flex v-for="movie in this.$store.state.data.movieList_homepage" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
 
+            <v-card style="margin:10px;">
+                <v-card-text>
+                  <v-container>
+                    {{movie.id}}, {{movie.title}}, {{movie.averagerate}}
+                    {{movie.url}}
+                    <!-- <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn> -->
+                  </v-container>
+                </v-card-text>
+
+            </v-card>
+        </v-flex>
+        </v-layout>
 
       </v-flex>
     </v-layout row wrap>
@@ -85,13 +94,11 @@ import { mapState, mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
-import UserCarousel from "../UserCarousel";
 
 
 export default {
   components:{
     Subscription,
-    UserCarousel
   },
   data() {
     return {
@@ -100,12 +107,18 @@ export default {
       user_data:'',
       subscription_date:'',
       now_date:'',
+      movie_row: '',
     }
   },
+  computed: {
+  },
   mounted() {
+    this.getMovies_homepage()
     this.fetchdata()
   },
   methods : {
+    ...mapActions("data", ["getMovies_homepage"]),
+    // getmoveis 는 단순 영화 나열을 위한 것입니다 = 로그인 여부와 관련 없는 것.
     async fetchdata() {
       this.user = this.$session.get('id')
       if (this.$session.get('id')=='') {
@@ -135,21 +148,8 @@ export default {
         }
         this.now_date = String(year)+month+date
       }
-
     }
   },
 
 }
 </script>
-
-<style>
-  .example-slide {
-    align-items: center;
-    background-color: #666;
-    color: #999;
-    display: flex;
-    font-size: 1.5rem;
-    justify-content: center;
-    min-height: 10rem;
-  }
-</style>
