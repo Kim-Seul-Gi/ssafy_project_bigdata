@@ -12,6 +12,8 @@ from api.views import EMcluster_views
 from api.views import cluster_views
 from api.views import IMDB_views
 from api.views import subscription_views
+
+from api.views import brightics_views
 urlpatterns = [
     # user 관리
     path('auth/signup-many/', auth_views.signup_many, name='sign_up_many'),
@@ -64,4 +66,6 @@ urlpatterns = [
     path('subscription/create/', subscription_views.create, name='subscription_create'),
     path('subscription/manager/', subscription_views.manager, name="subscription_manager"),
 
+    # brightics 관련된 것입니다. 사실상 쓸 일은 없을 것입니다 : 김슬기
+    path('brightics/', brightics_views.make)
 ]

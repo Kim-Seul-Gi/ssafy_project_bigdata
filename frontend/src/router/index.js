@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueSession from 'vue-session'
-import EmptyPage from '../components/pages/EmptyPage'
+import HomePage from '../components/pages/HomePage'
 import MovieSearchPage from '../components/pages/MovieSearchPage'
 import MovieDetailPage from '../components/pages/MovieDetailPage'
 import UserSearchPage from '../components/pages/UserSearchPage'
@@ -18,7 +18,7 @@ Vue.use(VueSession)
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', component: EmptyPage, name: 'home' },
+        { path: '/', component: HomePage, name: 'home' },
         { path: '/movies/search', component: MovieSearchPage, name: 'movie-search' },
         { path: '/movies/detail/:id', component: MovieDetailPage, name: 'movie-detail', props: true },
         { path: '/users/search', component: UserSearchPage, name: 'user-search' },
