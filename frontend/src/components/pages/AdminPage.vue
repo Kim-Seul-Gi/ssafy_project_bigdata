@@ -1,23 +1,29 @@
 <template>
-  <v-flex shrink>
+    <v-container grid-list-md text-center>
+    <v-layout justify-center wrap>
     <span class="display-3 grey--text">Admin page</span>
-    <v-flex fluid row style="width:100%;">
+    <v-flex fluid row justify-center style="width:100%;">
       <v-switch v-model="switch1" :label="`movie`" @click="one()" />
       <v-switch v-model="switch2" :label="`user`" @click="two()" />
       <v-switch v-model="switch3" :label="`clustering`" @click="three()" />
       <v-switch v-model="switch4" :label="`subscription`" @click="four()" />
       <v-btn @click="check()">초기화</v-btn>
     </v-flex>
-    <v-flex v-if="switch1" xs12>
-      <p>movie</p>
-      <MovieSearchForm :submit="searchMovies_admin" />
-      <v-flex xs4>
+    
+    <v-flex v-if="switch1" xs12 wrap>
+      <div class="display-2 pa-10">영화 검색</div>
+      <v-flex xs6 offset-3>
+        <MovieSearchForm :submit="searchMovies_admin" />
+      </v-flex>
+      <v-flex xs12>
         <AdminMovieList :movie-list-cards="movieList" />
       </v-flex>
     </v-flex>
     <v-flex v-if="switch2" xs12>
-      <p>user</p>
-      <UserSearchForm :submit="searchUsers_admin" />
+      <div class="display-2 pa-10">유저 검색</div>
+      <v-flex xs6 offset-3>
+        <UserSearchForm :submit="searchUsers_admin" />
+      </v-flex>
       <v-flex xs12>
         <AdminUserList :user-list-cards="userList" />
       </v-flex>
@@ -31,7 +37,8 @@
       <p>여기에서 사람들이 구독 신청한 것들을 관리합시다~</p>
       <AdminSubscriptionList />
     </v-flex>
-  </v-flex>
+  </v-layout>
+  </v-container>
 </template>
 
 <script>

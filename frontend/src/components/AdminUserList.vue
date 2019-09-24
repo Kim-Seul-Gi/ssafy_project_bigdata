@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
-    <v-layout column>
-      <v-flex v-for="(card, i) in userListCardsSliced" :key="i" pa-2>
+    <v-layout row wrap>
+      <v-flex v-for="(card, i) in userListCardsSliced" :key="i" pa-2 xs12 sm6 md4 lg3 xl2>
         <AdminUserListCard
           :id="card.user_id"
           :username="card.username"
@@ -26,7 +26,7 @@ export default {
     },
   },
   data: () => ({
-    cardsPerPage: 10,
+    cardsPerPage: 12,
     page: 1,
   }),
   computed: {
