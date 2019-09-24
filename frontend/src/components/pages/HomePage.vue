@@ -24,7 +24,7 @@
           로그인을 하지 않았습니다!!
 
           <!-- (1) 로그인 하러가기 -->
-          <v-btn>로그인하기</v-btn>
+          <v-btn @click="goTo()">로그인하기</v-btn>
 
         </div>
 
@@ -43,10 +43,9 @@
           </div>
 
           <!-- (4) 유사 유저는 여기에서 가져올 수 있네요..?!-->
-          <h1>유사 유저 리스트입니다</h1>
+          <!-- <h1>유사 유저 리스트입니다</h1>
           <v-layout row wrap>
           <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-
               <v-card style="margin:10px;">
                   <v-card-text>
                     <v-container>
@@ -56,17 +55,15 @@
                       <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
                     </v-container>
                   </v-card-text>
-
               </v-card>
           </v-flex>
-          </v-layout>
-
+          </v-layout> -->
 
         </div>
 
         <!-- (3) 단순한 영화 나열(조회수, 인기순) -->
         <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
-        <h1>단순 영화 나열입니다</h1>
+        <!-- <h1>단순 영화 나열입니다</h1>
         <v-layout row wrap>
         <v-flex v-for="movie in this.$store.state.data.movieList_homepage" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
 
@@ -78,10 +75,10 @@
                     <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
                   </v-container>
                 </v-card-text>
-
             </v-card>
         </v-flex>
-        </v-layout>
+        </v-layout> -->
+
 
       </v-flex>
     </v-layout row wrap>
@@ -157,6 +154,9 @@ export default {
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()
     },
+    goTo() {
+      router.push({name:"sign-in"})
+    }
   },
 
 }

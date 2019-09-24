@@ -2,9 +2,20 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
+        <h1>나와 유사한 영화들이에요~<br></h1>
+
+          <!-- {{this.itembased_movie}} -->
+          <div v-for="movie in this.itembased_movie">
+          {{movie.id}}, {{movie.title}}, {{movie.watch_count}}
+          </div>
+          <!-- {{this.itembased_movie}} -->
+
+
         <h1>구독 관련</h1>
 
-        <div v-if="this.approval">
+
+
+        <!-- <div v-if="this.approval">
           회원님의 구독 유효 기간은 {{sub_date}} 입니다.
 
           <div v-if="before_extend">
@@ -33,7 +44,7 @@
           <div v-else>
             구독 신청을 하였습니다.
           </div>
-        </div>
+        </div> -->
 
       </v-flex>
 
@@ -50,7 +61,8 @@ export default {
     amounts: [30, 90],
     picked_amount:'',
     before_create : true,
-    before_extend : true
+    before_extend : true,
+    itembased_movie:'',
   }),
   props : {
     user_data : {
@@ -61,8 +73,18 @@ export default {
     approval : { type : Boolean },
   },
   mounted() {
+    this.getMovies_subscription()
   },
   methods : {
+    async getMovies_subscription() {
+      const apiUrl = 'api'
+      const id = this.$session.get('id_number')
+      var movies = await axios.get(`${apiUrl}/subscription/getmovies/${id}`)
+      this.itembased_movie = movies.data
+      // console.log(movies, 123)
+      //
+
+    },
     async create_subscription() {
       const apiUrl = '/api'
       var subscription = await axios.post(`${apiUrl}/subscription/create/`, {user : this.$session.get('id'), request:this.picked_amount})
