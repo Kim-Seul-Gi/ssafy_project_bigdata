@@ -13,6 +13,10 @@
           :averagerate="card.averagerate"
           :watch_count="card.watch_count"
           :score_users="card.score_users"
+          :plot="card.plot"
+          :url="card.url"
+          :director="card.director"
+          :casting="card.casting"
         />
       </v-flex>
       <v-pagination v-if="maxPages > 1" v-model="page" :length="maxPages" />

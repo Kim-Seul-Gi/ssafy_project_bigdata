@@ -3,12 +3,13 @@ from .models import Profile, Movie, Rate, Cluster
 from .models import User_Cluster_Hmeans, Movie_Cluster_Hmeans
 from .models import User_Cluster_Kmeans, Movie_Cluster_Kmeans
 from .models import User_Cluster_EM, Movie_Cluster_EM
+from .models import Subscription_manager
 #
 # Register your models here.
 class ProfileAdmin(admin.ModelAdmin):
    list_display = ['id', 'user', 'gender', 'age','occupation', 'approval', 'subscription']
 class MovieAdmin(admin.ModelAdmin):
-   list_display = ['id', 'title', 'genres', 'watch_count']
+   list_display = ['id', 'title', 'genres', 'watch_count', 'plot']
 class RateAdmin(admin.ModelAdmin):
    list_display = ['id', 'UserID', 'MovieID', 'rating', 'Timestamp']
 # cluster
@@ -26,6 +27,8 @@ class UserEMAdmin(admin.ModelAdmin):
    list_display = ['id', 'UserID', 'EM3', 'EM4', 'EM5', 'EM6', 'EM7']
 class MovieEMAdmin(admin.ModelAdmin):
    list_display = ['id', 'MovieId', 'EM3', 'EM4', 'EM5', 'EM6', 'EM7']
+class Subscription_managerAdmin(admin.ModelAdmin):
+    list_display = ['id', 'Profile', 'request', 'approval', 'request_day', 'apply_day']
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Movie, MovieAdmin)
@@ -38,3 +41,4 @@ admin.site.register(Movie_Cluster_Hmeans, MovieHAdmin)
 admin.site.register(User_Cluster_EM, UserEMAdmin)
 admin.site.register(Movie_Cluster_EM, MovieEMAdmin)
 admin.site.register(Cluster, ClusterAdmin)
+admin.site.register(Subscription_manager, Subscription_managerAdmin)

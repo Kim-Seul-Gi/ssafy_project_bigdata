@@ -5,12 +5,13 @@
       <v-switch v-model="switch1" :label="`movie`" @click="one()" />
       <v-switch v-model="switch2" :label="`user`" @click="two()" />
       <v-switch v-model="switch3" :label="`clustering`" @click="three()" />
+      <v-switch v-model="switch4" :label="`subscription`" @click="four()" />
       <v-btn @click="check()">초기화</v-btn>
     </v-flex>
     <v-flex v-if="switch1" xs12>
       <p>movie</p>
       <MovieSearchForm :submit="searchMovies_admin" />
-      <v-flex xs12>
+      <v-flex xs4>
         <AdminMovieList :movie-list-cards="movieList" />
       </v-flex>
     </v-flex>
@@ -26,6 +27,10 @@
       여기에서 누르면 클러스터링 값이 변경될 것입니다.
       <AdminClustering />
     </v-flex>
+    <v-flex v-if="switch4" xs12>
+      <p>여기에서 사람들이 구독 신청한 것들을 관리합시다~</p>
+      <AdminSubscriptionList />
+    </v-flex>
   </v-flex>
 </template>
 
@@ -36,18 +41,25 @@ import AdminMovieList from "../AdminMovieList";
 import UserSearchForm from "../searchform/UserSearchForm";
 import AdminUserList from "../AdminUserList";
 import AdminClustering from "../AdminClustering";
+import AdminSubscriptionList from "../AdminSubscriptionList";
+
 export default {
   components: {
     AdminMovieList,
-    MovieSearchForm,
     AdminUserList,
+    AdminSubscriptionList,
+    
+    MovieSearchForm,
     UserSearchForm,
-    AdminClustering
+
+    AdminClustering,
+
   },
   data: () => ({
     switch1: false,
     switch2: false,
     switch3: false,
+    switch4: false,
     movielist:[],
     userlist:[],
   }),
@@ -63,21 +75,31 @@ export default {
       this.switch1 = true
       this.switch2 = false
       this.switch3 = false
+      this.switch4 = false
     },
     two() {
       this.switch1 = false
       this.switch2 = true
       this.switch3 = false
+      this.switch4 = false
     },
     three() {
       this.switch1 = false
       this.switch2 = false
       this.switch3 = true
+      this.switch4 = false
+    },
+    four() {
+      this.switch1 = false
+      this.switch2 = false
+      this.switch3 = false
+      this.switch4 = true
     },
     check() {
       this.switch1 = false
       this.switch2 = false
       this.switch3 = false
+      this.switch4 = false
     },
   }
 }

@@ -39,6 +39,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='subscription',
+<<<<<<< HEAD
             field=models.DateTimeField(default=datetime.datetime(2019, 9, 9, 9, 30, 35, 658675)),
+=======
+            field=models.DateTimeField(default=datetime.datetime(2019, 9, 9, 9, 30, 50, 340063)),
+>>>>>>> 8ec98f0fcdec71cfd0d2b2f53e95559b04874c16
         ),
     ]

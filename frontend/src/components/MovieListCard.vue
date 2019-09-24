@@ -8,6 +8,7 @@
             <v-layout column @click="SELECT_MovieDetail()">
               <v-list-item>
                 <v-list-item-content>
+                  <img :src="url" width="70%">
                   <v-list-item-title class="headline">
                     {{ title }}
                   </v-list-item-title>
@@ -75,6 +76,22 @@ export default {
     score_users: {
       type: Array,
       default: () => new Array()
+    },
+    plot: {
+      type: String,
+      default: ""
+    },
+    url: {
+      type: String,
+      default: ""
+    },
+    director: {
+      type: String,
+      default: ""
+    },
+    casting: {
+      type: String,
+      default: ""
     }
   },
   computed: {
@@ -90,7 +107,8 @@ export default {
     SELECT_MovieDetail() {
 
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
-                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate}
+                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
+                  'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}
       // router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       router.push({name:'movie-detail', params : {'id':movie_data.id}})
     }
