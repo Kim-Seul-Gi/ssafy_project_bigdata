@@ -71,11 +71,11 @@
         <v-flex v-for="movie in this.$store.state.data.movieList_homepage" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
 
             <v-card style="margin:10px;">
+                <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
                 <v-card-text>
                   <v-container>
-                    {{movie.id}}, {{movie.title}}, {{movie.averagerate}}
-                    {{movie.url}}
-                    <!-- <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn> -->
+                    {{movie.title}}
+                    <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
                   </v-container>
                 </v-card-text>
 
@@ -148,7 +148,15 @@ export default {
         }
         this.now_date = String(year)+month+date
       }
-    }
+    },
+    SELECT_MovieDetail(movie) {
+      var movie_data = {'id':movie.id, 'title':movie.title, 'genres_array':movie.genres_array,
+                  'img':movie.img,'watch_count' : movie.watch_count, 'score_users':movie.score_users, 'averagerate':movie.averagerate,
+                  'plot':movie.plot,'url':movie.url,'director':movie.director,'casting':movie.casting}
+
+      router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
+      window.location.reload()
+    },
   },
 
 }
