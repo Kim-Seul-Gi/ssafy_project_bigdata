@@ -2,16 +2,31 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
-        <h1>나와 유사한 영화들이에요~<br></h1>
+
+        <!-- {{this.profile_data.slice(1)}} -->
+
+          <!-- <h1>(2) 기능 : Itembased_movie 나열입니다</h1>
+          <v-layout row wrap>
+            <v-flex v-for="movie in this.itembased_movies" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
+
+                <v-card style="margin:10px;">
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
+                    <v-card-text>
+                      <v-container>
+                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                        평점 : {{movie.averagerate}}
+                        <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
+                      </v-container>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+          </v-layout> -->
 
           <!-- {{this.itembased_movie}} -->
-          <div v-for="movie in this.itembased_movie">
-          {{movie.id}}, {{movie.title}}, {{movie.watch_count}}
-          </div>
+          <!-- <div v-for="movie in this.itembased_movie">
+          {{movie.id}}, {{movie.title}}, {{movie.watch_count}}, {{movie.averagerate}}
+          </div> -->
           <!-- {{this.itembased_movie}} -->
-
-
-        <h1>구독 관련</h1>
 
 
 
@@ -62,27 +77,29 @@ export default {
     picked_amount:'',
     before_create : true,
     before_extend : true,
-    itembased_movie:'',
+    itembased_movies:'',
+    userbased_movies:'',
   }),
   props : {
-    user_data : {
-      type : Object,
+    profile_data : {
+      type : Object | Array,
     },
     now_date : { type : String },
     sub_date : { type : String },
     approval : { type : Boolean },
   },
-  mounted() {
+  created() {
     this.getMovies_subscription()
   },
   methods : {
     async getMovies_subscription() {
       const apiUrl = 'api'
       const id = this.$session.get('id_number')
-      var movies = await axios.get(`${apiUrl}/subscription/getmovies/${id}`)
-      this.itembased_movie = movies.data
+      var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies/${id}`)
+      this.itembased_movies = itembased_movies.data
+      var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})
+      // this.userbased_movies = userbased_movies.data
       // console.log(movies, 123)
-      //
 
     },
     async create_subscription() {

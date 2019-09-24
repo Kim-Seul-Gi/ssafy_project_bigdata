@@ -49,7 +49,7 @@ def movies(request):
 @api_view(['GET', 'POST', 'DELETE'])
 def homepage(request):
 
-    movies = Movie.objects.all().order_by('-watch_count')[:30]
+    movies = Movie.objects.all().order_by('-watch_count')[:10]
 
     serializer = MovieSerializer(movies, many=True)
 

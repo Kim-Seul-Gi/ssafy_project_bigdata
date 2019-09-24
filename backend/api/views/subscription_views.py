@@ -9,6 +9,8 @@ import pandas as pd
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import normalize, StandardScaler
 import random
+from django.db.models import Avg
+
 
 @api_view(['POST'])
 def create(request):
@@ -62,7 +64,7 @@ def manager(request):
         return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET','POST'])
-def getmovies(request, profile_pk):
+def itembased_movies(request, profile_pk):
     # 이 함수는 구독서비스를 이용하는 사용자에게 itembased 추천을 하는 함수입니다.
     #
     profile = Profile.objects.get(pk=profile_pk)
@@ -95,8 +97,6 @@ def getmovies(request, profile_pk):
     # 2. 배열에 box 추가하고
     # 3. 클러스터링 돌리고
     # 4. 마지막 클러스터링 넘버랑 같은 넘버 영화를 가져온다 > 이 때 단축평가 [x for x in range()] 이런거 사용
-    # 이게 오래걸린다면...?!?!
-
 
     # data = pd.read_csv("../data/movie_clu.csv")
     data = pd.read_csv("./api/fixtures/movie_clu.csv")
@@ -117,9 +117,60 @@ def getmovies(request, profile_pk):
 
 
     cluster_movies = [data[x:x+1].values[0][-1] for x in range(len(y_predict)-1) if y_predict[x]==y_predict[-1]]
-    pick_movies = random.sample(cluster_movies, k=30)
-
+    pick_movies = random.sample(cluster_movies, k=10)
     movies = Movie.objects.filter(title__in=pick_movies).order_by('-watch_count')
     serializer = MovieSerializer(movies, many=True)
 
     return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET','POST'])
+def userbased_movies(request, profile_pk):
+    if request.method == 'POST':
+        resemble_users = request.data.get('resemble_users')
+
+        profile_id = []
+        movie_box = {}
+
+        for profile in resemble_users:
+            profile_id.append(profile['id'])
+        # print(profile_id)
+        # moviebox = Movie.objects.filter(title='nothing')
+
+        for i in profile_id:
+            profile = Profile.objects.get(pk=i)
+            movies = profile.score_movies.all()[:5]
+            for movie in movies:
+
+                print(movie)
+
+
+        # profiles = Profile.objects.filter(pk__in=profile_id)[1]
+
+
+        # user = movie.score_users
+        # print(user)
+
+        # print(movie.set_score_users)
+        # print(profiles)
+        # movies = profiles.score_movies
+
+        # rates = Rate.objects.filter(UserID__in=profiles)[:5]
+
+        # print(movies)
+
+        # print()
+        # rates = Rate.objects.filter(UserID=profiles)
+        # print(rates)
+        # print()
+        #
+        # rates_avg = rates.annotate(avg=Avg('MovieID__id'))
+        # for i in rates_avg:
+        #     print(i.__dict__)
+        # print(rates_avg)
+
+        # rates = Rate.objects.filter(UserID__in=profiles).aggregate(Avg('rating'))
+        # print(rates)
+        # average_rate = Rate.objects.filter(MovieID=obj.id).aggregate(Avg('rating'))
+
+
+    return Response(status=status.HTTP_200_OK)
