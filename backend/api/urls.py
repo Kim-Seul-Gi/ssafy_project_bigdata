@@ -14,6 +14,8 @@ from api.views import IMDB_views
 from api.views import subscription_views
 
 from api.views import brightics_views
+from api.views import KNN_views
+
 urlpatterns = [
     # user 관리
     path('auth/signup-many/', auth_views.signup_many, name='sign_up_many'),
@@ -67,5 +69,8 @@ urlpatterns = [
     path('subscription/manager/', subscription_views.manager, name="subscription_manager"),
 
     # brightics 관련된 것입니다. 사실상 쓸 일은 없을 것입니다 : 김슬기
-    path('brightics/', brightics_views.make)
+    path('brightics/', brightics_views.make),
+
+    # KNN 알고리즘!
+    path('KNN/', KNN_views.KNN_algorithm),
 ]
