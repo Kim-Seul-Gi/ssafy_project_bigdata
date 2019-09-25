@@ -80,7 +80,7 @@ def detail(request, user_id):
             else:
                 cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H7
                 clusters = User_Cluster_Hmeans.objects.filter(H7=cluster_num)
-        elif way=="EM":
+        else:
             if(k==3):
                 cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM3
                 clusters = User_Cluster_EM.objects.filter(EM3=cluster_num)
