@@ -167,26 +167,46 @@ class MatrixFactorization():
         # print("Final R matrix:")
         # print(self.get_complete_matrix())
         result = self.get_complete_matrix().tolist()
-        tmp = self._R.tolist()      
-        print(type(result))
+        tmp = self._R.tolist()
         for i in range(1, len(result[0])):
             user = i
-            user_list = []
+            movie_list = []
             for j in range(1, len(result)):
                 if (j in none) or (tmp[j][i] != 0):
                     pass
-                user_list.append((result[j][i], j))
-            user_list.sort()
-            movie1 = Movie.objects.get(id=user_list[0][1])
-            movie2 = Movie.objects.get(id=user_list[1][1])
-            movie3 = Movie.objects.get(id=user_list[2][1])
-            movie4 = Movie.objects.get(id=user_list[3][1])
-            movie5 = Movie.objects.get(id=user_list[4][1])
-            movie6 = Movie.objects.get(id=user_list[5][1])
-            movie7 = Movie.objects.get(id=user_list[6][1])
-            movie8 = Movie.objects.get(id=user_list[7][1])
-            movie9 = Movie.objects.get(id=user_list[8][1])
-            movie10 = Movie.objects.get(id=user_list[9][1])
+                else:
+                    movie_list.append((result[j][i], j))
+            movie_list.sort()
+            # print(movie_list[0][1])
+            movie1 = Movie.objects.get(id=movie_list[0][1])
+            # print(movie1)
+            # print(movie_list[1][1])
+            movie2 = Movie.objects.get(id=movie_list[1][1])
+            # print(movie2)
+            # print(movie_list[2][1])
+            movie3 = Movie.objects.get(id=movie_list[2][1])
+            # print(movie3)
+            # print(movie_list[3][1])
+            movie4 = Movie.objects.get(id=movie_list[3][1])
+            # print(movie4)
+            # print(movie_list[4][1])
+            movie5 = Movie.objects.get(id=movie_list[4][1])
+            # print(movie5)
+            # print(movie_list[5][1])
+            movie6 = Movie.objects.get(id=movie_list[5][1])
+            # print(movie6)
+            # print(movie_list[6][1])
+            movie7 = Movie.objects.get(id=movie_list[6][1])
+            # print(movie7)
+            # print(movie_list[7][1])
+            movie8 = Movie.objects.get(id=movie_list[7][1])
+            # print(movie8)
+            # print(movie_list[8][1])
+            movie9 = Movie.objects.get(id=movie_list[8][1])
+            # print(movie9)
+            # print(movie_list[9][1])
+            movie10 = Movie.objects.get(id=movie_list[9][1])
+            # print(movie10)
             Matrix(UserID=Profile.objects.get(user=User.objects.get(pk=user)), Movie1=movie1, Movie2=movie2, Movie3=movie3, Movie4=movie4, Movie5=movie5, Movie6=movie6, Movie7=movie7, Movie8=movie8, Movie9=movie9, Movie10=movie10).save()
                 
                 
@@ -206,7 +226,7 @@ def matrix_factorization(request):
         if tmp:
             for t in tmp:
                 ratings[idx][t.UserID.pk] = t.rating
-        
+       
     factorizer = MatrixFactorization(np.array(ratings), k=3, learning_rate=0.01, reg_param=0.01, epochs=300, verbose=True)
     factorizer.fit()
     factorizer.print_results()
