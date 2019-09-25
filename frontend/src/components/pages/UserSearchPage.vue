@@ -11,7 +11,7 @@
       </v-flex>
 
       <!-- 검색 결과 -->
-      <v-flex xs7>
+      <v-flex xs12>
         <UserList :user-list-cards="userList" />
       </v-flex>
     </v-layout>
