@@ -26,6 +26,7 @@ urlpatterns = [
 
     path('movies/', movie_views.movies, name='movie_list'),
     path('movies/<int:movie_id>', movie_views.detail, name='movie_datail'),
+    path('movies/homepage/', movie_views.homepage, name='movie_homepage'),
 
     path('users/', user_views.users, name='user_list'),
     path('users/<int:user_id>', user_views.detail, name='user_list'),
@@ -66,9 +67,12 @@ urlpatterns = [
 
     # # subscription 관련 정보를 생성, 관리 합니다.
     # create : 유저가 구독신청하기
-    # apply : 관리자가 구독관련된 것을 적용하기
+    # manager(apply) : 관리자가 구독관련된 것을 적용하기
+    # itembasedmovies : 구독자에게 영화 추천하기 , id 는 구독자의 프로필 아이디이다.
     path('subscription/create/', subscription_views.create, name='subscription_create'),
     path('subscription/manager/', subscription_views.manager, name="subscription_manager"),
+    path('subscription/itembasedmovies/<int:profile_pk>', subscription_views.itembased_movies, name="subscription_itembasedmovies"),
+    path('subscription/userbasedmovies/<int:profile_pk>', subscription_views.userbased_movies, name="subscription_userbasedmovies"),
 
     # brightics 관련된 것입니다. 사실상 쓸 일은 없을 것입니다 : 김슬기
     path('brightics/', brightics_views.make)
