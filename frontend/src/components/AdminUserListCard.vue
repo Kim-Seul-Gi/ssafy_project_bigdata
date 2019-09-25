@@ -5,9 +5,11 @@
       <v-layout align-center py-4 pl-4>
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
-            <div @click="SELECT_UserDetail()">{{ id }} | {{ username }}</div>
-            <v-btn @click="profile_detail(id); dialog=true">수정</v-btn>
-            <v-btn v-on:click="profile_delete(id);">삭제</v-btn>
+            <div style="cursor: pointer; display: inline-block" @click="SELECT_UserDetail()">{{ id }} | {{ username }}</div>
+            <div>
+              <v-btn @click="profile_detail(id); dialog=true">수정</v-btn>
+              <v-btn v-on:click="profile_delete(id);">삭제</v-btn>
+            </div>
           </v-container>
         </v-flex>
       </v-layout>
