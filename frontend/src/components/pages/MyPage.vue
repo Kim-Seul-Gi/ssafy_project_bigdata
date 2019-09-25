@@ -4,13 +4,13 @@
 
       <!-- 검색 폼 by 영화이름-->
       <v-flex xs6>
-        <div>
+        <!-- <div>
           <Subscription
             :user_data="profile_data[0]"
             :now_date="now_date"
             :sub_date="subscription_date"
           />
-        </div>
+        </div> -->
 
         <p style="font-size: 3rem;">User Profile</p>
         <p><span style="margin-right: 1rem; font-weight: bold;">name</span><span>{{ user.username }}</span></p>
@@ -155,7 +155,7 @@ export default {
         date = String(date)
       }
       this.now_date = String(year)+month+date
-      
+
       this.user = this.profile_data[0]
       this.username = this.user.username
       this.age = this.user.age
