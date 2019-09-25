@@ -157,6 +157,10 @@ export default {
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()
     },
+    SELECT_UserDetail(id, username) {
+      var user_data = {'id':id, 'username':username}
+      router.push({name:'user-detail', params : {'id':user_data.id, 'user_data':user_data}})
+    },
     goTo() {
       router.push({name:"sign-in"})
     }
