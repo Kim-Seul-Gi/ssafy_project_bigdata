@@ -2,10 +2,11 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
-
+        <h1>(2) 구독하셨습니까??</h1>
         <!-- {{this.profile_data.slice(1)}} -->
-
-          <!-- <h1>(2) 기능 : Itembased_movie 나열입니다</h1>
+          <div id="item" style="display:none;">
+            <h1>(3) 기능 : Itembased_movie 나열입니다</h1>
+          </div>
           <v-layout row wrap>
             <v-flex v-for="movie in this.itembased_movies" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
 
@@ -20,7 +21,27 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
-          </v-layout> -->
+          </v-layout>
+
+          <div id="user" style="display:none;">
+            <h1>(4) 기능 : Userbased_movie 나열입니다</h1>
+          </div>
+          <v-layout row wrap>
+            <v-flex v-for="movie in this.userbased_movies" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
+
+                <v-card style="margin:10px;">
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
+                    <v-card-text>
+                      <v-container>
+                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                        평점 : {{movie.averagerate}}
+                        <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
+                      </v-container>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+          </v-layout>
+
 
           <!-- {{this.itembased_movie}} -->
           <!-- <div v-for="movie in this.itembased_movie">
@@ -77,29 +98,45 @@ export default {
     picked_amount:'',
     before_create : true,
     before_extend : true,
-    itembased_movies:'',
     userbased_movies:'',
+    itembased_movies:'',
+
   }),
   props : {
     profile_data : {
       type : Object | Array,
+      default:[]
     },
     now_date : { type : String },
     sub_date : { type : String },
     approval : { type : Boolean },
   },
+  watch: {
+    profile_data() {
+      this.getMovies_subscription()
+      // console.log(this.profile_data)
+    }
+  },
   created() {
-    this.getMovies_subscription()
+    // console.log(this.profile_data)
+    // this.getMovies_subscription()
   },
   methods : {
     async getMovies_subscription() {
+      // console.log(this.profile_data)
       const apiUrl = 'api'
       const id = this.$session.get('id_number')
+
       var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies/${id}`)
       this.itembased_movies = itembased_movies.data
+      document.querySelector('#item').style.display = 'block';
+      // console.log(itembased_movies.data)
+      // console.log(this.profile_data)
       var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})
-      // this.userbased_movies = userbased_movies.data
-      // console.log(movies, 123)
+      this.userbased_movies = userbased_movies.data
+      document.querySelector('#user').style.display = 'block';
+      // console.log(this.userbased_movies)
+
 
     },
     async create_subscription() {

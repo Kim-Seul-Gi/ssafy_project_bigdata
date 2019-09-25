@@ -120,57 +120,55 @@ def itembased_movies(request, profile_pk):
     pick_movies = random.sample(cluster_movies, k=10)
     movies = Movie.objects.filter(title__in=pick_movies).order_by('-watch_count')
     serializer = MovieSerializer(movies, many=True)
-
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET','POST'])
 def userbased_movies(request, profile_pk):
     if request.method == 'POST':
+        print(request.data.get('resemble_users'))
         resemble_users = request.data.get('resemble_users')
-
         profile_id = []
         movie_box = {}
 
         for profile in resemble_users:
             profile_id.append(profile['id'])
-        # print(profile_id)
-        # moviebox = Movie.objects.filter(title='nothing')
 
         for i in profile_id:
             profile = Profile.objects.get(pk=i)
-            movies = profile.score_movies.all()[:5]
-            for movie in movies:
+            rates = profile.profile_rate.all()
+            # rates = profile.profile_rate.order_by('?').first()
+            # print(len(rates))
+            for rate in rates:
+                # movie_box = {'영화키값':[평점sum, 평점count]}
+                if movie_box.get(rate.MovieID)==None:
+                    movie_box.update({rate.MovieID:[rate.rating,1]})
+                else:
+                    tmp_array = movie_box.get(rate.MovieID)
+                    tmp_array[0] += rate.rating
+                    tmp_array[1] += 1
 
-                print(movie)
+        # movie_box_sorted 는 배열입니다.
+        movie_box_sorted = sorted(movie_box.items(), key=lambda x : (x[1][0]/x[1][1], x[1][1]), reverse=True)
+        movie_box_sorted_slice = movie_box_sorted[:10]
+        print(movie_box_sorted_slice)
 
+        movie_array = []
+        for i in movie_box_sorted_slice:
+            movie_array.append(i[0])
 
-        # profiles = Profile.objects.filter(pk__in=profile_id)[1]
+        print(movie_array)
+        # movies = Movie.objects.filter()
 
-
-        # user = movie.score_users
-        # print(user)
-
-        # print(movie.set_score_users)
-        # print(profiles)
-        # movies = profiles.score_movies
-
-        # rates = Rate.objects.filter(UserID__in=profiles)[:5]
-
-        # print(movies)
-
-        # print()
-        # rates = Rate.objects.filter(UserID=profiles)
-        # print(rates)
-        # print()
-        #
-        # rates_avg = rates.annotate(avg=Avg('MovieID__id'))
-        # for i in rates_avg:
-        #     print(i.__dict__)
-        # print(rates_avg)
-
-        # rates = Rate.objects.filter(UserID__in=profiles).aggregate(Avg('rating'))
-        # print(rates)
-        # average_rate = Rate.objects.filter(MovieID=obj.id).aggregate(Avg('rating'))
-
-
-    return Response(status=status.HTTP_200_OK)
+        serializer = MovieSerializer(movie_array, many=True)
+        '''
+        # movie_box_sorted_slice :
+        [(<Movie: Sixth Sense, The (1999)>, [20, 4]), (<Movie: Princess Mononoke, The (Mononoke Hime
+        # ) (1997)>, [15, 3]), (<Movie: Monty Python and the Holy Grail (1974)>, [15, 3]), (<Movie: Ma
+        # trix, The (1999)>, [15, 3]), (<Movie: City of Lost Children, The (1995)>, [10, 2]), (<Movie:
+        #  Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963)>, [10, 2]), (<M
+        # ovie: Office Space (1999)>, [10, 2]), (<Movie: Ferris Bueller's Day Off (1986)>, [10, 2]), (
+        # <Movie: Saving Private Ryan (1998)>, [10, 2]), (<Movie: Pulp Fiction (1994)>, [10, 2])]
+        '''
+        # return Response(status=status.HTTP_200_OK)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        # return Response(data=movie_box_sorted_slice[0], status=status.HTTP_200_OK)
