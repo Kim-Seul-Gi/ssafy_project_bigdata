@@ -12,8 +12,13 @@ from api.views import EMcluster_views
 from api.views import cluster_views
 from api.views import IMDB_views
 from api.views import subscription_views
+<<<<<<< HEAD
+from api.views import matrix_views
+
+=======
 
 from api.views import brightics_views
+>>>>>>> a072df034e07c1545b3d732adfb5cb6b6c416e41
 urlpatterns = [
     # user 관리
     path('auth/signup-many/', auth_views.signup_many, name='sign_up_many'),
@@ -59,6 +64,9 @@ urlpatterns = [
     # cluster 관련 정보를 조회, 변경합니다.
     path('cluster/', cluster_views.cluster, name='cluster'),
     path('imdb/', IMDB_views.getmovies, name='imdb'),
+
+    # matrix factorization 수행
+    path('matrix/', matrix_views.matrix_factorization, name='matrix'),
 
     # # subscription 관련 정보를 생성, 관리 합니다.
     # create : 유저가 구독신청하기
