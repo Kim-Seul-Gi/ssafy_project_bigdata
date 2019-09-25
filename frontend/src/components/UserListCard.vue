@@ -5,7 +5,7 @@
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
 
-            <v-layout column @click="SELECT_UserDetail()">
+            <v-layout column style="cursor: pointer" @click="SELECT_UserDetail()">
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="headline">
