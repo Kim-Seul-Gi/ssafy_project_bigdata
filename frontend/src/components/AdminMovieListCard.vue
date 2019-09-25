@@ -7,7 +7,7 @@
           <v-container grid-list-lg pa-0>
             <v-list-item>
                 <v-list-item-content>
-                  <img :src="url" height="300vw" style="cursor: pointer" @click="SELECT_MovieDetail()">
+                  <img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" height="300vw" style="cursor: pointer" @click="SELECT_MovieDetail()">
                   <v-list-item-title class="headline">
                     {{ title }}
                   </v-list-item-title>
