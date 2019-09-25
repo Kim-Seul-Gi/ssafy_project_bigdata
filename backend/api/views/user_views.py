@@ -11,7 +11,7 @@ import random
 def users(request):
     if request.method == 'GET':
         username = request.GET.get('username', None)
-        users = User.objects.all()
+        users = User.objects.all()[1:]
         if username:
             users = users.filter(username__icontains=username)
         serializer = UserSerializer(users, many=True)
