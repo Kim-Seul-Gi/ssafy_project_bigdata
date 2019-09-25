@@ -72,5 +72,6 @@ urlpatterns = [
     path('brightics/', brightics_views.make),
 
     # KNN 알고리즘!
-    path('KNN/', KNN_views.KNN_algorithm),
+    path('KNN/movie/', KNN_views.KNN_algorithm_movie),
+    path('KNN/user/', KNN_views.KNN_algorithm_user),
 ]

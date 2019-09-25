@@ -106,3 +106,4 @@ if __name__ == '__main__':
     # create_movies()
     # create_users()
     # create_ratings()
+    pass
