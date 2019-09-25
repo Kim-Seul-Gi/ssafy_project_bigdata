@@ -88,6 +88,7 @@
 
 <script>
 import axios from 'axios';
+import router from "../router";
 
 export default {
   data: () => ({
@@ -134,7 +135,6 @@ export default {
       document.querySelector('#user').style.display = 'block';
       // console.log(this.userbased_movies)
 
-
     },
     async create_subscription() {
       const apiUrl = '/api'
@@ -154,6 +154,14 @@ export default {
       }
       this.before_extend = false
     },
+    SELECT_MovieDetail(movie) {
+      var movie_data = {'id':movie.id, 'title':movie.title, 'genres_array':movie.genres_array,
+                  'img':movie.img,'watch_count' : movie.watch_count, 'score_users':movie.score_users, 'averagerate':movie.averagerate,
+                  'plot':movie.plot,'url':movie.url,'director':movie.director,'casting':movie.casting}
+
+      router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
+      window.location.reload()
+    }
   }
 };
 </script>

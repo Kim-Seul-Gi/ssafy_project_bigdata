@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-from api.models import Profile, Subscription_manager, Rate, Cluster, Movie
+from api.models import Profile, Subscription_manager, Rate, Cluster, Movie, Matrix
 from rest_framework.response import Response
 from api.serializers import SubscriptionSerializer, MovieSerializer
 import datetime
@@ -10,6 +10,7 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import normalize, StandardScaler
 import random
 from django.db.models import Avg
+from sklearn.cluster import AgglomerativeClustering
 
 
 @api_view(['POST'])
@@ -76,9 +77,7 @@ def itembased_movies(request, profile_pk):
     # 0. 내가 어떠한 것을 좋아하는지 평점을 통해 알아냅니다.
     profile = Profile.objects.get(pk=profile_pk)
     rates = Rate.objects.filter(UserID=profile.user.id).order_by('-rating')[:5]
-    cluster = Cluster.objects.get(pk=1)
-    cluster_n = cluster.n_component
-    cluster_way = cluster.way
+
     # 평점을 잘 준 댓글들의 영화 장르들을 파악합니다.
     box = [0]*18
     genre_number = {'Action':0,'Adventure':1,'Animation':2,"Children's":3,'Comedy':4,
@@ -102,11 +101,43 @@ def itembased_movies(request, profile_pk):
     data_slice.loc[3883,:] = box
     # print(data_slice[-1:][:])
 
+    cluster = Cluster.objects.get(pk=1)
+    cluster_n = cluster.n_component
+    cluster_way = cluster.way
+
     # 3. 클러스터링 합니다.
-    data_scaled = StandardScaler().fit_transform(data_slice)
-    df = pd.DataFrame(data_scaled)
-    model = GaussianMixture(n_components=5, max_iter=20, random_state=0, covariance_type='spherical').fit(df)
-    y_predict = model.fit_predict(df)
+    if cluster_way == 'H':
+        data_scaled = StandardScaler().fit_transform(data_slice)
+        df = pd.DataFrame(data_scaled)
+        model = AgglomerativeClustering(n_clusters=cluster_n, affinity='euclidean', linkage='ward').fit(df)
+        y_predict = model.fit_predict(df)
+
+    elif cluster_way == 'MF':
+        matrix = Matrix.objects.filter(UserID=profile)[0]
+
+        movies_id = []
+
+        movies_id.append(matrix.Movie1.id)
+        movies_id.append(matrix.Movie2.id)
+        movies_id.append(matrix.Movie3.id)
+        movies_id.append(matrix.Movie4.id)
+        movies_id.append(matrix.Movie5.id)
+        movies_id.append(matrix.Movie6.id)
+        movies_id.append(matrix.Movie7.id)
+        movies_id.append(matrix.Movie8.id)
+        movies_id.append(matrix.Movie9.id)
+        movies_id.append(matrix.Movie10.id)
+
+        movies = Movie.objects.filter(id__in=movies_id)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    else:
+        # EM을 기준으로 합시다 > KNN, EM, K 일때 여기로 들어옴.
+        data_scaled = StandardScaler().fit_transform(data_slice)
+        df = pd.DataFrame(data_scaled)
+        model = GaussianMixture(n_components=cluster_n, max_iter=20, random_state=0, covariance_type='spherical').fit(df)
+        y_predict = model.fit_predict(df)
 
     # 4. 나의 넘버(y_predict[-1]를 통해 클러스터링 영화들을 가져옵니다.)
     cluster_number = y_predict[-1]

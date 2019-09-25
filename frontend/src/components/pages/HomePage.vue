@@ -112,6 +112,7 @@ export default {
   computed: {
   },
   created() {
+    console.log(1)
     this.getMovies_homepage()
     this.fetchdata()
   },

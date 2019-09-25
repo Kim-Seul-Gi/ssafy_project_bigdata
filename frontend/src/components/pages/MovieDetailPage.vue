@@ -8,6 +8,7 @@
 
         <div class="display-2 pa-10">
         영화 상세 내용<br>
+        <!-- {{movie_data[0]}} -->
         {{movie_data[0].id}}, {{movie_data[0].title}}
         <br><br>
         <p>{{movie_data[0].plot}}</p>
@@ -15,7 +16,7 @@
         <p>{{movie_data[0].director}}</p>
         <p>{{movie_data[0].casting}}</p>
 
-        <v-flex v-for="(movie,i) in movie_data.slice(1)" :key="i" pa-2>
+        <v-flex v-for="movie in movie_data.slice(1)" pa-2>
 
           <v-hover v-slot:default="{ hover }">
 
@@ -76,10 +77,23 @@ export default {
     // movie_data : {type:Object}
   },
   data: () => ({
-    movie_data:'',
+    movie_data:[
+      {"id":''},
+      {"averagerate":''},
+      {"casting":''},
+      {"director":''},
+      {"genres_array":''},
+      {"plot":''},
+      {"score_users":''},
+      {"title":''},
+      {"url":''},
+      {"watch_count":''}
+
+    ],
   }),
   mounted() {
     this.fetchdata()
+    console.log(1)
   },
   methods: {
     async fetchdata() {
@@ -87,6 +101,7 @@ export default {
         const id = this.$route.params.id
         var movie = await axios.get(`${apiUrl}/movies/${id}`)
         this.movie_data = movie.data
+        // console.log(this.movie_data)
     },
     search() {
       router.go(-1)

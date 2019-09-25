@@ -3,6 +3,11 @@
     <v-app-bar app clipped-left color="indigo">
       <v-app-bar-nav-icon class="white--text" @click="drawer = !drawer" />
       <span class="title ml-3 mr-5 white--text" @click="homepage()">영화 추천 서비스</span>
+      <!-- <router-link :to="{name:'home'}">
+        <span class="title ml-3 mr-5 white--text" router-link :to="{ name: 'home'}">2영화 추천 서비스</span>
+      </router-link> -->
+
+
 
       <!-- 이거 영화 데이터 장르별로 구하는 array>csv 코드입니다. 안쓰면 주석처리하세용 -->
       <!-- <v-btn @click="get_array()">데이터를 구해보자~</v-btn> -->
