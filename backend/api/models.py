@@ -110,3 +110,16 @@ class User_Cluster_EM(models.Model):
     EM5 = models.IntegerField(default=0)
     EM6 = models.IntegerField(default=0)
     EM7 = models.IntegerField(default=0)
+
+class Matrix(models.Model):
+    UserID = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="matrix_set")
+    Movie1 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie1")
+    Movie2 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie2")
+    Movie3 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie3")
+    Movie4 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie4")
+    Movie5 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie5")
+    Movie6 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie6")
+    Movie7 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie7")
+    Movie8 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie8")
+    Movie9 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie9")
+    Movie10 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie10")
