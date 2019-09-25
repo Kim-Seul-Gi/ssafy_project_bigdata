@@ -5,9 +5,16 @@
       <v-layout align-center py-4 pl-4>
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
-            <img :src="url" width="70%">
-            <div style="cursor: pointer" @click="SELECT_MovieDetail()">{{title}}</div>
-            <div>{{genres_array}}</div>
+            <v-list-item>
+                <v-list-item-content>
+                  <img :src="url" height="300vw" style="cursor: pointer" @click="SELECT_MovieDetail()">
+                  <v-list-item-title class="headline">
+                    {{ title }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>평점 : {{averagerate}}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
             <v-btn @click="movie_detail(id); dialog=true">수정</v-btn>
             <v-btn v-on:click="movie_delete(id);">삭제</v-btn>
           </v-container>
@@ -114,7 +121,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.id, 123123)
   },
   computed: {
     genresStr: function() {
