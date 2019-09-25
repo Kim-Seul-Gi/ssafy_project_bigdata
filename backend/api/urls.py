@@ -12,13 +12,9 @@ from api.views import EMcluster_views
 from api.views import cluster_views
 from api.views import IMDB_views
 from api.views import subscription_views
-<<<<<<< HEAD
 from api.views import matrix_views
-
-=======
-
 from api.views import brightics_views
->>>>>>> a072df034e07c1545b3d732adfb5cb6b6c416e41
+
 urlpatterns = [
     # user 관리
     path('auth/signup-many/', auth_views.signup_many, name='sign_up_many'),
