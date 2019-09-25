@@ -4,6 +4,23 @@
       <v-flex>
         <h1>(2) 구독하셨습니까??</h1>
         <!-- {{this.profile_data.slice(1)}} -->
+
+
+        <div v-if="this.approval">
+          회원님의 구독 유효 기간은 {{sub_date}} 입니다.
+
+          <div v-if="before_extend">
+            <div v-for="amount in amounts" style="display:inline-block;">
+              <input type="radio" :value="amount" v-model="picked_amount">
+              <label style="font-size:10px;">{{amount}}</label> &nbsp;
+            </div>
+            <v-btn @click="extend_subscription()">구독 연장</v-btn>
+          </div>
+
+          <div v-else>
+            연장 신청을 하였습니다.
+          </div>
+
           <div id="item" style="display:none;">
             <h1>(3) 기능 : Itembased_movie 나열입니다</h1>
           </div>
@@ -43,28 +60,8 @@
           </v-layout>
 
 
-          <!-- {{this.itembased_movie}} -->
-          <!-- <div v-for="movie in this.itembased_movie">
-          {{movie.id}}, {{movie.title}}, {{movie.watch_count}}, {{movie.averagerate}}
-          </div> -->
-          <!-- {{this.itembased_movie}} -->
 
 
-
-        <!-- <div v-if="this.approval">
-          회원님의 구독 유효 기간은 {{sub_date}} 입니다.
-
-          <div v-if="before_extend">
-            <div v-for="amount in amounts" style="display:inline-block;">
-              <input type="radio" :value="amount" v-model="picked_amount">
-              <label style="font-size:10px;">{{amount}}</label> &nbsp;
-            </div>
-            <v-btn @click="extend_subscription()">구독 연장</v-btn>
-          </div>
-
-          <div v-else>
-            연장 신청을 하였습니다.
-          </div>
 
         </div>
 
@@ -80,7 +77,7 @@
           <div v-else>
             구독 신청을 하였습니다.
           </div>
-        </div> -->
+        </div>
 
       </v-flex>
 
