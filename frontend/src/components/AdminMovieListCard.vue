@@ -121,7 +121,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.id, 123123)
   },
   computed: {
     genresStr: function() {
