@@ -5,14 +5,14 @@
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
 
-            <v-layout column @click="SELECT_MovieDetail()">
+            <v-layout column style="cursor: pointer" @click="SELECT_MovieDetail()">
               <v-list-item>
                 <v-list-item-content>
+                  <img :src="url" height="300vw">
                   <v-list-item-title class="headline">
                     {{ title }}
                   </v-list-item-title>
                   <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
-                  <v-list-item-subtitle>평점 : {{averagerate}}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-card-text>
@@ -25,7 +25,7 @@
                     dense
                     readonly
                   />
-                  <div class="grey--text ml-4">{{ averagerate.toFixed(1) }}</div>
+                  <div class="grey--text ml-4">{{ averagerate }}</div>
                 </v-layout>
               </v-card-text>
               <v-card-text>
@@ -75,6 +75,22 @@ export default {
     score_users: {
       type: Array,
       default: () => new Array()
+    },
+    plot: {
+      type: String,
+      default: ""
+    },
+    url: {
+      type: String,
+      default: ""
+    },
+    director: {
+      type: String,
+      default: ""
+    },
+    casting: {
+      type: String,
+      default: ""
     }
   },
   computed: {
@@ -90,7 +106,8 @@ export default {
     SELECT_MovieDetail() {
 
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
-                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate}
+                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
+                  'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}
       // router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       router.push({name:'movie-detail', params : {'id':movie_data.id}})
     }

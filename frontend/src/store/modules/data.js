@@ -6,6 +6,7 @@ const state = {
     // shape: [{ id, title, genres, viewCnt, rating }]
     movieSearchList: [],
     movieSearchList_admin: [],
+    movieList_homepage: [],
     userSearchList: [],
     userSearchList_admin: [],
     username: ''
@@ -28,7 +29,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
-            score_users: d.score_users
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -43,9 +48,32 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
-            score_users: d.score_users
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList_admin', movies)
+    },
+    async getMovies_homepage({ commit }) {
+        const resp = await api.getMovies_homepage()
+        if (!resp.data.length) {
+            alert('해당 이름의 영화는 없습니다.')
+        }
+        const movies = resp.data.map(d => ({
+            id: d.id,
+            title: d.title,
+            genres_array: d.genres_array,
+            watch_count: d.watch_count,
+            averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
+        }))
+        commit('setMovieList_homepage', movies)
     },
     async searchGenres({ commit }, params) {
         const resp = await api.searchGenre(params)
@@ -58,7 +86,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
-            score_users: d.score_users
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -73,6 +105,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -87,6 +124,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -101,6 +143,11 @@ const actions = {
             genres_array: d.genres_array,
             watch_count: d.watch_count,
             averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
         }))
         commit('setMovieSearchList', movies)
     },
@@ -138,6 +185,9 @@ const mutations = {
     },
     setMovieSearchList_admin(state, movies) {
         state.movieSearchList_admin = movies.map(m => m)
+    },
+    setMovieList_homepage(state, movies) {
+        state.movieList_homepage = movies.map(m => m)
     },
     setUserSearchList(state, users) {
         state.userSearchList = users.map(function(m) {

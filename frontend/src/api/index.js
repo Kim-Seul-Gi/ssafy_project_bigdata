@@ -9,6 +9,9 @@ export default {
       params,
     })
   },
+  getMovies_homepage() {
+    return axios.get(`${apiUrl}/movies/homepage`)
+  },
   searchGenre(params) {
     // movie search by genre
     return axios.get(`${apiUrl}/genres/`, {

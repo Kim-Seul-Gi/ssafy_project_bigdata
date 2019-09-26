@@ -1,8 +1,8 @@
 <!-- disable eslint-plugin-vue -->
 <template>
   <v-container class="pa-2" fluid grid-list-md>
-    <v-layout column>
-      <v-flex pa-2 v-for="(card, i) in movieListCardsSliced" :key="i">
+    <v-layout row wrap>
+      <v-flex pa-2 v-for="(card, i) in movieListCardsSliced" :key="i" xs12 sm6 md4 lg3 xl2>
         <!-- id img title genres_array averagerate watch_count score_users -->
         <AdminMovieListCard
           :movie_init="card"
@@ -13,6 +13,10 @@
           :averagerate="card.averagerate"
           :watch_count="card.watch_count"
           :score_users="card.score_users"
+          :plot="card.plot"
+          :url="card.url"
+          :director="card.director"
+          :casting="card.casting"
         />
       </v-flex>
       <v-pagination v-if="maxPages > 1" v-model="page" :length="maxPages" />
@@ -34,7 +38,7 @@ export default {
     },
   },
   data: () => ({
-    cardsPerPage: 10,
+    cardsPerPage: 12,
     page: 1,
     tmp_movieList:[],
   }),

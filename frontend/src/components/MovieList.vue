@@ -10,7 +10,7 @@
     <div v-if="!movieListCards.length">
       영화가 없어요!!!
     </div>
-    <v-layout column>
+    <v-layout row wrap>
 
       <!-- movieList 설명 -->
         <!-- 평점순 정렬 : tmp_movieList -->
@@ -25,7 +25,7 @@
 
 
       <!-- 처음에 보여주는 것 : 조회수 순 -->
-      <v-flex v-if="!seemode_rate" v-for="(card,i) in movieListCardsSliced" :key="i" pa-2>
+      <v-flex v-if="!seemode_rate" v-for="(card,i) in movieListCardsSliced" :key="i" pa-2 xs12 sm6 md4 lg3 xl2>
         <!-- {{card.viewCnt}} -->
         <MovieListCard
           :id="card.id"
@@ -35,12 +35,16 @@
           :averagerate="card.averagerate"
           :watch_count="card.watch_count"
           :score_users="card.score_users"
+          :plot="card.plot"
+          :url="card.url"
+          :director="card.director"
+          :casting="card.casting"
         />
       </v-flex>
       <!--  -->
 
       <!-- 선택옵션 - 평점 순 -->
-      <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" pa-2>
+      <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" pa-2 xs12 sm6 md4 lg3 xl2>
         <MovieListCard
           :id="card.id"
           :img="card.img"
@@ -49,6 +53,10 @@
           :averagerate="card.averagerate"
           :watch_count="card.watch_count"
           :score_users="card.score_users"
+          :plot="card.plot"
+          :url="card.url"
+          :director="card.director"
+          :casting="card.casting"
         />
       </v-flex>
       <!--  -->
@@ -72,7 +80,7 @@ export default {
     },
   },
   data: () => ({
-    cardsPerPage: 10,
+    cardsPerPage: 12,
     page: 1,
     seemode_rate:true,
     tmp_movieList:[],

@@ -8,7 +8,14 @@ class Profile(models.Model):
     age = models.IntegerField(default=25)
     occupation = models.CharField(max_length=200)
     approval = models.BooleanField(default=False)
-    subscription = models.DateTimeField(default=datetime.datetime.now() - datetime.timedelta(days=1))
+    subscription = models.DateTimeField(default=datetime.datetime(2019, 9, 10, 13, 47, 43, 630123))
+
+class Subscription_manager(models.Model):
+    Profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_sub")
+    request = models.IntegerField(default=0)
+    approval = models.BooleanField(default=False)
+    request_day = models.DateTimeField(auto_now_add=True)
+    apply_day = models.DateTimeField(auto_now=True)
 
 #  wrapper for create user Profile
 def create_profile(**kwargs):
@@ -103,3 +110,16 @@ class User_Cluster_EM(models.Model):
     EM5 = models.IntegerField(default=0)
     EM6 = models.IntegerField(default=0)
     EM7 = models.IntegerField(default=0)
+
+class Matrix(models.Model):
+    UserID = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="matrix_set")
+    Movie1 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie1")
+    Movie2 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie2")
+    Movie3 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie3")
+    Movie4 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie4")
+    Movie5 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie5")
+    Movie6 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie6")
+    Movie7 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie7")
+    Movie8 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie8")
+    Movie9 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie9")
+    Movie10 = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="movie10")

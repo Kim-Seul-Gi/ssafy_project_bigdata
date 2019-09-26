@@ -32,7 +32,6 @@ def signup(request):
         gender = request.data.get('gender', None)
         occupation = request.data.get('occupation', None)
         password = request.data.get('password')
-        print(username, age, gender, occupation, password)
         create_profile(username=username, password=password, age=age, occupation=occupation, gender=gender)
 
         return Response(status=status.HTTP_201_CREATED)
