@@ -19,18 +19,20 @@
             <!-- 2. 로그인 O , 구독 X / 보여줄 기능 : (1), (2), (5), (6) -->
             <!-- 3. 로그인 O , 구독 O / 보여줄 기능 : (1), (2), (3), (4), (5), (6) -->
 
-        <h1>(1) 로그인하셨습니까?</h1>
+        <!-- <h1>(1) 로그인하셨습니까?</h1> -->
         <!-- 1. 로그인 여부 -->
         <div v-if="!this.user">
-          로그인을 하지 않았습니다!!
-
+          <!-- 로그인을 하지 않았습니다!! -->
+          로그인을 하시면 영화를 추천해드릴게요.<br>
+          클러스터링 알고리즘 을 이용하여 영화를 추천합니다.<br>
+          사용된 알고리즘 : K-means, H, EM, MatrixFactorization<br><br>
           <!-- (1) 로그인 하러가기 -->
-          <v-btn @click="goTo()">로그인하기</v-btn>
+          <!-- <v-btn @click="goTo()">로그인하기</v-btn> -->
 
         </div>
 
         <div v-else>
-          저는 {{this.user}}입니다.<br>
+          로그인 ID : {{this.user}}<br><br>
 
           <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
           <div>
@@ -64,7 +66,7 @@
         </v-layout>
 
         <div v-if="this.user">
-          <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?!-->
+          <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
           <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
           <v-layout row wrap>
           <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
@@ -112,7 +114,6 @@ export default {
   computed: {
   },
   created() {
-    console.log(1)
     this.getMovies_homepage()
     this.fetchdata()
   },

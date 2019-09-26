@@ -2,7 +2,7 @@
   <v-app id="app">
     <v-app-bar app clipped-left color="indigo">
       <v-app-bar-nav-icon class="white--text" @click="drawer = !drawer" />
-      <span class="title ml-3 mr-5 white--text" @click="homepage()">영화 추천 서비스</span>
+      <span class="title ml-3 mr-5 white--text" style="cursor:pointer;" @click="homepage()">영화 추천 서비스</span>
       <!-- <router-link :to="{name:'home'}">
         <span class="title ml-3 mr-5 white--text" router-link :to="{ name: 'home'}">2영화 추천 서비스</span>
       </router-link> -->

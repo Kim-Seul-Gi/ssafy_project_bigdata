@@ -2,7 +2,7 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
-        <h1>(2) 구독하셨습니까??</h1>
+        <!-- <h1>(2) 구독하셨습니까??</h1> -->
         <!-- {{this.profile_data.slice(1)}} -->
 
 
@@ -66,7 +66,7 @@
         </div>
 
         <div v-else>
-          회원님은 구독 서비스를 이용한 적이 없어요~
+          회원님은 구독 서비스를 이용한 적이 없어요~<br><br>
           <div v-if="before_create">
             <div v-for="amount in amounts" style="display:inline-block;">
               <input type="radio" :value="amount" v-model="picked_amount">
@@ -127,13 +127,15 @@ export default {
 
       var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies/${id}`)
       this.itembased_movies = itembased_movies.data
-      document.querySelector('#item').style.display = 'block';
-      // console.log(itembased_movies.data)
-      // console.log(this.profile_data)
+
       var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})
       this.userbased_movies = userbased_movies.data
-      document.querySelector('#user').style.display = 'block';
-      // console.log(this.userbased_movies)
+
+      if (this.profile_data[0].approval) {
+        document.querySelector('#item').style.display = 'block';
+        document.querySelector('#user').style.display = 'block';
+      }
+
 
     },
     async create_subscription() {

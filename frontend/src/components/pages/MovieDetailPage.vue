@@ -9,7 +9,7 @@
         <div class="display-2 pa-10">
         영화 상세 내용<br>
         <!-- {{movie_data[0]}} -->
-        {{movie_data[0].id}}, {{movie_data[0].title}}
+        {{movie_data[0].id}}, {{movie_data[0].title}}, {{movie_data[0].watch_count}}
         <br><br>
         <p>{{movie_data[0].plot}}</p>
         <img :src="movie_data[0].url"/>
@@ -93,7 +93,6 @@ export default {
   }),
   mounted() {
     this.fetchdata()
-    console.log(1)
   },
   methods: {
     async fetchdata() {
