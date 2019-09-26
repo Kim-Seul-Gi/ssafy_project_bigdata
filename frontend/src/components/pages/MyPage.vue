@@ -24,7 +24,7 @@
         >
           Edit
         </v-btn>
-        <div style="margin-top: 3rem;">
+        <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem;">Similar Users</p>
           <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;">
             <v-card-text>
@@ -134,6 +134,7 @@ export default {
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
       this.profile_data = profile.data
+      console.log(this.profile_data)
 
       // 구독 날짜 확인하기,
       // 오늘 날짜 : this.now_date , ex) 20190910
