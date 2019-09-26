@@ -123,7 +123,9 @@ export default {
   },
   mounted() {
     this.tmp_genres = this.genres_array
-
+    if (url == '.') {
+      url = ''
+    }
   },
   computed: {
     genresStr: function() {
