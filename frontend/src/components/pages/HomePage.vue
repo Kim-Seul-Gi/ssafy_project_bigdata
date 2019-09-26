@@ -19,18 +19,20 @@
             <!-- 2. 로그인 O , 구독 X / 보여줄 기능 : (1), (2), (5), (6) -->
             <!-- 3. 로그인 O , 구독 O / 보여줄 기능 : (1), (2), (3), (4), (5), (6) -->
 
-        <h1>(1) 로그인하셨습니까?</h1>
+        <!-- <h1>(1) 로그인하셨습니까?</h1> -->
         <!-- 1. 로그인 여부 -->
         <div v-if="!this.user">
-          로그인을 하지 않았습니다!!
-
+          <!-- 로그인을 하지 않았습니다!! -->
+          로그인을 하시면 영화를 추천해드릴게요.<br>
+          클러스터링 알고리즘 을 이용하여 영화를 추천합니다.<br>
+          사용된 알고리즘 : K-means, H, EM, MatrixFactorization<br><br>
           <!-- (1) 로그인 하러가기 -->
-          <v-btn @click="goTo()">로그인하기</v-btn>
+          <!-- <v-btn @click="goTo()">로그인하기</v-btn> -->
 
         </div>
 
         <div v-else>
-          저는 {{this.user}}입니다.<br>
+          로그인 ID : {{this.user}}<br><br>
 
           <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
           <div>
@@ -41,26 +43,6 @@
               :approval="this.user_data.approval"
             />
           </div>
-
-
-
-          <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?!-->
-          <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
-          <v-layout row wrap>
-          <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-              <v-card style="margin:10px;">
-                  <v-card-text>
-                    <v-container>
-                      <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
-                      <p>{{ person.age }} / {{ person.gender }}</p>
-                      <p>{{ person.occupation }}</p>
-                      <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
-                    </v-container>
-                  </v-card-text>
-              </v-card>
-          </v-flex>
-          </v-layout>
-
 
         </div>
 
@@ -83,8 +65,25 @@
         </v-flex>
         </v-layout>
 
+        <div v-if="this.user">
+          <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
+          <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
+          <v-layout row wrap>
+          <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
+              <v-card style="margin:10px;">
+                  <v-card-text>
+                    <v-container>
+                      <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
+                      <p>{{ person.age }} / {{ person.gender }}</p>
+                      <p>{{ person.occupation }}</p>
+                      <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+                    </v-container>
+                  </v-card-text>
+              </v-card>
+          </v-flex>
+          </v-layout>
+        </div>
 
-        
       </v-flex>
     </v-layout row wrap>
 
@@ -158,6 +157,10 @@ export default {
 
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()
+    },
+    SELECT_UserDetail(id, username) {
+      var user_data = {'id':id, 'username':username}
+      router.push({name:'user-detail', params : {'id':user_data.id, 'user_data':user_data}})
     },
     goTo() {
       router.push({name:"sign-in"})

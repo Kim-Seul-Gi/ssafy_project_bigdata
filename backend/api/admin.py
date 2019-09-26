@@ -31,6 +31,7 @@ class Subscription_managerAdmin(admin.ModelAdmin):
     list_display = ['id', 'Profile', 'request', 'approval', 'request_day', 'apply_day']
 class MatrixAdmin(admin.ModelAdmin):
    list_display = ['UserID', 'Movie1', 'Movie2', 'Movie3', 'Movie4', 'Movie5', 'Movie6', 'Movie7', 'Movie8', 'Movie9', 'Movie10']
+
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Rate, RateAdmin)

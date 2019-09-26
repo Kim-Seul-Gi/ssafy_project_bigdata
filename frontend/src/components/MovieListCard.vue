@@ -8,7 +8,7 @@
             <v-layout column style="cursor: pointer" @click="SELECT_MovieDetail()">
               <v-list-item>
                 <v-list-item-content>
-                  <img :src="url" height="300vw">
+                  <img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" height="300vw">                
                   <v-list-item-title class="headline">
                     {{ title }}
                   </v-list-item-title>

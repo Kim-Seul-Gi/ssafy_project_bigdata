@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-from api.models import Profile, Subscription_manager, Rate, Cluster, Movie
+from api.models import Profile, Subscription_manager, Rate, Cluster, Movie, Matrix
 from rest_framework.response import Response
 from api.serializers import SubscriptionSerializer, MovieSerializer
 import datetime
@@ -10,6 +10,7 @@ from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import normalize, StandardScaler
 import random
 from django.db.models import Avg
+from sklearn.cluster import AgglomerativeClustering
 
 
 @api_view(['POST'])
@@ -66,13 +67,18 @@ def manager(request):
 @api_view(['GET','POST'])
 def itembased_movies(request, profile_pk):
     # 이 함수는 구독서비스를 이용하는 사용자에게 itembased 추천을 하는 함수입니다.
-    #
-    profile = Profile.objects.get(pk=profile_pk)
+    # 과정은 아래와 같습니다.
+    # 0. 나의 선호 영화 장르 파악하기(box)
+    # 1. csv 가져오기
+    # 2. 1에 box 추가하고
+    # 3. 저장된 방식의 클러스터링 알고리즘 적용(K-means, H, EM, KNN, MF 인지 확인)한 이후 적합한 방법으로 ㄱ
+    # 4. 마지막 클러스터링 넘버랑 같은 넘버 영화를 가져온다
 
+    # 0. 내가 어떠한 것을 좋아하는지 평점을 통해 알아냅니다.
+    profile = Profile.objects.get(pk=profile_pk)
     rates = Rate.objects.filter(UserID=profile.user.id).order_by('-rating')[:5]
 
-    # rate 의 영화를 조회하여 해당 영화의 장르 평점을 담기 위한 것 : box
-    # rate 는 일차배열입니다.
+    # 평점을 잘 준 댓글들의 영화 장르들을 파악합니다.
     box = [0]*18
     genre_number = {'Action':0,'Adventure':1,'Animation':2,"Children's":3,'Comedy':4,
                        'Crime':5,'Documentary':6,'Drama':7,'Fantasy':8,'Film-Noir':9,
@@ -82,62 +88,84 @@ def itembased_movies(request, profile_pk):
         genres = rate.MovieID.genres.strip().split('|')
         # print(genres)
         for genre in genres:
-            box[genre_number[genre]] += 1/5
+            box[genre_number[genre]] += 1/len(rates)
+    # box : User 의 영화 장르 평점입니다! 이걸 이용해서 클러스링 돌리고 친구들 가져옵시다!
 
-    # User 의 영화 장르 평점입니다! 이걸 이용해서 클러스링 돌리고 친구들 가져옵시다!
-    # print(box)
+    # 1. data를 가져올 때 파일을 가져오는데 기본 위치는 backend입니다.
+    # data = pd.read_csv("../data/movie_clu.csv")
+    data = pd.read_csv("./api/fixtures/movie_clu.csv")
+    data_slice = data[['Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']]
+
+    # 2. 나의 성향(box)을 1에 추가합니다.
+    # print(data_slice[-1:][:])
+    data_slice.loc[3883,:] = box
+    # print(data_slice[-1:][:])
 
     cluster = Cluster.objects.get(pk=1)
     cluster_n = cluster.n_component
     cluster_way = cluster.way
 
-    # n : 7, way : K
+    # 3. 클러스터링 합니다.
+    if cluster_way == 'H':
+        data_scaled = StandardScaler().fit_transform(data_slice)
+        df = pd.DataFrame(data_scaled)
+        model = AgglomerativeClustering(n_clusters=cluster_n, affinity='euclidean', linkage='ward').fit(df)
+        y_predict = model.fit_predict(df)
 
-    # 1. csv 가져오기 > 배열이잖아?
-    # 2. 배열에 box 추가하고
-    # 3. 클러스터링 돌리고
-    # 4. 마지막 클러스터링 넘버랑 같은 넘버 영화를 가져온다 > 이 때 단축평가 [x for x in range()] 이런거 사용
+    elif cluster_way == 'MF':
+        matrix = Matrix.objects.filter(UserID=profile)[0]
 
-    # data = pd.read_csv("../data/movie_clu.csv")
-    data = pd.read_csv("./api/fixtures/movie_clu.csv")
+        movies_id = []
 
-    data_slice = data[['Action', 'Adventure', 'Animation', "Children's", 'Comedy', 'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror', 'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western']]
+        movies_id.append(matrix.Movie1.id)
+        movies_id.append(matrix.Movie2.id)
+        movies_id.append(matrix.Movie3.id)
+        movies_id.append(matrix.Movie4.id)
+        movies_id.append(matrix.Movie5.id)
+        movies_id.append(matrix.Movie6.id)
+        movies_id.append(matrix.Movie7.id)
+        movies_id.append(matrix.Movie8.id)
+        movies_id.append(matrix.Movie9.id)
+        movies_id.append(matrix.Movie10.id)
 
-    # print(data_slice[-1:][:])
-    data_slice.loc[3883,:] = box
-    # print(data_slice[-1:][:])
+        movies = Movie.objects.filter(id__in=movies_id)
+        serializer = MovieSerializer(movies, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-    data_scaled = StandardScaler().fit_transform(data_slice)
-    df = pd.DataFrame(data_scaled)
+    else:
+        # EM을 기준으로 합시다 > KNN, EM, K 일때 여기로 들어옴.
+        data_scaled = StandardScaler().fit_transform(data_slice)
+        df = pd.DataFrame(data_scaled)
+        model = GaussianMixture(n_components=cluster_n, max_iter=20, random_state=0, covariance_type='spherical').fit(df)
+        y_predict = model.fit_predict(df)
 
-    model = GaussianMixture(n_components=5, max_iter=20, random_state=0, covariance_type='spherical').fit(df)
-    y_predict = model.fit_predict(df)
-
+    # 4. 나의 넘버(y_predict[-1]를 통해 클러스터링 영화들을 가져옵니다.)
     cluster_number = y_predict[-1]
-
-
     cluster_movies = [data[x:x+1].values[0][-1] for x in range(len(y_predict)-1) if y_predict[x]==y_predict[-1]]
     pick_movies = random.sample(cluster_movies, k=10)
     movies = Movie.objects.filter(title__in=pick_movies).order_by('-watch_count')
     serializer = MovieSerializer(movies, many=True)
+
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['GET','POST'])
+@api_view(['POST'])
 def userbased_movies(request, profile_pk):
+    # 이 함수는 구독서비스를 이용하는 사용자에게 userbased 추천을 하는 함수입니다.
+    # 과정은 아래와 같습니다.
+    # 0. 나와 유사한 사람(이미 클러스터링을 통해 나온 값들입니다.)확인
+    # 1. 그 사람들이 남긴 평점들을 가져옵니다.
+    # 2. 해당 평점들을 예쁘게 나열, 정렬시킵니다.
+    # 3. 일부분 영화를 추가하고, 해당 영화들을 반환합니다.
+
     if request.method == 'POST':
-        print(request.data.get('resemble_users'))
+    # 0 : 나와 유사한 사람(resemble_users), 유사한 영화들을 담을 movie_box(나중에 배열로 형변환됨.)
         resemble_users = request.data.get('resemble_users')
-        profile_id = []
         movie_box = {}
+    # 1
+        for i in resemble_users:
+            profile = Profile.objects.get(pk=i['id'])
+            rates = profile.profile_rate.order_by('rating')[:5]
 
-        for profile in resemble_users:
-            profile_id.append(profile['id'])
-
-        for i in profile_id:
-            profile = Profile.objects.get(pk=i)
-            rates = profile.profile_rate.all()
-            # rates = profile.profile_rate.order_by('?').first()
-            # print(len(rates))
             for rate in rates:
                 # movie_box = {'영화키값':[평점sum, 평점count]}
                 if movie_box.get(rate.MovieID)==None:
@@ -146,29 +174,14 @@ def userbased_movies(request, profile_pk):
                     tmp_array = movie_box.get(rate.MovieID)
                     tmp_array[0] += rate.rating
                     tmp_array[1] += 1
-
-        # movie_box_sorted 는 배열입니다.
-        movie_box_sorted = sorted(movie_box.items(), key=lambda x : (x[1][0]/x[1][1], x[1][1]), reverse=True)
-        movie_box_sorted_slice = movie_box_sorted[:10]
-        print(movie_box_sorted_slice)
-
+    # 2
+        movie_box = sorted(movie_box.items(), key=lambda x : (x[1][0]/x[1][1], x[1][1]), reverse=True)
+        movie_box = movie_box[:10]
+    # 3
         movie_array = []
-        for i in movie_box_sorted_slice:
+        for i in movie_box:
             movie_array.append(i[0])
 
-        print(movie_array)
-        # movies = Movie.objects.filter()
-
         serializer = MovieSerializer(movie_array, many=True)
-        '''
-        # movie_box_sorted_slice :
-        [(<Movie: Sixth Sense, The (1999)>, [20, 4]), (<Movie: Princess Mononoke, The (Mononoke Hime
-        # ) (1997)>, [15, 3]), (<Movie: Monty Python and the Holy Grail (1974)>, [15, 3]), (<Movie: Ma
-        # trix, The (1999)>, [15, 3]), (<Movie: City of Lost Children, The (1995)>, [10, 2]), (<Movie:
-        #  Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1963)>, [10, 2]), (<M
-        # ovie: Office Space (1999)>, [10, 2]), (<Movie: Ferris Bueller's Day Off (1986)>, [10, 2]), (
-        # <Movie: Saving Private Ryan (1998)>, [10, 2]), (<Movie: Pulp Fiction (1994)>, [10, 2])]
-        '''
-        # return Response(status=status.HTTP_200_OK)
+
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-        # return Response(data=movie_box_sorted_slice[0], status=status.HTTP_200_OK)

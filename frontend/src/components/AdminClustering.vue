@@ -33,7 +33,7 @@ export default {
   },
   data: () => ({
     n_components : ['3','4', '5', '6', '7'],
-    ways : ['K', 'H', 'EM'],
+    ways : ['K', 'H', 'EM', 'MF'],
     saved_n:'',
     saved_way : '',
     picked_n:'',

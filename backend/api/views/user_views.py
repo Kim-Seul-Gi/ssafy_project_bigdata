@@ -11,11 +11,16 @@ import random
 def users(request):
     if request.method == 'GET':
         username = request.GET.get('username', None)
-        users = User.objects.all()[1:]
+        # users = User.objects.all()[1:]
+
         if username:
-            users = users.filter(username__icontains=username)
+            users = User.objects.filter(username__icontains=username)
+        else:
+            users = User.objects.all()[1:]
+        # print(users)
         serializer = UserSerializer(users, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+        # return Response(status=status.HTTP_200_OK)
 
     # if request.method == 'DELETE':
     #     movie = Movie.objects.all()
@@ -80,7 +85,7 @@ def detail(request, user_id):
             else:
                 cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H7
                 clusters = User_Cluster_Hmeans.objects.filter(H7=cluster_num)
-        elif way=="EM":
+        else:
             if(k==3):
                 cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM3
                 clusters = User_Cluster_EM.objects.filter(EM3=cluster_num)
