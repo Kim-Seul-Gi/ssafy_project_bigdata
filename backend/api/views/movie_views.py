@@ -161,6 +161,8 @@ def genders(request):
 @api_view(['GET', 'POST', 'DELETE'])
 def detail(request, movie_id):
     movie = Movie.objects.get(pk=movie_id)
+    movie.watch_count += 1
+    movie.save()
     cluster = Cluster.objects.get(pk=1)
     result = []
     serializer = MovieSerializer(movie)

@@ -8,7 +8,11 @@
 
         <div class="display-2 pa-10">
         유저 상세 내용<br>
-        {{profile_data[0]}}
+
+        {{profile_data[0]['id']}}
+
+
+
         <br><br>
 
         <v-flex v-for="person in profile_data.slice(1)" pa-2>
@@ -77,7 +81,14 @@ export default {
     // user_data : {type:Object}
   },
   data: () => ({
-    profile_data:'',
+    profile_data:[
+      {'id':''},
+      {"approval":''},
+      {"gender":''},
+      {"is_staff":''},
+      {"occupation":''},
+      {"subscription":''},
+      {"username":''}],
   }),
   mounted() {
     this.fetchdata()

@@ -2,8 +2,25 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
-        <h1>(2) 구독하셨습니까??</h1>
+        <!-- <h1>(2) 구독하셨습니까??</h1> -->
         <!-- {{this.profile_data.slice(1)}} -->
+
+
+        <div v-if="this.approval">
+          회원님의 구독 유효 기간은 {{sub_date}} 입니다.
+
+          <div v-if="before_extend">
+            <div v-for="amount in amounts" style="display:inline-block;">
+              <input type="radio" :value="amount" v-model="picked_amount">
+              <label style="font-size:10px;">{{amount}}</label> &nbsp;
+            </div>
+            <v-btn @click="extend_subscription()">구독 연장</v-btn>
+          </div>
+
+          <div v-else>
+            연장 신청을 하였습니다.
+          </div>
+
           <div id="item" style="display:none;">
             <h1>(3) 기능 : Itembased_movie 나열입니다</h1>
           </div>
@@ -43,33 +60,13 @@
           </v-layout>
 
 
-          <!-- {{this.itembased_movie}} -->
-          <!-- <div v-for="movie in this.itembased_movie">
-          {{movie.id}}, {{movie.title}}, {{movie.watch_count}}, {{movie.averagerate}}
-          </div> -->
-          <!-- {{this.itembased_movie}} -->
 
 
-
-        <!-- <div v-if="this.approval">
-          회원님의 구독 유효 기간은 {{sub_date}} 입니다.
-
-          <div v-if="before_extend">
-            <div v-for="amount in amounts" style="display:inline-block;">
-              <input type="radio" :value="amount" v-model="picked_amount">
-              <label style="font-size:10px;">{{amount}}</label> &nbsp;
-            </div>
-            <v-btn @click="extend_subscription()">구독 연장</v-btn>
-          </div>
-
-          <div v-else>
-            연장 신청을 하였습니다.
-          </div>
 
         </div>
 
         <div v-else>
-          회원님은 구독 서비스를 이용한 적이 없어요~
+          회원님은 구독 서비스를 이용한 적이 없어요~<br><br>
           <div v-if="before_create">
             <div v-for="amount in amounts" style="display:inline-block;">
               <input type="radio" :value="amount" v-model="picked_amount">
@@ -80,7 +77,7 @@
           <div v-else>
             구독 신청을 하였습니다.
           </div>
-        </div> -->
+        </div>
 
       </v-flex>
 
@@ -91,6 +88,7 @@
 
 <script>
 import axios from 'axios';
+import router from "../router";
 
 export default {
   data: () => ({
@@ -129,13 +127,14 @@ export default {
 
       var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies/${id}`)
       this.itembased_movies = itembased_movies.data
-      document.querySelector('#item').style.display = 'block';
-      // console.log(itembased_movies.data)
-      // console.log(this.profile_data)
+
       var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})
       this.userbased_movies = userbased_movies.data
-      document.querySelector('#user').style.display = 'block';
-      // console.log(this.userbased_movies)
+
+      if (this.profile_data[0].approval) {
+        document.querySelector('#item').style.display = 'block';
+        document.querySelector('#user').style.display = 'block';
+      }
 
 
     },
@@ -157,6 +156,14 @@ export default {
       }
       this.before_extend = false
     },
+    SELECT_MovieDetail(movie) {
+      var movie_data = {'id':movie.id, 'title':movie.title, 'genres_array':movie.genres_array,
+                  'img':movie.img,'watch_count' : movie.watch_count, 'score_users':movie.score_users, 'averagerate':movie.averagerate,
+                  'plot':movie.plot,'url':movie.url,'director':movie.director,'casting':movie.casting}
+
+      router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
+      window.location.reload()
+    }
   }
 };
 </script>
