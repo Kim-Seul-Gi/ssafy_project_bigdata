@@ -74,4 +74,5 @@ urlpatterns = [
     # KNN 알고리즘!
     path('KNN/movie/', KNN_views.KNN_algorithm_movie),
     path('KNN/user/', KNN_views.KNN_algorithm_user),
+    path('KNN/checkCSV/', KNN_views.checkCSV),
 ]

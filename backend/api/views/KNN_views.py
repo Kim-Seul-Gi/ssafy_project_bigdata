@@ -28,7 +28,8 @@ def new_movie(request):
   url = request.data.get('url', None)
   director = request.data.get('director', None)
   casting = request.data.get('casting', None)
-  Movie(title=title, genres=genres, plot=plot, url=url, dircetor=director, casting=casting).save()
+  Movie(title=title, genres='|'.join(genres), plot=plot, url=url, director=director, casting='|'.join(casting)).save()
+
 # 영화간의 거리 계산(장르, 감독, 배우)
 def distance_movie(input_movie, input_movie_genre, movie_genre, title):
   movie = Movie.objects.get(title=title)
@@ -57,18 +58,8 @@ def create_Movie():
 
 @api_view(['GET','POST'])
 def KNN_algorithm_movie(request):
-  # new_movie(request)
-  # input_movie = { 
-  #         "title":"test", 
-  #         "genres":["Comedy","Romance"],
-  #         "casting":["Robert De Niro",
-  #                     "Ben Stiller",
-  #                     "Teri Polo",
-  #                     "Blythe Danner"],
-  #         "director":"Jay Roach"}
-  
-  input_movie = Movie.objects.get(pk=1)
-
+  new_movie(request)
+  input_movie = Movie.objects.all().last()
   input_movie_genre = [0 for i in range(len(label))];
 
   for genre in input_movie.genres.split("|"):
@@ -76,7 +67,6 @@ def KNN_algorithm_movie(request):
     input_movie_genre[idx] = 1
 
   Movies, titles = create_Movie()
-
   dist_movie = [] # 영화간의 거리 리스트
   input_movie_genre = np.array(input_movie_genre)
   for movie_genre, title in zip(Movies.values, titles):
@@ -116,6 +106,7 @@ def CheckCluster(data, Nearest_data, input_data, target):
     Movie_Cluster_EM(MovieId=input_data, EM3=EM_list[0], EM4=EM_list[1], EM5=EM_list[2], EM6=EM_list[3], EM7=EM_list[4]).save()
   elif(target=="USER"):
     User_Cluster_EM(UserID=input_data, EM3=EM_list[0], EM4=EM_list[1], EM5=EM_list[2], EM6=EM_list[3], EM7=EM_list[4]).save()
+  
   # H
   H_list = [];
   for k in range(3,8):
@@ -184,11 +175,13 @@ def add_user_rating(scores, pk):
 
 @api_view(["GET", "POST"])
 def KNN_algorithm_user(request):
-  # new_user(request)
   Users, users_pk = create_User()
-  input_user_score = [3.96,4.0,4.0,4.0,3.77,0,0,4.0,4.5,0,2.67,4.0,3.0,3.8,3.83,3.8,4.0,4.67]
-  input_user = Profile.objects.get(pk=4)
-  add_user_rating(input_user_score, input_user.pk)
+  input_user_score = []
+  for N in request.data.get('scores'):
+    input_user_score.append(float(N))
+  input_user_pk = request.data.get('pk')
+  input_user = Profile.objects.get(pk=input_user_pk)
+  add_user_rating(input_user_score, input_user_pk)
 
   users_distance = []; # 유저간의 거리 리스트
   input_user_score = np.array(input_user_score)
@@ -205,3 +198,15 @@ def KNN_algorithm_user(request):
   target = "USER"
   CheckCluster(Users, Nearest_user, input_user, target)
   return Response(status=status.HTTP_200_OK)
+
+# 신규유저가 평점을 남긴 적이 있는지 확인
+@api_view(['GET', 'POST'])
+def checkCSV(request):
+  pk = request.data.get('pk')
+  flag = False
+  Users = pd.read_csv('./api/fixtures/user_rating.csv', header=0)
+  Users = Users['user_pk']
+  for user_pk in Users:
+    if(user_pk==pk):
+      flag = True; break;
+  return Response(data=flag, status=status.HTTP_200_OK)
