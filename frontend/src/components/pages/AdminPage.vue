@@ -13,6 +13,9 @@
     <v-flex v-if="switch1" xs12 wrap>
       <div class="display-2 pa-10">영화 검색</div>
       <v-flex xs6 offset-3>
+        <v-btn @click="createMovie()" v-if="!create">create</v-btn>
+        <v-btn @click="createMovie()" v-if="create">cancel</v-btn>
+        <CreateMovieForm v-if="create"/>
         <MovieSearchForm :submit="searchMovies_admin" />
       </v-flex>
       <v-flex xs12>
@@ -49,6 +52,7 @@ import UserSearchForm from "../searchform/UserSearchForm";
 import AdminUserList from "../AdminUserList";
 import AdminClustering from "../AdminClustering";
 import AdminSubscriptionList from "../AdminSubscriptionList";
+import CreateMovieForm from "../CreateMovieForm";
 
 export default {
   components: {
@@ -60,6 +64,7 @@ export default {
     UserSearchForm,
 
     AdminClustering,
+    CreateMovieForm,
 
   },
   data: () => ({
@@ -69,6 +74,7 @@ export default {
     switch4: false,
     movielist:[],
     userlist:[],
+    create: false,
   }),
   computed: {
     ...mapState({
@@ -108,6 +114,9 @@ export default {
       this.switch3 = false
       this.switch4 = false
     },
+    createMovie() {
+      this.create = !(this.create);
+    }
   }
 }
 </script>
