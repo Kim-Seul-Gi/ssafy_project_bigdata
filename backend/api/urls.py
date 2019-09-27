@@ -14,6 +14,7 @@ from api.views import IMDB_views
 from api.views import subscription_views
 from api.views import matrix_views
 from api.views import brightics_views
+from api.views import KNN_views
 
 urlpatterns = [
     # user 관리
@@ -76,6 +77,9 @@ urlpatterns = [
     path('subscription/itembasedmovies2/<int:profile_pk>', subscription_views.itembased_movies2, name="subscription_itembasedmovies2"),
     # brightics 관련된 것입니다. 사실상 쓸 일은 없을 것입니다 : 김슬기
     path('brightics/', brightics_views.make),
-    # path('brightics/gogo/', brightics_views.gogo)
 
+    # KNN 알고리즘!
+    path('KNN/movie/', KNN_views.KNN_algorithm_movie),
+    path('KNN/user/', KNN_views.KNN_algorithm_user),
+    path('KNN/checkCSV/', KNN_views.checkCSV),
 ]

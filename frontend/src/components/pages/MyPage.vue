@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
   <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
@@ -20,11 +21,13 @@
         <v-btn
           color="red lighten-2"
           dark
-          @click="dialog=true"
-        >
+          @click="dialog=true">
           Edit
         </v-btn>
-        <div style="margin-top: 3rem;">
+        <v-btn @click="NewRate()" v-if="!modal">평점등록하기</v-btn>
+        <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
+        <NewUserRating :modal="modal" v-if="modal"/>
+        <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem;">Similar Users</p>
           <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;">
             <v-card-text>
@@ -91,6 +94,7 @@ import { mapState, mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
+import NewUserRating from "../NewUserRating";
 // import MovieSearchForm from "../searchform/MovieSearchForm";
 // import MovieList from "../MovieList";
 
@@ -99,7 +103,8 @@ export default {
   components: {
     // MovieSearchForm,
     // MovieList,
-    Subscription
+    Subscription,
+    NewUserRating
   },
   data: () => ({
     user: null,
@@ -109,6 +114,7 @@ export default {
     occupation: null,
     profile_data:'',
     dialog: false,
+    modal: false,
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters'
@@ -134,6 +140,7 @@ export default {
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
       this.profile_data = profile.data
+      console.log(this.profile_data)
 
       // 구독 날짜 확인하기,
       // 오늘 날짜 : this.now_date , ex) 20190910
@@ -167,6 +174,20 @@ export default {
       var user_data = {'id':id, 'username':username}
       router.push({name:'user-detail', params : {'id':user_data.id, 'user_data':user_data}})
     },
+
+    NewRate() {
+      const apiUrl = '/api'
+      axios.post(`${apiUrl}/KNN/checkCSV/`,{
+        pk:this.$session.get('id_number')
+      }).then(res => {
+        console.log(res.data)
+        if(res.data==false)
+          this.modal = !(this.modal)
+        else
+          alert("이미 등록하신 평점이 있습니다!")
+      })
+    },
+
     async edit() {
       let __this = this;
       const id = this.$session.get('id_number');

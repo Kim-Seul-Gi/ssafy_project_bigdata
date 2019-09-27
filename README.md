@@ -82,6 +82,48 @@ async edit() {
       })
     }
 
+<<<<<<< HEAD
+#  wrapper for create user Profile
+def create_profile(**kwargs):
+
+    user = User.objects.create_user(
+        username=kwargs['username'],
+        password=kwargs['password'],
+        is_active=True
+    )
+
+    profile = Profile.objects.create(
+        user=user,
+        gender=kwargs['gender'],
+        age=kwargs['age'],
+        occupation=kwargs['occupation']
+    )
+
+    return profile
+
+class Movie(models.Model):
+    id = models.IntegerField(primary_key=True)
+    title = models.CharField(max_length=200)
+    genres = models.CharField(max_length=500)
+    watch_count = models.IntegerField(default=0)
+    averagerate = models.IntegerField(default=0)
+
+    score_users = models.ManyToManyField(User, through='Rate', related_name='score_movies')
+
+    @property
+    def genres_array(self):
+        return self.genres.strip().split('|')
+
+    def __str__(self):
+        return f'{self.title}'
+
+class Rate(models.Model):
+    UserID = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_rate")
+    MovieID = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="user_movie")
+    rating = models.IntegerField(default=0)
+    Timestamp = models.IntegerField()
+=======
+>>>>>>> 8ec98f0fcdec71cfd0d2b2f53e95559b04874c16
 ```
 
 
@@ -169,3 +211,11 @@ def manager(request):
         return Response(status=status.HTTP_200_OK)
 ```
 
+<<<<<<< HEAD
+- 유저 검색
+  - 유저 이름을 통해 검색하기 가능
+  - 엔터 클릭, search 로 가능
+  - 순서나열은 따로 적용하지 않음
+  - 카드를 누르면 유저 프로필 페이지로 이동
+=======
+>>>>>>> 
