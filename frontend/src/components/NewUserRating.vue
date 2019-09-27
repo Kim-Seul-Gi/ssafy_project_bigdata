@@ -23,10 +23,6 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <v-card v-if="check">
-      평점 등록 및 클러스터링이 진행 중입니다!
-      잠시만 기다려주세요!
-    </v-card>
   </div>
 </template>
 
@@ -36,7 +32,6 @@ import axios from 'axios';
 export default {
   data: () => ({
     modal:false,
-    check:false,
     items: ["Action","Adventure","Animation","Children's",
                 "Comedy","Crime","Documentary","Drama","Fantasy",
                 "Film-Noir","Horror","Musical","Mystery","Romance",
@@ -49,13 +44,17 @@ export default {
   }),
   methods: {
     createScore() {
+      console.log(111)
+      // 시작
+      var preload = document.querySelector('#check2')
+      preload.style.display = 'block'
       const apiUrl = '/api'
-      this.check = true;
       axios.post(`${apiUrl}/KNN/user/`, {
         scores:this.scores,
         pk:this.$session.get('id_number')
       }).then(res => {
-        this.check = false;
+        // 끝
+        preload.style.display = 'none'
         alert('평점을 등록했습니다!')
       })
       // console.log(this.$session.getAll())

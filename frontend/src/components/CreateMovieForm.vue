@@ -120,6 +120,9 @@ export default {
     },
     createMovie: function() {
       const apiUrl = '/api'
+      var preload = document.querySelector('#check1')
+      preload.style.display = 'block'
+
       axios.post(`${apiUrl}/KNN/movie/`, {
         title:this.title,
         genres:this.genres,
@@ -127,9 +130,11 @@ export default {
         url:this.url,
         director:this.director,
         casting:this.casting
+      }).then(res => {
+        preload.style.display = 'none'
+        alert("영화가 등록되었습니다!")
+        this.$refs.form.reset()
       })
-      alert("영화가 등록되었습니다!")
-      this.$refs.form.reset()
     }
   },
   watch: {
