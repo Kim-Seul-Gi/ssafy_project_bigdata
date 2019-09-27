@@ -73,7 +73,9 @@ urlpatterns = [
     path('subscription/manager/', subscription_views.manager, name="subscription_manager"),
     path('subscription/itembasedmovies/<int:profile_pk>', subscription_views.itembased_movies, name="subscription_itembasedmovies"),
     path('subscription/userbasedmovies/<int:profile_pk>', subscription_views.userbased_movies, name="subscription_userbasedmovies"),
-
+    path('subscription/itembasedmovies2/<int:profile_pk>', subscription_views.itembased_movies2, name="subscription_itembasedmovies2"),
     # brightics 관련된 것입니다. 사실상 쓸 일은 없을 것입니다 : 김슬기
-    path('brightics/', brightics_views.make)
+    path('brightics/', brightics_views.make),
+    # path('brightics/gogo/', brightics_views.gogo)
+
 ]
