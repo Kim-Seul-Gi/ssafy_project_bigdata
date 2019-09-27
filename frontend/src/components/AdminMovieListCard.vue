@@ -5,9 +5,16 @@
       <v-layout align-center py-4 pl-4>
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
-            <img :src="url" width="70%">
-            <div style="cursor: pointer" @click="SELECT_MovieDetail()">{{title}}</div>
-            <div>{{genres_array}}</div>
+            <v-list-item>
+                <v-list-item-content>
+                  <img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" height="300vw" style="cursor: pointer" @click="SELECT_MovieDetail()">
+                  <v-list-item-title class="headline">
+                    {{ title }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>평점 : {{averagerate}}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
             <v-btn @click="movie_detail(id); dialog=true">수정</v-btn>
             <v-btn v-on:click="movie_delete(id);">삭제</v-btn>
           </v-container>
@@ -16,10 +23,10 @@
     </v-card>
   </v-hover>
   <v-dialog v-model="dialog" width="500" >
-    <v-card flat class="text-xs-center ma-3" min-width="500">
+    <v-card flat class="text-xs-center" min-width="500">
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-responsive class="pt-4">
-        </v-responsive>
+        <!-- <v-responsive class="pt-4">
+        </v-responsive> -->
 
         <v-card-text>
           <v-text-field
@@ -47,7 +54,7 @@
       <v-btn color="primary" text @click="movie_update(id); dialog=false">
         수정하기
       </v-btn>
-      <v-btn color="primary" text @click="dialog=false">
+      <v-btn color="primary" text @click="movie_cancel(); dialog=false">
         닫기
       </v-btn>
     </v-card>
@@ -66,6 +73,7 @@ export default {
     'Crime', 'Documentary', 'Drama', 'Fantasy', 'Film-Noir', 'Horror',
     'Musical', 'Mystery', 'Romance', 'Sci-Fi', 'Thriller', 'War', 'Western', "Children's"],
     // genres_array : []
+    tmp_genres : []
   }),
   props: {
     id: {
@@ -114,7 +122,8 @@ export default {
     }
   },
   mounted() {
-    console.log(this.id, 123123)
+    this.tmp_genres = this.genres_array
+
   },
   computed: {
     genresStr: function() {
@@ -159,6 +168,9 @@ export default {
       console.log(movie.data[0])
       // this.title = movie.data[0].title
       // this.genres_array = movie.data[0].genres_array
+    },
+    movie_cancel() {
+      this.genres_array = this.tmp_genres
     }
   }
 };

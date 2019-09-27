@@ -5,15 +5,14 @@
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
 
-            <v-layout column @click="SELECT_MovieDetail()">
+            <v-layout column style="cursor: pointer" @click="SELECT_MovieDetail()">
               <v-list-item>
                 <v-list-item-content>
-                  <img :src="url" width="70%">
+                  <img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" height="300vw">                
                   <v-list-item-title class="headline">
                     {{ title }}
                   </v-list-item-title>
                   <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
-                  <v-list-item-subtitle>평점 : {{averagerate}}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-card-text>
@@ -26,7 +25,7 @@
                     dense
                     readonly
                   />
-                  <div class="grey--text ml-4">{{ averagerate.toFixed(1) }}</div>
+                  <div class="grey--text ml-4">{{ averagerate }}</div>
                 </v-layout>
               </v-card-text>
               <v-card-text>

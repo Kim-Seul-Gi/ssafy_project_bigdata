@@ -5,26 +5,17 @@
         <v-flex text-center>
           <v-container grid-list-lg pa-0>
 
-            <v-layout column @click="SELECT_UserDetail()">
+            <v-layout column style="cursor: pointer" @click="SELECT_UserDetail()">
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="headline">
-                    ID : {{ id }}, username : {{ username }}
-
+                    {{ id }} | {{ username }}
                   </v-list-item-title>
-                  <!-- <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle> -->
                 </v-list-item-content>
               </v-list-item>
               <v-card-text>
                 <v-layout justify-center>
-
-                </v-layout>
-              </v-card-text>
-              <v-card-text>
-                <v-layout justify-center>
                   프로필 보러가기
-                  <!-- <v-icon color="black">mdi-eye</v-icon> -->
-                  <!-- <div class="grey--text ml-4">{{ viewCnt }}</div> -->
                 </v-layout>
               </v-card-text>
             </v-layout>

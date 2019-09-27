@@ -5,13 +5,13 @@
 
       <!-- 검색 폼 by 영화이름-->
       <v-flex xs6>
-        <div>
+        <!-- <div>
           <Subscription
             :user_data="profile_data[0]"
             :now_date="now_date"
             :sub_date="subscription_date"
           />
-        </div>
+        </div> -->
 
         <p style="font-size: 3rem;">User Profile</p>
         <p><span style="margin-right: 1rem; font-weight: bold;">name</span><span>{{ user.username }}</span></p>
@@ -27,7 +27,7 @@
         <v-btn @click="NewRate()" v-if="!modal">평점등록하기</v-btn>
         <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
         <NewUserRating :modal="modal" v-if="modal"/>
-        <div style="margin-top: 3rem;">
+        <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem;">Similar Users</p>
           <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;">
             <v-card-text>
@@ -140,6 +140,7 @@ export default {
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
       this.profile_data = profile.data
+      console.log(this.profile_data)
 
       // 구독 날짜 확인하기,
       // 오늘 날짜 : this.now_date , ex) 20190910
@@ -161,7 +162,7 @@ export default {
         date = String(date)
       }
       this.now_date = String(year)+month+date
-      
+
       this.user = this.profile_data[0]
       this.username = this.user.username
       this.age = this.user.age
