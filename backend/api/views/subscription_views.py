@@ -188,6 +188,14 @@ def userbased_movies(request, profile_pk):
 
 @api_view(['GET', 'POST'])
 def itembased_movies2(request, profile_pk):
+    # 이 함수는 구독서비스를 이용하는 사용자에게 itembased 추천을 하는 함수입니다.
+    # 과정은 아래와 같습니다.
+    # 0. 나의 선호 영화 장르 파악하기(box)
+    # 1. csv 가져오기
+    # 2. 1에 box 추가하고
+    # 3. 저장된 방식의 클러스터링 알고리즘 적용(K-means, H, EM, KNN, MF 인지 확인)한 이후 적합한 방법으로 ㄱ
+    # 4. 마지막 클러스터링 넘버랑 같은 넘버 영화를 가져온다
+
     ## 1. 변수 정의
     # 1-1. array : array 에 있는 데이터를 csv로 변환할 것입니다.
     # 예시 array[0] = [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Toy Story (1995)']
