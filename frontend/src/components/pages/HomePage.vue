@@ -50,19 +50,22 @@
         <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
         <h1> (5) 기능 : 단순 영화 나열입니다</h1>
         <v-layout row wrap>
-        <v-flex v-for="movie in this.$store.state.data.movieList_homepage" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-
-            <v-card style="margin:10px;">
-                <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
-                <v-card-text>
-                  <v-container>
-                    {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                    평점 : {{movie.averagerate}}
-                    <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
-                  </v-container>
-                </v-card-text>
-            </v-card>
-        </v-flex>
+          <v-flex>
+            <carousel :per-page="pageNum">
+              <slide v-for="movie in this.$store.state.data.movieList_homepage"style="height: 21rem; width: 15rem;">
+                <v-card style="margin:10px; height: 20rem; width: 15rem;">
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem;"></v-img>
+                    <v-card-text>
+                      <!-- <v-container> -->
+                        <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
+                        <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                        <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                      <!-- </v-container> -->
+                    </v-card-text>
+                </v-card>
+              </slide>
+            </carousel>
+          </v-flex>
         </v-layout>
 
         <div v-if="this.user">
@@ -95,11 +98,13 @@ import { mapState, mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
-
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   components:{
     Subscription,
+    Carousel,
+    Slide
   },
   data() {
     return {
@@ -109,6 +114,7 @@ export default {
       subscription_date:'',
       now_date:'',
       movie_row: '',
+      pageNum: 4
     }
   },
   computed: {
@@ -165,7 +171,6 @@ export default {
     goTo() {
       router.push({name:"sign-in"})
     }
-  },
-
+  }
 }
 </script>
