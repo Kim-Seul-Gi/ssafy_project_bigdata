@@ -17,22 +17,20 @@
             <div class="grey--text">{{movie_data[0].averagerate}} ({{movie_data[0].watch_count}})</div>
             <div class="grey--text">Director: {{movie_data[0].director}}</div>
           </v-col>
-          {{movie_data[0].plot}}
-          <v-card-actions>
-            <div class="flex-grow-1">극 중 배우</div>
-            <v-btn icon @click="show = !show">
-              <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
-          </v-card-actions>
-
+          {{this.movie_data[0].castings.split("|")}}
+          <br>
+          <v-btn icon @click="show = !show">
+            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+          </v-btn>
+          
           <v-expand-transition>
             <div v-show="show">
-              <v-card-text>{{this.movie_data[0].casting.split("|")}}</v-card-text>
+              <v-card-text>{{movie_data[0].plot}}</v-card-text>
             </div>
           </v-expand-transition>
         </v-card>
   
-        <div style="width:200px;">
+        <!-- <div style="width:200px;">
           <h2>평점 추가하기</h2>
           <v-text-field
             v-model="score"
@@ -44,7 +42,7 @@
           <v-btn @click="createRating(movie_data[0].id)">등록</v-btn>
           <v-btn @click="updateRating(movie_data[0].id)">수정</v-btn>
           <v-btn @click="deleteRating(movie_data[0].id)">삭제</v-btn>
-        </div>
+        </div> -->
         <br><br>
         <h3>유사 작품</h3>
         <v-flex v-for="movie in movie_data.slice(1)" pa-2>
@@ -114,7 +112,7 @@ export default {
     movie_data:[
       {"id":''},
       {"averagerate":''},
-      {"casting":''},
+      {"castings":''},
       {"director":''},
       {"genres_array":''},
       {"plot":''},
