@@ -9,13 +9,22 @@
         <div class="display-2 pa-10">
         유저 상세 내용<br>
 
-        {{profile_data[0]['id']}}
+        <p>{{profile_data[0]['is_username']}}</p>
+        <div v-if="profile_data[0]['gender'] == 'F'">성별 : 여</div>
+        <div v-else-if="profile_data[0]['gender'] == 'M'">성별 : 남</div>
+        <p>직업 : {{profile_data[0]['occupation']}}</p>
+        <div v-if="profile_data[0]['age'] == '1'">연령대 : 18세이하</div>
+        <div v-else-if="profile_data[0]['age'] == '18'">연령대 : 18-24세</div>
+        <div v-else-if="profile_data[0]['age'] == '25'">연령대 : 25-34세</div>
+        <div v-else-if="profile_data[0]['age'] == '35'">연령대 : 35-44세</div>
+        <div v-else-if="profile_data[0]['age'] == '45'">연령대 : 45-49세</div>
+        <div v-else-if="profile_data[0]['age'] == '50'">연령대 : 50-55세</div>
+        <div v-else-if="profile_data[0]['age'] == '56'">연령대 : 56세이상</div>
 
 
+        <br>
 
-        <br><br>
-
-        <v-flex v-for="person in profile_data.slice(1)" pa-2>
+        <v-flex v-for="(person,idx) in profile_data.slice(1)" :key='idx' pa-2>
 
         <v-hover v-slot:default="{ hover }">
 
@@ -29,6 +38,7 @@
                       <v-list-item-content>
                         <v-list-item-title class="headline">
                           {{person.id}}
+                          
                           <!-- ID : {{ id }}, username : {{ username }} -->
 
                         </v-list-item-title>
@@ -57,8 +67,6 @@
 
       </v-flex>
 
-        <br><br>
-
         <br>
         <v-btn @click="search()">검색으로 이동</v-btn>
         </div>
@@ -85,6 +93,7 @@ export default {
       {'id':''},
       {"approval":''},
       {"gender":''},
+      {"age":''},
       {"is_staff":''},
       {"occupation":''},
       {"subscription":''},
