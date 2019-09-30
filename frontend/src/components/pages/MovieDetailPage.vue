@@ -14,7 +14,7 @@
         <p>{{movie_data[0].plot}}</p>
         <img :src="movie_data[0].url"/>
         <p>{{movie_data[0].director}}</p>
-        <p>{{movie_data[0].casting}}</p>
+        <p>{{movie_data[0].castings}}</p>
 
         <v-flex v-for="movie in movie_data.slice(1)" pa-2>
 
