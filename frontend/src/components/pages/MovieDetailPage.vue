@@ -44,6 +44,11 @@
           <v-btn @click="deleteRating(movie_data[0].id)">삭제</v-btn>
         </div> -->
         <br><br>
+        <p>{{movie_data[0].plot}}</p>
+        <img :src="movie_data[0].url"/>
+        <p>{{movie_data[0].director}}</p>
+        <p>{{movie_data[0].castings}}</p>
+
         <h3>유사 작품</h3>
         <v-flex v-for="movie in movie_data.slice(1)" pa-2>
           <v-hover v-slot:default="{ hover }">
