@@ -136,7 +136,7 @@ export default {
       const apiUrl = 'api'
       const id = this.$session.get('id_number')
 
-      var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies/${id}`)
+      var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies2/${id}`)
       this.itembased_movies = itembased_movies.data
 
       var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})

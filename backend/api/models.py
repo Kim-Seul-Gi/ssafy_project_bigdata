@@ -56,7 +56,7 @@ class Movie(models.Model):
 class Rate(models.Model):
     UserID = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="profile_rate")
     MovieID = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="profile_movie")
-    rating = models.IntegerField(default=0)
+    rating = models.FloatField(default=0.0)
     Timestamp = models.IntegerField()
 
 class Cluster(models.Model):
