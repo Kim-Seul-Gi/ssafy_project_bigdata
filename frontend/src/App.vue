@@ -37,7 +37,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content>
+    <v-content style="position:absolute; right:0; width:100%; height:100%">
       <v-container fluid fill-height style="background-color: #303030;">
         <v-layout justify-center align-center>
           <div style="width:100%; height:100%; position:absolute;
