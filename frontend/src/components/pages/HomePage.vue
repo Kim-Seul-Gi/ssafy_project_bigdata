@@ -3,42 +3,19 @@
     <v-container style="padding-top: 0;">
       <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('img/background.jpg');">
         <div id="container">
-          <p><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
+          <p class="a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
+          <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
+          <!-- 1. 로그인 여부 -->
+          <p v-if="!this.user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
+          <p v-else><router-link to="/users/signup" class="a">See you again</router-link></p>
         </div>
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-
-          <!-- <span class="display-3 grey--text">Select menu</span> -->
-
-          <!-- Homepage에서 보여주고자 하는 기능들은 아래와 같습니다. -->
-              <!-- (1) 로그인 하셨습니까? -->
-              <!-- (2) 구독 관리 -->
-              <!-- (3) MovieBased 영화 추천 -->
-              <!-- (4) UserBased 영화 추천 -->
-              <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
-              <!-- (6) 단순한 유사유저 리스트 -->
-
-
-          <!-- 유저의 상태는 로그인 여부(this.user) / 구독 여부(Subscription) 에서 다룹니다. -->
-              <!-- 1. 로그인 X / 보여줄 기능 : (1), (5) -->
-              <!-- 2. 로그인 O , 구독 X / 보여줄 기능 : (1), (2), (5), (6) -->
-              <!-- 3. 로그인 O , 구독 O / 보여줄 기능 : (1), (2), (3), (4), (5), (6) -->
-
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
-          <div v-if="!this.user">
-            <!-- 로그인을 하지 않았습니다!! -->
-             
-            <span style="color: white;">로그인을 하시면 영화를 추천해드릴게요.</span><br>
-            <span style="color: white;">클러스터링 알고리즘 을 이용하여 영화를 추천합니다.</span><br>
-            <!-- <span style="color: white;">사용된 알고리즘 : K-means, H, EM, MatrixFactorization</span><br><br> -->
-            <!-- (1) 로그인 하러가기 -->
-            <!-- <v-btn @click="goTo()">로그인하기</v-btn> -->
 
-          </div>
-
-          <div v-else>
+          <div v-if="this.user">
             로그인 ID : {{this.user}}<br><br>
 
             <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
@@ -193,7 +170,7 @@ export default {
   /*Neon*/
   p {
     text-align: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin: 20px 0 20px 0;
   }
   
@@ -203,12 +180,21 @@ export default {
     -moz-transition: all 0.5s;
     transition: all 0.5s;
   }
-  p:nth-child(1) .a {
+
+  /* p:nth-child(1) .a {
+    color: #fff;
+    font-family: 'Monoton', cursive;
+    -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+    animation: neon1 1.5s ease-in-out infinite alternate;
+  } */
+
+  p:nth-child(3) .a {
     color: #FFDD1B;
     font-family: 'Pacifico', cursive;
   }
 
-  p:nth-child(1) .a:hover {
+  p:nth-child(3) .a:hover {
     -webkit-animation: neon3 1.5s ease-in-out infinite alternate;
     -moz-animation: neon3 1.5s ease-in-out infinite alternate;
     animation: neon3 1.5s ease-in-out infinite alternate;
@@ -216,6 +202,33 @@ export default {
 
   p .a:hover {
     color: #ffffff;
+  }
+
+  @-webkit-keyframes neon1 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #DD00FF, 0 0 70px #DD00FF, 0 0 80px #DD00FF, 0 0 100px #DD00FF, 0 0 150px #DD00FF;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #DD00FF, 0 0 35px #DD00FF, 0 0 40px #DD00FF, 0 0 50px #DD00FF, 0 0 75px #DD00FF;
+    }
+  }
+
+  @-moz-keyframes neon1 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #DD00FF, 0 0 70px #DD00FF, 0 0 80px #DD00FF, 0 0 100px #DD00FF, 0 0 150px #DD00FF;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #DD00FF, 0 0 35px #DD00FF, 0 0 40px #DD00FF, 0 0 50px #DD00FF, 0 0 75px #DD00FF;
+    }
+  }
+
+  @keyframes neon1 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #DD00FF, 0 0 70px #DD00FF, 0 0 80px #DD00FF, 0 0 100px #DD00FF, 0 0 150px #DD00FF;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #DD00FF, 0 0 35px #DD00FF, 0 0 40px #DD00FF, 0 0 50px #DD00FF, 0 0 75px #DD00FF;
+    }
   }
 
   @-webkit-keyframes neon3 {
