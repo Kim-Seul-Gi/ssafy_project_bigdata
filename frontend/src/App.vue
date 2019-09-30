@@ -13,8 +13,7 @@
     <v-navigation-drawer v-model="drawer" app permanent dark floating fixed color="#000">
       <v-list dense dark color="#000">
         <div style="margin-left: 1.5rem; margin-top: 1.5rem;">
-        <img src="../public/img/popcorn.png" style="height: 4rem; width: 4rem; margin-right: 0.5rem;"/><span style="font-size: 2rem; height: 4rem; line-height: 4rem; vertical-align: middle; font-family: 'Raleway', sans-serif;">Fluid</span>
-        <!-- <img src="img/popcorn.png" style="height: 4rem; width: 4rem; margin-right: 0.5rem;"/><span style="font-size: 2rem; height: 4rem; line-height: 4rem; vertical-align: middle; font-family: 'Raleway', sans-serif;">Fluid</span> -->
+        <router-link to="/"><img src="../public/img/popcorn.png" style="height: 4rem; width: 4rem; margin-right: 0.5rem;"/></router-link><span style="font-size: 2rem; height: 4rem; line-height: 4rem; vertical-align: middle; font-family: 'Raleway', sans-serif;">Fluid</span>
         </div>
         <template v-for="(choice, i) in choices">
           <v-list-item
