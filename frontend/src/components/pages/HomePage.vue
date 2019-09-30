@@ -67,21 +67,29 @@
 
         <div v-if="this.user">
           <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
-          <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
-          <v-layout row wrap>
-          <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-              <v-card style="margin:10px;">
-                  <v-card-text>
-                    <v-container>
-                      <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
-                      <p>{{ person.age }} / {{ person.gender }}</p>
-                      <p>{{ person.occupation }}</p>
-                      <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
-                    </v-container>
-                  </v-card-text>
-              </v-card>
-          </v-flex>
-          </v-layout>
+
+          <div v-if="this.profile_data.length>1">
+            <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
+            <v-layout row wrap>
+            <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
+                <v-card style="margin:10px;">
+                    <v-card-text>
+                      <v-container>
+                        <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
+                        <p>{{ person.age }} / {{ person.gender }}</p>
+                        <p>{{ person.occupation }}</p>
+                        <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+                      </v-container>
+                    </v-card-text>
+                </v-card>
+            </v-flex>
+            </v-layout>
+          </div>
+          <div v-else>
+            <h1>(6) 기능 : 유사추천 받으러 가기~</h1>
+          </div>
+
+
         </div>
 
       </v-flex>
