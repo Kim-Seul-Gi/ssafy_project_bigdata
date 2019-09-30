@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-layout row align-center style="min-height: 100vh; position: fixed; top: 0; left: 0; background-size: cover; background-image: url('img/background.jpg');">
+    <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('img/background.jpg');">
     </v-layout>
     <v-container>
       <v-layout row wrap>
@@ -26,9 +26,10 @@
           <!-- 1. 로그인 여부 -->
           <div v-if="!this.user">
             <!-- 로그인을 하지 않았습니다!! -->
-            로그인을 하시면 영화를 추천해드릴게요.<br>
-            클러스터링 알고리즘 을 이용하여 영화를 추천합니다.<br>
-            사용된 알고리즘 : K-means, H, EM, MatrixFactorization<br><br>
+             
+            <span style="color: white;">로그인을 하시면 영화를 추천해드릴게요.</span><br>
+            <span style="color: white;">클러스터링 알고리즘 을 이용하여 영화를 추천합니다.</span><br>
+            <!-- <span style="color: white;">사용된 알고리즘 : K-means, H, EM, MatrixFactorization</span><br><br> -->
             <!-- (1) 로그인 하러가기 -->
             <!-- <v-btn @click="goTo()">로그인하기</v-btn> -->
 
