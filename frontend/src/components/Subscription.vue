@@ -25,18 +25,21 @@
             <h1>(3) 기능 : Itembased_movie 나열입니다</h1>
           </div>
           <v-layout row wrap>
-            <v-flex v-for="movie in this.itembased_movies" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-
-                <v-card style="margin:10px;">
-                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
-                    <v-card-text>
-                      <v-container>
-                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        평점 : {{movie.averagerate}}
-                        <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
-                      </v-container>
-                    </v-card-text>
-                </v-card>
+            <v-flex>
+              <carousel :per-page="pageNum">
+                <slide v-for="movie in this.itembased_movies" style="height: 21rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                      <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                      <v-card-text>
+                        <!-- <v-container> -->
+                          <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
+                          <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                          <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                        <!-- </v-container> -->
+                      </v-card-text>
+                  </v-card>
+                </slide>
+              </carousel>
             </v-flex>
           </v-layout>
 
@@ -44,18 +47,21 @@
             <h1>(4) 기능 : Userbased_movie 나열입니다</h1>
           </div>
           <v-layout row wrap>
-            <v-flex v-for="movie in this.userbased_movies" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-
-                <v-card style="margin:10px;">
-                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
-                    <v-card-text>
-                      <v-container>
-                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        평점 : {{movie.averagerate}}
-                        <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
-                      </v-container>
-                    </v-card-text>
-                </v-card>
+            <v-flex>
+              <carousel :per-page="pageNum">
+                <slide v-for="movie in this.userbased_movies" style="height: 21rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                      <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                      <v-card-text>
+                        <!-- <v-container> -->
+                          <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
+                          <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                          <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                        <!-- </v-container> -->
+                      </v-card-text>
+                  </v-card>
+                </slide>
+              </carousel>
             </v-flex>
           </v-layout>
 
@@ -89,8 +95,13 @@
 <script>
 import axios from 'axios';
 import router from "../router";
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
+  components:{
+    Carousel,
+    Slide
+  },
   data: () => ({
     amounts: [30, 90],
     picked_amount:'',
@@ -98,7 +109,7 @@ export default {
     before_extend : true,
     userbased_movies:'',
     itembased_movies:'',
-
+    pageNum: 4
   }),
   props : {
     profile_data : {
