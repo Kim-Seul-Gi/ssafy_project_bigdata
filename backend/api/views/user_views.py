@@ -53,56 +53,84 @@ def detail(request, user_id):
         k = clu.n_component
         way = clu.way
         clusters = []
-        print(k, way, user_id)
         if way=="K":
             if(k==3):
-                cluster_num = User_Cluster_Kmeans.objects.get(UserID=user_id).K3
-                clusters = User_Cluster_Kmeans.objects.filter(K3=cluster_num)
+                cluster_num = User_Cluster_Kmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].K3
+                    clusters = User_Cluster_Kmeans.objects.filter(K3=cluster_num)
             elif(k==4):
-                cluster_num = User_Cluster_Kmeans.objects.get(UserID=user_id).K4
-                clusters = User_Cluster_Kmeans.objects.filter(K4=cluster_num)
+                cluster_num = User_Cluster_Kmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].K4
+                    clusters = User_Cluster_Kmeans.objects.filter(K4=cluster_num)
             elif(k==5):
-                cluster_num = User_Cluster_Kmeans.objects.get(UserID=user_id).K5
-                clusters = User_Cluster_Kmeans.objects.filter(K5=cluster_num)
+                cluster_num = User_Cluster_Kmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].K5
+                    clusters = User_Cluster_Kmeans.objects.filter(K5=cluster_num)
             elif(k==6):
-                cluster_num = User_Cluster_Kmeans.objects.get(UserID=user_id).K6
-                clusters = User_Cluster_Kmeans.objects.filter(K6=cluster_num)
+                cluster_num = User_Cluster_Kmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].K6
+                    clusters = User_Cluster_Kmeans.objects.filter(K6=cluster_num)
             else:
-                cluster_num = User_Cluster_Kmeans.objects.get(UserID=user_id).K7
-                clusters = User_Cluster_Kmeans.objects.filter(K7=cluster_num)
+                cluster_num = User_Cluster_Kmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].K7
+                    clusters = User_Cluster_Kmeans.objects.filter(K7=cluster_num)
         elif way=="H":
             if(k==3):
-                cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H3
-                clusters = User_Cluster_Hmeans.objects.filter(H3=cluster_num)
+                cluster_num = User_Cluster_Hmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].H3
+                    clusters = User_Cluster_Hmeans.objects.filter(H3=cluster_num)
             elif(k==4):
-                cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H4
-                clusters = User_Cluster_Hmeans.objects.filter(H4=cluster_num)
+                cluster_num = User_Cluster_Hmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].H4
+                    clusters = User_Cluster_Hmeans.objects.filter(H4=cluster_num)
             elif(k==5):
-                cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H5
-                clusters = User_Cluster_Hmeans.objects.filter(H5=cluster_num)
+                cluster_num = User_Cluster_Hmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].H5
+                    clusters = User_Cluster_Hmeans.objects.filter(H5=cluster_num)
             elif(k==6):
-                cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H6
-                clusters = User_Cluster_Hmeans.objects.filter(H6=cluster_num)
+                cluster_num = User_Cluster_Hmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].H6
+                    clusters = User_Cluster_Hmeans.objects.filter(H6=cluster_num)
             else:
-                cluster_num = User_Cluster_Hmeans.objects.get(UserID=user_id).H7
-                clusters = User_Cluster_Hmeans.objects.filter(H7=cluster_num)
+                cluster_num = User_Cluster_Hmeans.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].H7
+                    clusters = User_Cluster_Hmeans.objects.filter(H7=cluster_num)
         else:
             if(k==3):
-                cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM3
-                clusters = User_Cluster_EM.objects.filter(EM3=cluster_num)
+                cluster_num = User_Cluster_EM.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].EM3
+                    clusters = User_Cluster_EM.objects.filter(EM3=cluster_num)
             elif(k==4):
-                cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM4
-                clusters = User_Cluster_EM.objects.filter(EM4=cluster_num)
+                cluster_num = User_Cluster_EM.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].EM4
+                    clusters = User_Cluster_EM.objects.filter(EM4=cluster_num)
             elif(k==5):
-                cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM5
-                clusters = User_Cluster_EM.objects.filter(EM5=cluster_num)
+                cluster_num = User_Cluster_EM.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].EM5
+                    clusters = User_Cluster_EM.objects.filter(EM5=cluster_num)
             elif(k==6):
-                cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM6
-                clusters = User_Cluster_EM.objects.filter(EM6=cluster_num)
+                cluster_num = User_Cluster_EM.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].EM6
+                    clusters = User_Cluster_EM.objects.filter(EM6=cluster_num)
             else:
-                cluster_num = User_Cluster_EM.objects.get(UserID=user_id).EM7
-                clusters = User_Cluster_EM.objects.filter(EM7=cluster_num)
-        print(clusters, 11111111111111111111111111)
+                cluster_num = User_Cluster_EM.objects.filter(UserID=user_id)
+                if cluster_num:
+                    cluster_num = cluster_num[0].EM7
+                    clusters = User_Cluster_EM.objects.filter(EM7=cluster_num)
         profiles = []
         my_cluster = []
         serializer = ProfileSerializer(user_profile)
