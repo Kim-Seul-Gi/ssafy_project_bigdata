@@ -12,15 +12,14 @@
             contain
           ></v-img>
 
-          <v-card-title>
-            <div>{{movie_data[0].title}}</div>
-            <br><br>
-            <div class="grey--text subtitle-1">{{movie_data[0].director}}</div>
-            <p>{{movie_data[0].casting}}</p>
-          </v-card-title>
-          
+          <v-card-title align="center">{{movie_data[0].title}}</v-card-title>
+          <v-col>
+            <div class="grey--text">{{movie_data[0].averagerate}} ({{movie_data[0].watch_count}})</div>
+            <div class="grey--text">Director: {{movie_data[0].director}}</div>
+          </v-col>
+          {{movie_data[0].plot}}
           <v-card-actions>
-            <div class="flex-grow-1"></div>
+            <div class="flex-grow-1">극 중 배우</div>
             <v-btn icon @click="show = !show">
               <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
             </v-btn>
@@ -28,22 +27,26 @@
 
           <v-expand-transition>
             <div v-show="show">
-              <v-card-text>{{movie_data[0].plot}}</v-card-text>
+              <v-card-text>{{this.movie_data[0].casting.split("|")}}</v-card-text>
             </div>
           </v-expand-transition>
         </v-card>
   
-        <p>평점 추가하기</p>
-        <v-text-field
-          v-model="score"
-          label="score"
-          :rules="scoreRules"
-          type="number"
-          required>
-        </v-text-field>
-        <v-btn @click="createRating(movie_data[0].id)">등록</v-btn>
-        <v-btn @click="updateRating(movie_data[0].id)">수정</v-btn>
-        <v-btn @click="deleteRating(movie_data[0].id)">삭제</v-btn>
+        <div style="width:200px;">
+          <h2>평점 추가하기</h2>
+          <v-text-field
+            v-model="score"
+            label="score"
+            :rules="scoreRules"
+            type="number"
+            required>
+          </v-text-field>
+          <v-btn @click="createRating(movie_data[0].id)">등록</v-btn>
+          <v-btn @click="updateRating(movie_data[0].id)">수정</v-btn>
+          <v-btn @click="deleteRating(movie_data[0].id)">삭제</v-btn>
+        </div>
+        <br><br>
+        <h3>유사 작품</h3>
         <v-flex v-for="movie in movie_data.slice(1)" pa-2>
           <v-hover v-slot:default="{ hover }">
             <v-card :elevation="hover ? 8 : 2">
@@ -55,9 +58,9 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title class="headline">
-                            {{movie.id}}
-                            <!-- ID : {{ id }}, username : {{ username }} -->
-
+                            No. {{movie.id}}
+                            <br> 
+                            {{movie.title}}
                           </v-list-item-title>
                           <!-- <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle> -->
                         </v-list-item-content>
@@ -107,6 +110,7 @@ export default {
     scoreRules: [
       v => (v < 6) || 'score is maximum of 5',
     ],
+    castingList: [],
     movie_data:[
       {"id":''},
       {"averagerate":''},
@@ -123,6 +127,7 @@ export default {
   }),
   mounted() {
     this.fetchdata()
+    this.castingList = movie_data[0].casting.split("|")
   },
   methods: {
     async fetchdata() {
