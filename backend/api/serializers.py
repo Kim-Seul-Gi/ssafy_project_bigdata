@@ -21,10 +21,18 @@ class ProfileSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     genres_array = serializers.ReadOnlyField()
     averagerate = serializers.SerializerMethodField('get_averagerate')
+    castings = serializers.SerializerMethodField('get_castings')
 
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director','casting')
+        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director','castings')
+        # fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director')
+
+    def get_castings(self, obj):
+        casting = Movie.objects.get(id=obj.id).casting
+        casting = casting.split('|')
+        castings = '|'.join(casting[:3])
+        return castings
 
     def get_averagerate(self, obj):
 
