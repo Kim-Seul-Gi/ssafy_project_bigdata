@@ -9,16 +9,17 @@
           <v-card v-if="before_extend" color="#424242" dark class="mx-3 my-3">
             <v-card-title style="font-size: 1rem;">{{this.user}}님의 구독 유효 기간 <span style="padding-left: 0.7rem;">{{sub_date}}</span></v-card-title>
             <v-card-text>
-            <div v-for="amount in amounts" style="display:inline-block;">
-              <input type="radio" :value="amount" v-model="picked_amount">
-              <label style="font-size:10px;">{{amount}}</label> &nbsp;
-            </div>
+            <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
+              <v-radio value=30 label="30 days" color=""></v-radio>
+              <v-radio value=90 label="90 days" color=""></v-radio>
+              <!-- <label style="font-size:10px;">{{amount}}</label> &nbsp; -->
+            </v-radio-group>
             <v-btn @click="extend_subscription()">구독 연장</v-btn>
             </v-card-text>
           </v-card>
 
           <v-card v-else>
-            연장 신청을 하였습니다.
+            <v-text>연장 신청을 하였습니다.</v-text>
           </v-card>
 
           <!-- <div id="item" style="display:none;"> -->
@@ -80,18 +81,19 @@
 
         </div>
 
-        <div v-else>
-          회원님은 구독 서비스를 이용한 적이 없어요~<br><br>
-          <div v-if="before_create">
-            <div v-for="amount in amounts" style="display:inline-block;">
-              <input type="radio" :value="amount" v-model="picked_amount">
-              <label style="font-size:10px;">{{amount}}</label> &nbsp;
-            </div>
+        <div v-else class="mx-auto">
+          {{this.user}}님은 구독 서비스를 이용한 적이 없어요~<br><br>
+          <v-card v-if="before_created" color="#424242" dark class="mx-3 my-3">
+            <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
+              <v-radio value=30 label="30 days" color=""></v-radio>
+              <v-radio value=90 label="90 days" color=""></v-radio>
+              <!-- <label style="font-size:10px;">{{amount}}</label> &nbsp; -->
+            </v-radio-group>
             <v-btn @click="create_subscription()">구독 신청</v-btn>
-          </div>
-          <div v-else>
-            구독 신청을 하였습니다.
-          </div>
+          </v-card>
+          <v-card v-else>
+            <v-text>구독 신청을 하였습니다.</v-text>
+          </v-card>
         </div>
 
       </v-flex>
