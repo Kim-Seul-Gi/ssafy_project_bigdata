@@ -5,7 +5,6 @@
         <!-- <h1>(2) 구독하셨습니까??</h1> -->
         <!-- {{this.profile_data.slice(1)}} -->
 
-
         <div v-if="this.approval">
           회원님의 구독 유효 기간은 {{sub_date}} 입니다.
 
@@ -27,11 +26,15 @@
           <v-layout row wrap>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="movie in this.itembased_movies" style="height: 21rem; width: 15rem;">
-                  <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                <slide v-for="movie in this.itembased_movies" style="height: 22rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark class="rounded-card">
                       <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                       <v-card-text>
                         <!-- <v-container> -->
+                          <div class="movietitle">
+                            {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                            <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                          </div>
                           <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
                           <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                           <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
@@ -49,12 +52,15 @@
           <v-layout row wrap>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="movie in this.userbased_movies" style="height: 21rem; width: 15rem;">
-                  <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                <slide v-for="movie in this.userbased_movies" style="height: 22rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                       <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                       <v-card-text>
                         <!-- <v-container> -->
-                          <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
+                        <div class="movietitle">
+                          {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                          <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        </div>
                           <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                           <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
                         <!-- </v-container> -->
@@ -178,3 +184,28 @@ export default {
   }
 };
 </script>
+
+<style>
+  .movietitle {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .movietitle .hovertext {
+    visibility: hidden;
+    /* width: 250px; */
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    bottom: 20%;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  .movietitle:hover .hovertext {
+    visibility: visible;
+  }
+</style>
