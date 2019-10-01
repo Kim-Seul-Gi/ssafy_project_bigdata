@@ -10,7 +10,7 @@
           <p v-else><router-link to="/users/signup" class="a">See you again</router-link></p>
         </div>
       </v-layout>
-      <v-layout row wrap>
+      <v-layout row wrap >
         <v-flex xs12>
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
@@ -32,8 +32,9 @@
 
           <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
           <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
-          <h1> (5) 기능 : 단순 영화 나열입니다</h1>
+
           <v-layout row wrap pa-5>
+            <h1> (5) 기능 : 단순 영화 나열입니다</h1>
             <v-flex>
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
@@ -57,8 +58,9 @@
 
           <div v-if="this.user">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
+
+            <v-layout row wrap pa-5>
             <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
-            <v-layout row wrap>
               <v-flex>
                 <carousel :per-page="pageNum">
                   <slide v-for="person in this.profile_data.slice(1)" style="height: 21rem; width: 15rem;">

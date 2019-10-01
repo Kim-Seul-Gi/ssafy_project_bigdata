@@ -20,13 +20,14 @@
             연장 신청을 하였습니다.
           </div>
 
-          <div id="item" style="display:none;">
+          <!-- <div id="item" style="display:none;"> -->
+          <div id="item">
             <h1>(3) 기능 : Itembased_movie 나열입니다</h1>
           </div>
           <v-layout row wrap>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="movie in this.itembased_movies" style="height: 22rem; width: 15rem;">
+                <slide v-for="movie in this.$store.state.data.movieList_homepage_itembased" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark class="rounded-card">
                       <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                       <v-card-text>
@@ -46,13 +47,14 @@
             </v-flex>
           </v-layout>
 
-          <div id="user" style="display:none;">
+          <!-- <div id="user" style="display:none;"> -->
+          <div id="user">
             <h1>(4) 기능 : Userbased_movie 나열입니다</h1>
           </div>
           <v-layout row wrap>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="movie in this.userbased_movies" style="height: 22rem; width: 15rem;">
+                <slide v-for="movie in this.$store.state.data.movieList_homepage_userbased" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                       <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                       <v-card-text>
@@ -99,6 +101,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import axios from 'axios';
 import router from "../router";
 import { Carousel, Slide } from 'vue-carousel';
@@ -128,7 +131,17 @@ export default {
   },
   watch: {
     profile_data() {
-      this.getMovies_subscription()
+      // this.getMovies_subscription()
+      // const id = this.$session.get(id_number)
+      const params = {
+        id : this.$session.get('id_number'),
+        approval : this.profile_data[0].approval,
+        resemble_users : this.profile_data.slice(1)
+      }
+      // console.log(this.profile_data[0].approval)
+      this.getMovies_subscription_itembased(params)
+      this.getMovies_subscription_userbased(params)
+      // this.getMovies_subscription_userbased()
       // console.log(this.profile_data)
     }
   },
@@ -137,24 +150,25 @@ export default {
     // this.getMovies_subscription()
   },
   methods : {
-    async getMovies_subscription() {
-      // console.log(this.profile_data)
-      const apiUrl = 'api'
-      const id = this.$session.get('id_number')
-
-      var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies2/${id}`)
-      this.itembased_movies = itembased_movies.data
-
-      var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})
-      this.userbased_movies = userbased_movies.data
-
-      if (this.profile_data[0].approval) {
-        document.querySelector('#item').style.display = 'block';
-        document.querySelector('#user').style.display = 'block';
-      }
-
-
-    },
+    ...mapActions("data", ["getMovies_subscription_itembased", "getMovies_subscription_userbased"]),
+    // async getMovies_subscription() {
+    //   // console.log(this.profile_data)
+    //   const apiUrl = 'api'
+    //   const id = this.$session.get('id_number')
+    //
+    //   var itembased_movies = await axios.get(`${apiUrl}/subscription/itembasedmovies2/${id}`)
+    //   this.itembased_movies = itembased_movies.data
+    //
+    //   var userbased_movies = await axios.post(`${apiUrl}/subscription/userbasedmovies/${id}`, {resemble_users : this.profile_data.slice(1)})
+    //   this.userbased_movies = userbased_movies.data
+    //
+    //   if (this.profile_data[0].approval) {
+    //     document.querySelector('#item').style.display = 'block';
+    //     document.querySelector('#user').style.display = 'block';
+    //   }
+    //
+    //
+    // },
     async create_subscription() {
       const apiUrl = '/api'
       var subscription = await axios.post(`${apiUrl}/subscription/create/`, {user : this.$session.get('id'), request:this.picked_amount})
