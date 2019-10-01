@@ -5,20 +5,21 @@
         <!-- <h1>(2) 구독하셨습니까??</h1> -->
         <!-- {{this.profile_data.slice(1)}} -->
 
-        <div v-if="this.approval">
-          회원님의 구독 유효 기간은 {{sub_date}} 입니다.
-
-          <div v-if="before_extend">
+        <div v-if="this.approval" class="mx-auto">
+          <v-card v-if="before_extend" color="#424242" dark class="mx-3 my-3">
+            <v-card-title style="font-size: 1rem;">{{this.user}}님의 구독 유효 기간 <span style="padding-left: 0.7rem;">{{sub_date}}</span></v-card-title>
+            <v-card-text>
             <div v-for="amount in amounts" style="display:inline-block;">
               <input type="radio" :value="amount" v-model="picked_amount">
               <label style="font-size:10px;">{{amount}}</label> &nbsp;
             </div>
             <v-btn @click="extend_subscription()">구독 연장</v-btn>
-          </div>
+            </v-card-text>
+          </v-card>
 
-          <div v-else>
+          <v-card v-else>
             연장 신청을 하였습니다.
-          </div>
+          </v-card>
 
           <!-- <div id="item" style="display:none;"> -->
           <div id="item">
@@ -126,6 +127,7 @@ export default {
       default:[]
     },
     now_date : { type : String },
+    user : { type : String },
     sub_date : { type : String },
     approval : { type : Boolean },
   },
