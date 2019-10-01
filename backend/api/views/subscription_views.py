@@ -156,7 +156,7 @@ def userbased_movies(request, profile_pk):
     # 1. 그 사람들이 남긴 평점들을 가져옵니다.
     # 2. 해당 평점들을 예쁘게 나열, 정렬시킵니다.
     # 3. 일부분 영화를 추가하고, 해당 영화들을 반환합니다.
-
+    print(1111111111111)
     if request.method == 'POST':
     # 0 : 나와 유사한 사람(resemble_users), 유사한 영화들을 담을 movie_box(나중에 배열로 형변환됨.)
         resemble_users = request.data.get('resemble_users')
@@ -183,7 +183,7 @@ def userbased_movies(request, profile_pk):
             movie_array.append(i[0])
 
         serializer = MovieSerializer(movie_array, many=True)
-
+        print(2222222222222)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
