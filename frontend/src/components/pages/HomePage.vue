@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container style="padding-top: 0;">
-      <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('img/background.jpg');">
+      <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('../../img/background.jpg');">
         <div id="container">
           <p class="a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
           <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
@@ -173,7 +173,7 @@ export default {
     font-size: 2.5rem;
     margin: 20px 0 20px 0;
   }
-  
+
   .a {
     text-decoration: none;
     -webkit-transition: all 0.5s;

@@ -39,7 +39,7 @@
     </v-navigation-drawer>
     <v-content>
       <v-container fluid fill-height style="background-color: #303030; padding: 0;">
-        <v-layout justify-center align-center>
+        <v-layout align-center>
           <div style="width:100%; height:100%; position:absolute;
           z-index:10; display:none; background-color:#a6a6a6; opacity:.6;" id="searching">
 
