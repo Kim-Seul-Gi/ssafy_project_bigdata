@@ -72,14 +72,22 @@ export default {
           this.$session.set('id_number', res.data.id_number)
           this.$session.set('admin', res.data.admin)
           // console.log(this.$store.state.data.username)
-          alert('로그인완료!')
+          // alert('로그인완료!')
           router.push('/')
           window.location.reload()
+          Swal.fire({
+            title: '로그인 완료!',
+            type: 'success'
+          })
         }
          else {
           __this.username = ''
           __this.password = ''
-          alert('ID 또는 비밀번호가 다릅니다. 확인해주세요!')
+          // alert('ID 또는 비밀번호가 다릅니다. 확인해주세요!')
+          Swal.fire({
+            text: 'ID 또는 비밀번호가 다릅니다. 확인해주세요!',
+            type: 'error'
+          })
         }
       })
     },
