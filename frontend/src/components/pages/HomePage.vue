@@ -65,13 +65,13 @@
               <v-flex>
                 <carousel :per-page="pageNum">
                   <slide v-for="person in this.profile_data.slice(1)" style="height: 21rem; width: 15rem;">
-                    <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                    <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
                         <v-card-text>
-                          <v-container>
-                            <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
-                            <p>{{ person.age }} / {{ person.gender }}</p>
-                            <p>{{ person.occupation }}</p>
-                            <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+                          <v-container style="margin-top: 1.2rem;">
+                            <p style="color: white; font-size: 1.5rem;">{{ person.username }}</p>
+                            <p style="font-size: 1rem; margin-top: 2.2rem;">{{ person.age }} / {{ person.gender }}</p>
+                            <p style="font-size: 1rem;">{{ person.occupation }}</p>
+                            <v-btn text style="margin-left: 2.6rem;" color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
                           </v-container>
                         </v-card-text>
                     </v-card>
