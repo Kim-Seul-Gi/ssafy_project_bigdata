@@ -1,11 +1,11 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
-from api.serializers import UserSerializer, ProfileSerializer
+from api.serializers import UserSerializer, ProfileSerializer, MovieSerializer
 from rest_framework.response import Response
-from api.models import Profile, Cluster
+from api.models import Profile, Cluster, Rate, Movie
 from api.models import User_Cluster_Kmeans, User_Cluster_Hmeans, User_Cluster_EM
-import random
+import random, pprint
 import pandas as pd
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -152,7 +152,7 @@ def detail(request, user_id):
             if(user_pk==user_profile.pk):
                 flag = True; break;
         my_cluster.append(flag)
-
+        
         return Response(data=my_cluster, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
@@ -162,3 +162,13 @@ def detail(request, user_id):
         user_profile.occupation = request.data.get('occupation', None)
         user_profile.save()
         return Response(status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def userMovie(request, user_id):
+    user_profile = Profile.objects.get(user=user_id)
+    movies = []
+    rates = user_profile.profile_rate.all();
+    for rate in rates:
+        serializer = MovieSerializer(rate.MovieID)
+        movies.append(serializer.data)
+    return Response(data = movies, status=status.HTTP_200_OK)
