@@ -1,5 +1,5 @@
 <template>
-  <v-card  color="#424242" dark>
+  <v-card color="#424242" dark>
     <v-card-text>
     <p style="text-align: center; font-size: 2.5rem; padding-bottom: 3rem; padding-top: 3rem;">Sign up</p>
     <form>
