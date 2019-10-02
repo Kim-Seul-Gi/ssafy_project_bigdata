@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-container style="padding-top: 0;">
-      <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('img/background.jpg');">
-        <div id="container">
+      <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('../../img/background.jpg');">
+        <div id="container" style="margin-left: 15rem;">
           <p class="a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
           <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
           <!-- 1. 로그인 여부 -->
@@ -10,17 +10,18 @@
           <p v-else><router-link to="/users/signup" class="a">See you again</router-link></p>
         </div>
       </v-layout>
-      <v-layout row wrap>
+      <v-layout row wrap >
         <v-flex xs12>
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
 
           <div v-if="this.user">
-            로그인 ID : {{this.user}}<br><br>
+            <!-- 로그인 ID : {{this.user}}<br><br> -->
 
             <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
             <div>
               <Subscription
+                :user="user"
                 :profile_data="profile_data"
                 :now_date="now_date"
                 :sub_date="subscription_date"
@@ -32,16 +33,20 @@
 
           <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
           <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
-          <h1> (5) 기능 : 단순 영화 나열입니다</h1>
-          <v-layout row wrap>
+
+          <v-layout row wrap pa-5>
+            <h1> (5) 기능 : 단순 영화 나열입니다</h1>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="movie in this.$store.state.data.movieList_homepage" style="height: 21rem; width: 15rem;">
-                  <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                <slide v-for="movie in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                       <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                       <v-card-text>
                         <!-- <v-container> -->
-                          <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
+                        <div class="movietitle">
+                          {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                          <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        </div>
                           <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                           <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
                         <!-- </v-container> -->
@@ -54,8 +59,9 @@
 
           <div v-if="this.user">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
+
+            <v-layout row wrap pa-5>
             <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
-            <v-layout row wrap>
               <v-flex>
                 <carousel :per-page="pageNum">
                   <slide v-for="person in this.profile_data.slice(1)" style="height: 21rem; width: 15rem;">
@@ -173,7 +179,7 @@ export default {
     font-size: 2.5rem;
     margin: 20px 0 20px 0;
   }
-  
+
   .a {
     text-decoration: none;
     -webkit-transition: all 0.5s;
