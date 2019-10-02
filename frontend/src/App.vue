@@ -175,8 +175,9 @@ export default {
       this.user = ''
       this.$session.set('id', '')
       this.$session.set('admin', false)
+      router.push({name:'home'})
       window.location.reload()
-      router.push('/')
+      // router.push('/')
     },
 
     // get_array() {
