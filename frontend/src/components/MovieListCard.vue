@@ -1,46 +1,21 @@
 <template>
-  <v-hover v-slot:default="{ hover }">
-    <v-card :elevation="hover ? 8 : 2">
-      <v-layout align-center py-4 pl-4>
-        <v-flex text-center>
-          <v-container grid-list-lg pa-0>
-
-            <v-layout column style="cursor: pointer" @click="SELECT_MovieDetail()">
-              <v-list-item>
-                <v-list-item-content>
-                  <img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" height="300vw">                
-                  <v-list-item-title class="headline">
-                    {{ title }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-text>
-                <v-layout justify-center>
-                  <v-rating
-                    :value="averagerate"
-                    color="indigo"
-                    background-color="indigo"
-                    half-increments
-                    dense
-                    readonly
-                  />
-                  <div class="grey--text ml-4">{{ averagerate }}</div>
-                </v-layout>
-              </v-card-text>
-              <v-card-text>
-                <v-layout justify-center>
-                  <v-icon color="black">mdi-eye</v-icon>
-                  <div class="grey--text ml-4">{{ watch_count }}</div>
-                </v-layout>
-              </v-card-text>
-            </v-layout>
-
-          </v-container>
-        </v-flex>
-      </v-layout>
-    </v-card>
-  </v-hover>
+  <v-layout row wrap text-left >
+    <v-flex>
+      <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+        <v-img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+        <v-card-text>
+          <!-- <v-container> -->
+          <div class="movietitle">
+            {{title.substring(0, title.indexOf("("))}}<br>
+            <span class="hovertext2">{{title.substring(0, title.indexOf("("))}}</span>
+          </div>
+          <i class="fas fa-star" style="color: #FFB600;"></i><span>평점 </span><span style="font-weight: bold;">{{averagerate}}</span>
+          <span><v-btn text color="primary" @click="SELECT_MovieDetail()">explore</v-btn></span>
+          <!-- </v-container> -->
+        </v-card-text>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -114,3 +89,23 @@ export default {
   }
 };
 </script>
+<style>
+  .movietitle .hovertext2 {
+    visibility: hidden;
+    /* width: 250px; */
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    bottom: 20%;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  .movietitle:hover .hovertext2 {
+    visibility: visible;
+    -webkit-transform:translate(-70px, 0)
+  }
+</style>

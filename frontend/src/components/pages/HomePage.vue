@@ -40,17 +40,17 @@
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-                      <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
-                      <v-card-text>
-                        <!-- <v-container> -->
-                        <div class="movietitle">
-                          {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                          <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
-                        </div>
-                          <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
-                          <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
-                        <!-- </v-container> -->
-                      </v-card-text>
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                    <v-card-text>
+                      <!-- <v-container> -->
+                      <div class="movietitle">
+                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                      </div>
+                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                      <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                      <!-- </v-container> -->
+                    </v-card-text>
                   </v-card>
                 </slide>
               </carousel>
