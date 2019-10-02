@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card  color="#424242" dark>
     <v-card-text>
     <p style="text-align: center; font-size: 2.5rem; padding-bottom: 3rem; padding-top: 3rem;">Sign up</p>
     <form>
@@ -43,8 +43,8 @@
 
     <v-btn @click="submit" style="margin-top: 2rem; margin-bottom: 1rem;">Sign up</v-btn>
     </form>
-    <div style="padding-top: 1.5rem; padding-top: 3rem;">
-    <router-link to="signin">로그인하러 가기</router-link>
+    <div style="padding-top: 1.3rem; padding-bottom: 3rem;">
+    <router-link to="signin">로그인하러 가실게요.</router-link>
     </div>
     </v-card-text>
   </v-card>
