@@ -32,7 +32,7 @@ class MovieSerializer(serializers.ModelSerializer):
         casting = Movie.objects.get(id=obj.id).casting
         if casting.count('|') >= 3:
             casting = casting.split('|')
-            casting = '|'.join(casting[:3])                
+            casting = '|'.join(casting[:3])
         return casting
 
     def get_averagerate(self, obj):
