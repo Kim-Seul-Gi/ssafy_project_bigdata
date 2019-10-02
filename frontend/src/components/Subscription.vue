@@ -1,32 +1,32 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
-      <v-flex>
+      <v-flex v-if="this.user != 'admin'">
         <!-- <h1>(2) 구독하셨습니까??</h1> -->
         <!-- {{this.profile_data.slice(1)}} -->
 
         <div v-if="this.approval" class="mx-auto">
-          <v-card v-if="before_extend" color="#424242" dark class="mx-3 my-3">
-            <v-card-title style="font-size: 1rem;">{{this.user}}님의 구독 유효 기간 <span style="padding-left: 0.7rem;">{{sub_date}}</span></v-card-title>
+          <v-card v-if="before_extend" color="#424242" dark class="mx-3 my-3 px-8 py-3">
+            <v-card-title style="font-size: 1.2rem;">{{this.user}}님의 구독 유효 기간 <span style="padding-left: 0.7rem;">{{sub_date}}</span></v-card-title>
             <v-card-text>
             <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
               <v-radio value=30 label="30 days" color=""></v-radio>
               <v-radio value=90 label="90 days" color=""></v-radio>
               <!-- <label style="font-size:10px;">{{amount}}</label> &nbsp; -->
             </v-radio-group>
-            <v-btn @click="extend_subscription()">구독 연장</v-btn>
+            <v-btn @click="extend_subscription()" style="margin-left: 0.7rem;">구독 연장</v-btn>
             </v-card-text>
           </v-card>
 
-          <v-card v-else>
-            <v-text>연장 신청을 하였습니다.</v-text>
+          <v-card v-else color="#424242" dark class="mx-3 my-3  px-3 py-3">
+            <v-card-text>연장 신청이 완료되었어요. 관리자 승인 중입니다. :)</v-card-text>
           </v-card>
 
           <!-- <div id="item" style="display:none;"> -->
-          <div id="item">
-            <h1>(3) 기능 : Itembased_movie 나열입니다</h1>
-          </div>
-          <v-layout row wrap>
+          <v-layout row wrap pa-8>
+            <div id="item">
+              <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> {{this.user}}님을 위한 영화 추천</span>
+            </div>
             <v-flex>
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage_itembased" style="height: 22rem; width: 15rem;">
@@ -50,25 +50,25 @@
           </v-layout>
 
           <!-- <div id="user" style="display:none;"> -->
-          <div id="user">
-            <h1>(4) 기능 : Userbased_movie 나열입니다</h1>
-          </div>
-          <v-layout row wrap>
+          <v-layout row wrap pa-8>
+            <div id="user">
+              <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> 유사한 사용자의 선호 영화</span>
+            </div>
             <v-flex>
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage_userbased" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-                      <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
-                      <v-card-text>
-                        <!-- <v-container> -->
-                        <div class="movietitle">
-                          {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                          <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
-                        </div>
-                          <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
-                          <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
-                        <!-- </v-container> -->
-                      </v-card-text>
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                    <v-card-text>
+                      <!-- <v-container> -->
+                      <div class="movietitle">
+                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                      </div>
+                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                      <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                      <!-- </v-container> -->
+                    </v-card-text>
                   </v-card>
                 </slide>
               </carousel>
@@ -82,23 +82,24 @@
         </div>
 
         <div v-else class="mx-auto">
-          {{this.user}}님은 구독 서비스를 이용한 적이 없어요~<br><br>
-          <v-card v-if="before_create" color="#424242" dark class="mx-3 my-3">
-            <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
-              <v-radio value=30 label="30 days" color=""></v-radio>
-              <v-radio value=90 label="90 days" color=""></v-radio>
-              <!-- <label style="font-size:10px;">{{amount}}</label> &nbsp; -->
-            </v-radio-group>
-            <v-btn @click="create_subscription()">구독 신청</v-btn>
+          <v-card v-if="before_create" color="#424242" dark class="mx-3 my-3 px-8 py-3">
+            <v-card-text>
+              <p style="font-size: 1rem; text-align: left;">{{this.user}}님은 구독 서비스를 이용한 적이 없어요.</p>
+              <p style="font-size: 1rem; text-align: left;">영화 추천을 위한 구독을 원하시나요?</p>
+              <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
+                <v-radio value=30 label="30 days" color=""></v-radio>
+                <v-radio value=90 label="90 days" color=""></v-radio>
+                <!-- <label style="font-size:10px;">{{amount}}</label> &nbsp; -->
+              </v-radio-group>
+              <v-btn @click="create_subscription()" style="margin-left: 0.7rem;">구독 신청</v-btn>
+            </v-card-text>
           </v-card>
-          <v-card v-else>
-            <v-text>구독 신청을 하였습니다.</v-text>
+          <v-card v-else color="#424242" dark class="mx-3 my-3 px-3 py-3">
+            <v-card-text>구독 신청이 완료되었어요. 관리자 승인 중입니다 :)</v-card-text>
           </v-card>
         </div>
 
       </v-flex>
-
-
     </v-layout>
   </v-container>
 </template>

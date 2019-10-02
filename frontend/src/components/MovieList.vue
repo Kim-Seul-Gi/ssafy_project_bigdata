@@ -25,7 +25,7 @@
 
 
       <!-- 처음에 보여주는 것 : 조회수 순 -->
-      <v-flex v-if="!seemode_rate" v-for="(card,i) in movieListCardsSliced" :key="i" pa-2 xs12 sm6 md4 lg3 xl2>
+      <v-flex v-if="!seemode_rate" v-for="(card,i) in movieListCardsSliced" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
         <!-- {{card.viewCnt}} -->
         <MovieListCard
           :id="card.id"
@@ -43,7 +43,7 @@
       <!--  -->
 
       <!-- 선택옵션 - 평점 순 -->
-      <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" pa-2 xs12 sm6 md4 lg3 xl2>
+      <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
         <MovieListCard
           :id="card.id"
           :title="card.title"

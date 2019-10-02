@@ -13,7 +13,7 @@
           />
         </div> -->
 
-        <p style="font-size: 3rem;">User Profile</p>
+        <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">User Profile</p>
         <p><span style="margin-right: 1rem; font-weight: bold;">name</span><span>{{ user.username }}</span></p>
         <p><span style="margin-right: 1rem; font-weight: bold;">gender</span><span>{{ user.gender }}</span></p>
         <p><span style="margin-right: 1rem; font-weight: bold;">age</span><span>{{ user.age }}</span></p>
@@ -28,9 +28,9 @@
         <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
         <NewUserRating :modal="modal" v-if="modal"/>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
-          <p style="font-size: 3rem;">Similar Users</p>
-          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;">
-            <v-card-text>
+          <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
+          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark>
+            <v-card-text> 
               <v-container>
                 <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
                 <p>{{ person.age }} / {{ person.gender }}</p>
@@ -184,7 +184,10 @@ export default {
         if(res.data==false)
           this.modal = !(this.modal)
         else
-          alert("이미 등록하신 평점이 있습니다!")
+          // alert("이미 등록하신 평점이 있습니다!")
+          Swal.fire({
+            text: '이미 등록한 평점이 있어요.'
+          })
       })
     },
 
