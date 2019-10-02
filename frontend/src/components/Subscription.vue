@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
-      <v-flex>
+      <v-flex v-if="this.user != 'admin'">
         <!-- <h1>(2) 구독하셨습니까??</h1> -->
         <!-- {{this.profile_data.slice(1)}} -->
 
@@ -100,8 +100,6 @@
         </div>
 
       </v-flex>
-
-
     </v-layout>
   </v-container>
 </template>
