@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-md text-center style="width: 50rem;" @keyup.enter="login">
-    <v-card wdith="width">
+    <v-card wdith="width" color="#424242" dark>
       <v-card-text>
         <p style="text-align: center; font-size: 2.5rem; padding-bottom: 3rem; padding-top: 3rem;">Sign in</p>
         <form>
