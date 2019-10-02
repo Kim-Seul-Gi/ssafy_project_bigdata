@@ -83,7 +83,7 @@
 
         <div v-else class="mx-auto">
           {{this.user}}님은 구독 서비스를 이용한 적이 없어요~<br><br>
-          <v-card v-if="before_created" color="#424242" dark class="mx-3 my-3">
+          <v-card v-if="before_create" color="#424242" dark class="mx-3 my-3">
             <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
               <v-radio value=30 label="30 days" color=""></v-radio>
               <v-radio value=90 label="90 days" color=""></v-radio>
