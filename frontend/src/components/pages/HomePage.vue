@@ -119,6 +119,9 @@ export default {
     ...mapActions("data", ["getMovies_homepage"]),
     // getmoveis 는 단순 영화 나열을 위한 것입니다 = 로그인 여부와 관련 없는 것.
     async fetchdata() {
+      if (this.$session.get('id')==undefined) {
+        this.$session.set('id', '')
+      }
       this.user = this.$session.get('id')
       if (this.$session.get('id')=='') {
       } else {
