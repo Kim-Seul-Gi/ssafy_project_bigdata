@@ -24,12 +24,14 @@
           @click="dialog=true">
           Edit
         </v-btn>
-        <v-btn @click="NewRate()" v-if="!modal">평점등록하기</v-btn>
-        <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
+        <div v-show="!profile_data[6]">
+          <v-btn @click="NewRate()" v-if="!modal">장르별 평점 등록하기</v-btn>
+          <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
+        </div>
         <NewUserRating :modal="modal" v-if="modal"/>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem;">Similar Users</p>
-          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;">
+          <v-card v-for="person in this.profile_data.slice(1,6)" style="margin-bottom: 2rem;">
             <v-card-text>
               <v-container>
                 <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
@@ -115,6 +117,7 @@ export default {
     profile_data:'',
     dialog: false,
     modal: false,
+    checkCSV: false,
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters'
@@ -139,8 +142,9 @@ export default {
       const apiUrl = '/api'
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
+      console.log(profile)
       this.profile_data = profile.data
-      console.log(this.profile_data)
+      console.log(this.profile_data[6])
 
       // 구독 날짜 확인하기,
       // 오늘 날짜 : this.now_date , ex) 20190910

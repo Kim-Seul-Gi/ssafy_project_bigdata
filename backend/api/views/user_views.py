@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from api.models import Profile, Cluster
 from api.models import User_Cluster_Kmeans, User_Cluster_Hmeans, User_Cluster_EM
 import random
+import pandas as pd
 
 @api_view(['GET', 'POST', 'DELETE'])
 def users(request):
@@ -143,6 +144,15 @@ def detail(request, user_id):
             for i in numbers:
                 serializer = ProfileSerializer(profiles[i])
                 my_cluster.append(serializer.data)
+        # csv에 평점 데이터 유무 확인
+        flag = False
+        Users = pd.read_csv('./api/fixtures/user_rating.csv', header=0)
+        Users = Users['user_pk']
+        for user_pk in Users:
+            if(user_pk==user_profile.pk):
+                flag = True; break;
+        my_cluster.append(flag)
+
         return Response(data=my_cluster, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':

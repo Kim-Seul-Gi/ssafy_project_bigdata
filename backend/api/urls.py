@@ -84,5 +84,6 @@ urlpatterns = [
     path('KNN/checkCSV/', KNN_views.checkCSV),
 
     # Rating CRUD
+    path('movie/<int:movie_pk>/score/check/', rate_views.checkRating),
     path('movie/<int:movie_pk>/score/cdu/', rate_views.cduRating),
 ]

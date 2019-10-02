@@ -4,6 +4,7 @@ from api.models import Movie, Profile, Rate
 from api.serializers import MovieSerializer
 from rest_framework.response import Response
 from django.contrib.auth.models import User
+import pprint
 
 @api_view(['GET', 'POST', 'DELETE'])
 def ratings(request):
@@ -36,14 +37,33 @@ def ratings(request):
 
 		return Response(status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def checkRating(request, movie_pk):
+  pprint.pprint(request.data)
+  if request.method == 'POST':
+    rates = Rate.objects.filter(MovieID=movie_pk) # 영화에 담긴 평점 모두 가져오기
+    user_pk = request.data.get('user_pk')         # 유저
+    profile = Profile.objects.get(user=user_pk)   # 유저의 프로필
+    rate = rates.objects.get(UserID=profile.pk, default=None)        # 유저가 영화에 남긴 평점 가져오기
+    print(rate)
+    if(rate==[]):
+      return Response(data=False, status=status.HTTP_200_OK)
+    else:
+      return Response(data=True, status=status.HTTP_200_OK)
+
 @api_view(['PUT', 'POST', 'DELETE'])
 def cduRating(request, movie_pk):
-  rates = Rate.objects.filter(MovieID=movie_pk)
-  user_pk = request.objects.get("user_pk")
-  profile = Profile.objects.get(user=user_pk)
-  rate = rates.filter(UserID=profile.pk)
+  pprint.pprint(request.data)
+  rates = Rate.objects.filter(MovieID=movie_pk) # 영화에 담긴 평점 모두 가져오기
+  user_pk = request.data.get("user_pk", None)      # 유저
+  profile = Profile.objects.get(user=user_pk)   # 유저의 프로필
+  flag = False
+  for rate in rates:
+    if rate.UserID == profile.pk:
+      flag = True
+      break
   if request.method == "POST":
-    if(rate!=[]):
+    if(flag==False):
       return Response(data=False, status=status.HTTP_200_OK)
     else:
       score = request.data.get("score")
@@ -51,12 +71,12 @@ def cduRating(request, movie_pk):
 				MovieID=Movie.objects.get(pk=movie_pk),
 				rating=score, Timestamp=0).save()
   elif request.method == "DELETE":
-    if(rate==[]): 
+    if(flag==False): 
       return Response(data=False, status=status.HTTP_200_OK)
     else:
       rate.delete()
   elif request.method == "PUT":
-    if(rate==[]):
+    if(flag==False):
       return Response(data=False, status=status.HTTP_200_OK)
     else:
       rate.rating = score
