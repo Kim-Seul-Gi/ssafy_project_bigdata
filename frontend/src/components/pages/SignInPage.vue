@@ -73,11 +73,12 @@ export default {
           this.$session.set('admin', res.data.admin)
           // console.log(this.$store.state.data.username)
           // alert('로그인완료!')
-          router.push('/')
-          window.location.reload()
           Swal.fire({
             title: '로그인 완료!',
             type: 'success'
+          }).then((result) => {
+            router.push('/')
+            window.location.reload()
           })
         }
          else {
