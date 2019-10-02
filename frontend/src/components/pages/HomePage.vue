@@ -2,7 +2,7 @@
   <div>
     <v-container style="padding-top: 0;">
       <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('../../img/background.jpg');">
-        <div id="container">
+        <div id="container" style="margin-left: 15rem;">
           <p class="a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
           <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
           <!-- 1. 로그인 여부 -->
@@ -16,11 +16,12 @@
           <!-- 1. 로그인 여부 -->
 
           <div v-if="this.user">
-            로그인 ID : {{this.user}}<br><br>
+            <!-- 로그인 ID : {{this.user}}<br><br> -->
 
             <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
             <div>
               <Subscription
+                :user="user"
                 :profile_data="profile_data"
                 :now_date="now_date"
                 :sub_date="subscription_date"
