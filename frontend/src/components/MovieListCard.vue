@@ -1,46 +1,21 @@
 <template>
-  <v-hover v-slot:default="{ hover }">
-    <v-card :elevation="hover ? 8 : 2">
-      <v-layout align-center py-4 pl-4>
-        <v-flex text-center>
-          <v-container grid-list-lg pa-0>
-
-            <v-layout column style="cursor: pointer" @click="SELECT_MovieDetail()">
-              <v-list-item>
-                <v-list-item-content>
-                  <img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" height="300vw">                
-                  <v-list-item-title class="headline">
-                    {{ title }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-text>
-                <v-layout justify-center>
-                  <v-rating
-                    :value="averagerate"
-                    color="indigo"
-                    background-color="indigo"
-                    half-increments
-                    dense
-                    readonly
-                  />
-                  <div class="grey--text ml-4">{{ averagerate }}</div>
-                </v-layout>
-              </v-card-text>
-              <v-card-text>
-                <v-layout justify-center>
-                  <v-icon color="black">mdi-eye</v-icon>
-                  <div class="grey--text ml-4">{{ watch_count }}</div>
-                </v-layout>
-              </v-card-text>
-            </v-layout>
-
-          </v-container>
-        </v-flex>
-      </v-layout>
-    </v-card>
-  </v-hover>
+  <v-layout row wrap pa-5>
+    <v-flex>
+      <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+        <v-img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+        <v-card-text>
+          <!-- <v-container> -->
+          <div class="movietitle">
+            <!-- {{title.substring(0, title.indexOf("("))}}<br> -->
+            <span class="hovertext2">{{title.substring(0, title.indexOf("("))}}</span>
+          </div>
+          <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{Math.round(averagerate*100)/100}}</span>
+          <v-btn text color="primary" @click="SELECT_MovieDetail()" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+          <!-- </v-container> -->
+        </v-card-text>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -59,10 +34,6 @@ export default {
     genres_array: {
       type: Array | String ,
       default: () => new Array()
-    },
-    img: {
-      type: String,
-      default: ""
     },
     averagerate: {
       type: Number,
@@ -106,8 +77,9 @@ export default {
     SELECT_MovieDetail() {
 
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
-                  'img':this.img,'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
+                  'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
                   'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}
+      // console.log(movie_data)
       // router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       router.push({name:'movie-detail', params : {'id':movie_data.id}})
     }
