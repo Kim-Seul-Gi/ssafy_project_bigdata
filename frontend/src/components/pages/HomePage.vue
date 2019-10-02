@@ -2,12 +2,12 @@
   <div>
     <v-container style="padding-top: 0;">
       <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('../../img/background.jpg');">
-        <div id="container" style="margin-left: 15rem;">
+        <div id="container" style="margin-left: 18rem;">
           <p class="a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
           <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
           <!-- 1. 로그인 여부 -->
           <p v-if="!this.user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
-          <p v-else><router-link to="/users/signup" class="a">See you again</router-link></p>
+          <p v-else><a class="a" @click="logout()">See you again</a></p>
         </div>
       </v-layout>
       <v-layout row wrap >
@@ -34,8 +34,8 @@
           <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
           <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
 
-          <v-layout row wrap pa-5>
-            <h1> (5) 기능 : 단순 영화 나열입니다</h1>
+          <v-layout row wrap pa-8>
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
             <v-flex>
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
@@ -57,21 +57,21 @@
             </v-flex>
           </v-layout>
 
-          <div v-if="this.user">
+          <div v-if="this.user && this.user != 'admin'">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
 
-            <v-layout row wrap pa-5>
-            <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
+            <v-layout row wrap pa-8>
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-account</v-icon> {{this.user}}님과 유사한 이용자</span>
               <v-flex>
                 <carousel :per-page="pageNum">
                   <slide v-for="person in this.profile_data.slice(1)" style="height: 21rem; width: 15rem;">
-                    <v-card style="margin:10px; height: 20rem; width: 15rem;" color="#424242" dark>
+                    <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
                         <v-card-text>
-                          <v-container>
-                            <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
-                            <p>{{ person.age }} / {{ person.gender }}</p>
-                            <p>{{ person.occupation }}</p>
-                            <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+                          <v-container style="margin-top: 1.2rem;">
+                            <p style="color: white; font-size: 1.5rem;">{{ person.username }}</p>
+                            <p style="font-size: 1rem; margin-top: 2.2rem;">{{ person.age }} / {{ person.gender }}</p>
+                            <p style="font-size: 1rem;">{{ person.occupation }}</p>
+                            <v-btn text style="margin-left: 2.6rem;" color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
                           </v-container>
                         </v-card-text>
                     </v-card>
@@ -163,6 +163,17 @@ export default {
     },
     goTo() {
       router.push({name:"sign-in"})
+    },
+    logout() {
+      // let __this = this
+      let tmp = axios.get('/api/auth/logout').then(res => {
+        // console.log(res)
+      })
+      this.user = ''
+      this.$session.set('id', '')
+      this.$session.set('admin', false)
+      window.location.reload()
+      router.push('/')
     }
   }
 }
