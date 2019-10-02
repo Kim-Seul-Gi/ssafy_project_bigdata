@@ -57,7 +57,7 @@
             </v-flex>
           </v-layout>
 
-          <div v-if="this.user">
+          <div v-if="this.user && this.user != 'admin'">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
 
             <v-layout row wrap pa-8>
