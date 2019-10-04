@@ -1,28 +1,10 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card :elevation="hover ? 8 : 2">
-      <v-layout align-center py-4 pl-4>
-        <v-flex text-center>
-          <v-container grid-list-lg pa-0>
-
-            <v-layout column style="cursor: pointer" @click="SELECT_UserDetail()">
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="headline">
-                    {{ id }} | {{ username }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-text>
-                <v-layout justify-center>
-                  프로필 보러가기
-                </v-layout>
-              </v-card-text>
-            </v-layout>
-
-          </v-container>
-        </v-flex>
-      </v-layout>
+    <v-card :elevation="hover ? 8 : 2" style="margin:10px; height: 5rem; width: 20rem; border-radius:15px;" color="#424242" dark>
+      <v-card-text>
+        <div>{{id}} | {{username}}</div>
+        <v-btn text color="primary" @click="SELECT_UserDetail()" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+      </v-card-text>
     </v-card>
   </v-hover>
 </template>
@@ -40,11 +22,6 @@ export default {
       type: String,
       default : ''
     }
-  },
-  computed: {
-    // genresStr: function() {
-    //   return this.genres.join(" / ");
-    // },
   },
   methods: {
     SELECT_UserDetail() {

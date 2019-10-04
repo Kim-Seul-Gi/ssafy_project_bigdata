@@ -4,9 +4,9 @@
     <v-layout justify-center wrap>
 
       <!-- 검색 폼 by 영화이름-->
-      <v-flex xs-12>
+      <v-flex>
         <div style="color:rgb(255,255,255)">No. {{movie_data[0].id}}</div>
-        <v-card class="mx-auto" max-width="600px">
+        <v-card class="mx-auto" max-width="600px" color="#424242" dark>
           <v-img :src="movie_data[0].url"
             height="400px" contain
           ></v-img>
@@ -46,30 +46,34 @@
             </div>
           </v-expand-transition>
         </v-card>
+        <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">
+          Similar Movies</p>
       </v-flex>
+
+
+
       <v-flex>
-      <h2>유사 작품</h2>
-        <v-flex v-for="movie in movie_data.slice(1)" pa-2>
-          <v-col>
-          <v-hover v-slot:default="{ hover }">
-            <v-card :elevation="hover ? 12 : 2"
-              max-width="300" max-height="300" class="mx-auto"
-              @click="SELECT_MovieDetail(movie)">
-              <v-row class="py-4 pl-4">
-                <v-img
-                  height="200"
-                  width="200"
-                  contain
-                  :src="movie.url"
-                ></v-img>
-              </v-row>
-              <div>{{movie.title}}</div>
-            </v-card>
-          </v-hover>
-          </v-col>
+        <carousel :per-page="4">
+          <slide v-for="movie in this.movie_data.slice(1)" style="height: 22rem; width: 15rem;">
+            <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+              <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+              <v-card-text>
+                <div class="movietitle">
+                  {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                  <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                </div>
+                  <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                  <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                </v-card-text>
+              </v-card>
+            </slide>
+          </carousel>
         </v-flex>
-        </v-flex>
+
+
+
       </v-layout>
+
     <v-btn @click="search()">이전으로 이동</v-btn>
   </v-container>
 </template>
@@ -77,9 +81,12 @@
 <script>
 import router from "../../router";
 import axios from 'axios'
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   components: {
+    Carousel,
+    Slide
   },
   props: {
     id : {type:Number | String},
