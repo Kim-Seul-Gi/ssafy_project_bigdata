@@ -27,6 +27,7 @@ urlpatterns = [
 
     path('movies/', movie_views.movies, name='movie_list'),
     path('movies/<int:movie_id>', movie_views.detail, name='movie_datail'),
+    path('movies/<int:movie_id>/<int:profile_id>/', movie_views.getrate, name='movie_getrate'),
     path('movies/homepage/', movie_views.homepage, name='movie_homepage'),
 
     path('users/', user_views.users, name='user_list'),

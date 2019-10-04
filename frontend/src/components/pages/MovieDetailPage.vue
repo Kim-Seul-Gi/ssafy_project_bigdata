@@ -12,7 +12,8 @@
           ></v-img>
           <v-col>
             <h1>{{movie_data[0].title}}</h1>
-            <v-btn icon @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 남기기'}}</v-btn>
+            <v-btn icon v-if="!this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 남기기'}}</v-btn>
+            <v-btn icon v-if="this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 수정하기'}}</v-btn>
             <v-flex v-show="rate_show">
               <div class="mx-auto" style="width:200px">
                 <v-text-field
@@ -22,9 +23,10 @@
                   type="number"
                   required>
                 </v-text-field>
-                <v-btn @click="createRating(movie_data[0].id)">등록</v-btn>
-                <v-btn @click="updateRating(movie_data[0].id)">수정</v-btn>
-                <v-btn @click="deleteRating(movie_data[0].id)">삭제</v-btn>
+                <v-btn v-if="!this.rate_flag" @click="createRating(movie_data[0].id)">등록</v-btn>
+                <v-btn v-if="this.rate_flag" @click="deleteRating(movie_data[0].id)">삭제</v-btn>
+                <v-btn v-if="this.rate_flag" @click="updateRating(movie_data[0].id)">수정</v-btn>
+                <v-btn @click="rate_show = !rate_show">취소</v-btn>
               </div>
             </v-flex>
             <div class="grey--text">{{movie_data[0].averagerate}} ({{movie_data[0].watch_count}})</div>
@@ -50,8 +52,8 @@
         <v-flex v-for="movie in movie_data.slice(1)" pa-2>
           <v-col>
           <v-hover v-slot:default="{ hover }">
-            <v-card :elevation="hover ? 12 : 2" 
-              max-width="300" max-height="300" class="mx-auto" 
+            <v-card :elevation="hover ? 12 : 2"
+              max-width="300" max-height="300" class="mx-auto"
               @click="SELECT_MovieDetail(movie)">
               <v-row class="py-4 pl-4">
                 <v-img
@@ -103,6 +105,7 @@ export default {
       {"url":''},
       {"watch_count":''}
     ],
+    rate_flag:false,
   }),
   mounted() {
     this.fetchdata()
@@ -112,10 +115,19 @@ export default {
     async fetchdata() {
         const apiUrl = '/api'
         const id = this.$route.params.id
+
         var movie = await axios.get(`${apiUrl}/movies/${id}`)
         this.movie_data = movie.data
         this.castingList = this.movie_data[0].castings.split("|")
         // console.log(this.movie_data)
+
+        // 내가 댓글을 남겼다면..? 해당점수를 가져와야죠!
+        var myrate = await axios.get(`${apiUrl}/movies/${id}/${this.$session.get('id_number')}`)
+        if (myrate.data.flag===true) {
+          this.rate_flag = true
+          this.score = myrate.data.rate
+        }
+
     },
     search() {
       router.go(-1)
@@ -145,6 +157,7 @@ export default {
       }).then(res => {
         if(res.data==false) alert("이미 평점을 등록하셨습니다.")
         else alert("평점을 등록했습니다.")
+        this.rate_flag = !this.rate_flag
         this.rate_show = !this.rate_show
       })
     },
@@ -168,6 +181,7 @@ export default {
         if(res.data==false) alert("등록된 평점이 없습니다.")
         else alert("평점을 삭제했습니다.")
         this.rate_show = !this.rate_show
+        this.rate_flag = !this.rate_flag
       })
     }
   }

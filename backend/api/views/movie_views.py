@@ -152,7 +152,7 @@ def genders(request):
     rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
-    
+
     serializer = Movie_Age_Serializer(rates, many=True)
 
     return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -259,3 +259,16 @@ def getarray(request):
     df.to_csv("answer.csv", header=None, index=None)
 
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getrate(request, movie_id, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
+    movie = Movie.objects.get(pk=movie_id)
+    rate = Rate.objects.filter(UserID=profile, MovieID=movie)
+
+    if rate:
+        result = {'flag':True, 'rate':rate[0].rating}
+    else:
+        result = {'flag':False}
+
+    return Response(data=result, status=status.HTTP_200_OK)
