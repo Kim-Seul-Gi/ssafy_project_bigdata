@@ -29,7 +29,6 @@
         <!-- {{card.viewCnt}} -->
         <MovieListCard
           :id="card.id"
-          :img="card.img"
           :title="card.title"
           :genres_array="card.genres_array"
           :averagerate="card.averagerate"
@@ -47,7 +46,6 @@
       <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
         <MovieListCard
           :id="card.id"
-          :img="card.img"
           :title="card.title"
           :genres_array="card.genres_array"
           :averagerate="card.averagerate"

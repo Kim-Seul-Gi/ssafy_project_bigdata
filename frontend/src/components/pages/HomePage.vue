@@ -14,7 +14,6 @@
         <v-flex xs12>
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
-
           <div v-if="this.user">
             <!-- 로그인 ID : {{this.user}}<br><br> -->
 
@@ -38,7 +37,7 @@
             <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="movie in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
+                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                     <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                     <v-card-text>
@@ -115,11 +114,14 @@ export default {
   created() {
     this.getMovies_homepage()
     this.fetchdata()
-  },
+    },
   methods : {
     ...mapActions("data", ["getMovies_homepage"]),
     // getmoveis 는 단순 영화 나열을 위한 것입니다 = 로그인 여부와 관련 없는 것.
     async fetchdata() {
+      if (this.$session.get('id')==undefined) {
+        this.$session.set('id', '')
+      }
       this.user = this.$session.get('id')
       if (this.$session.get('id')=='') {
       } else {
