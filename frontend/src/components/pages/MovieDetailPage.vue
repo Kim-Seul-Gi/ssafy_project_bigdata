@@ -51,8 +51,8 @@
           <v-col>
           <v-hover v-slot:default="{ hover }">
             <v-card :elevation="hover ? 12 : 2" 
-                    max-width="300" max-height="300" class="mx-auto" 
-                    @click="SELECT_MovieDetail(movie)">
+              max-width="300" max-height="300" class="mx-auto" 
+              @click="SELECT_MovieDetail(movie)">
               <v-row class="py-4 pl-4">
                 <v-img
                   height="200"
@@ -128,24 +128,24 @@ export default {
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()
     },
-    checkRating(id) {
-      const apiUrl = '/api'
-      axios.post(`${apiUrl}/movie/${id}/score/check/`, {
-        user_pk:this.$session.get('id_number')
-      }).then(res => {
-        if(res==true) {alert("이미 평점을 남겼습니다.");}
-        else {this.rate_show = true;}
-      })
-    },
+    // checkRating(id) {
+    //   const apiUrl = '/api'
+    //   axios.post(`${apiUrl}/movie/${id}/score/check/`, {
+    //     user_pk:this.$session.get('id_number')
+    //   }).then(res => {
+    //     if(res==true) {alert("이미 평점을 남겼습니다.");}
+    //     else {this.rate_show = true;}
+    //   })
+    // },
     createRating(id) {
       const apiUrl = '/api'
       axios.post(`${apiUrl}/movie/${id}/score/cdu/`, {
         user_pk:this.$session.get('id_number'),
         score:this.score
       }).then(res => {
-        if(res==false) alert("이미 평점을 등록하셨습니다!!")
+        if(res.data==false) alert("이미 평점을 등록하셨습니다.")
         else alert("평점을 등록했습니다.")
-        
+        this.rate_show = !this.rate_show
       })
     },
     updateRating(id) {
@@ -154,8 +154,9 @@ export default {
         user_pk:this.$session.get('id_number'),
         score:this.score
       }).then(res => {
-        if(res==false) alert("등록된 평점이 없습니다.")
+        if(res.data==false) alert("등록된 평점이 없습니다.")
         else alert("평점을 수정했습니다.")
+        this.rate_show = !this.rate_show
       })
     },
     deleteRating(id) {
@@ -166,6 +167,7 @@ export default {
         console.log(res.data)
         if(res.data==false) alert("등록된 평점이 없습니다.")
         else alert("평점을 삭제했습니다.")
+        this.rate_show = !this.rate_show
       })
     }
   }
