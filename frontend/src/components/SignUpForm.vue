@@ -31,17 +31,32 @@
     v-model="age"
     type="number"
     label="Age"
+    :rules="ageRules"
     style="margin-left: 5rem; margin-right: 5rem;"
     required
     ></v-text-field>
-    <v-text-field
+    <!-- <v-text-field
     v-model="occupation"
     label="Occupation"
     style="margin-left: 5rem; margin-right: 5rem;"
     required
-    ></v-text-field>
+    ></v-text-field> -->
+    <v-select
+      v-model="occupation"
+      :items="occupations"
+      label="Occupation"
+      :rules="occupationRules"
+      style="margin-left: 5rem; margin-right: 5rem;"
+      required
+    ></v-select>
 
-    <v-btn @click="submit" style="margin-top: 2rem; margin-bottom: 1rem;">Sign up</v-btn>
+
+    <v-btn v-if="this.nameRules[0](this.username)===true && this.passwordRules[0](this.password)===true
+    && this.ageRules[0](this.age)===true && this.occupationRules[0](this.occupation)===true"
+    @click="submit"
+    style="margin-top: 2rem; margin-bottom: 1rem;">Sign up</v-btn>
+    <v-btn v-else disabled style="margin-top: 2rem; margin-bottom: 1rem;">Sign up</v-btn>
+
     </form>
     <div style="padding-top: 1.3rem; padding-bottom: 3rem;">
     <router-link to="signin">로그인하러 가실게요.</router-link>
@@ -62,20 +77,73 @@ export default {
       password: '',
       gender: 'F',
       age: null,
+      occupations: ["other","academic/educator","artist","clerical/admin","college/grad student",
+      "customer service","doctor/health care","executive/managerial","farmer","homemaker",
+      "K-12 student","lawyer","programmer","retired","sales/marketing","scientist",
+      "self-employed","technician/engineer","tradesman/craftsman","unemployed","writer"],
       occupation: '',
       nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+        function(v) {
+          // 아예 없는지 체크
+          if (!v) {
+            return 'Name is required'
+          }
+          // 길이 제한 체크
+          if (v.length > 10) {
+            return 'Name must be less than 10 characters'
+          }
+          // 공백 체크
+          if (v!==v.replace(/(\s*)/g,"")) {
+            return "공백은 안돼요~"
+          }
+          //특수문자 체크
+          var pattern_spc = /[~!@#$%^&*()_+|<>?:{}]/;
+          if (pattern_spc.test(v)) {
+            return "username에 특수문자는 사용 불가능!"
+          }
+          return !!v
+        },
       ],
       passwordRules: [
-        v => !!v || 'Password is required',
-        v => (v && v.length >= 6) || 'Name must be more than 6 characters'
+        function(v) {
+          // 아예 없는지 체크
+          if (!v) {
+            return 'Password is required'
+          }
+          // 길이 제한 체크
+          if (v.length < 6 || v.length > 20) {
+            return 'Name must be less than 6~20 characters'
+          }
+          // 공백 체크
+          if (v!==v.replace(/(\s*)/g,"")) {
+            return "공백은 안돼요~"
+          }
+          return !!v
+        },
       ],
+      ageRules : [
+        function(v) {
+          // 양수인지 체크
+          if (v<=0) {
+            return 'Age must be more than 1'
+          } return !!v
+        }
+      ],
+      occupationRules : [
+        function(v) {
+          // 등록했는지 체크
+          if (!v) {
+            return 'Occupation is required'
+          } return !!v
+        }
+      ]
     }
+  },
+  watch: {
   },
   methods: {
     async submit() {
-      const apiUrl = '/api'   
+      const apiUrl = '/api'
       let __this = this;
       await axios.post(`${apiUrl}/auth/signup/`, {
         username: __this.username,
@@ -88,7 +156,7 @@ export default {
           this.$router.push('/users/signin');
         }
       })
-    }
+    },
   }
 };
 </script>
