@@ -4,7 +4,8 @@
     <v-layout justify-center wrap>
 
       <!-- 검색 폼 by 영화이름-->
-      <v-flex xs6>
+      <v-col>
+      <v-flex>
         <!-- <div>
           <Subscription
             :user_data="profile_data[0]"
@@ -24,24 +25,53 @@
           @click="dialog=true">
           Edit
         </v-btn>
-        <v-btn @click="NewRate()" v-if="!modal">평점등록하기</v-btn>
-        <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
-        <NewUserRating :modal="modal" v-if="modal"/>
+        <v-btn color="lighten-2" dark 
+          @click="userMovie(); movie_show=!movie_show">
+          내가봤던 영화
+        </v-btn>
+          <v-layout row pa-5 v-show="movie_show">
+            <v-flex>
+              <carousel :per-page="pageNum">
+                <slide v-if="movielist.length > 1" v-for="movie in this.movielist" style="height: 22rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+                    <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                    <v-card-text>
+                      <div class="movietitle">
+                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                      </div>
+                        <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                        <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                    </v-card-text>
+                  </v-card>
+                </slide>
+              </carousel>
+            </v-flex>
+          </v-layout>
+        
+        <!-- <div v-show="!profile_data[6]">
+          <v-btn @click="NewRate()" v-if="!modal">장르별 평점 등록하기</v-btn>
+          <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
+        </div>
+        <NewUserRating :modal="modal" v-if="modal"/> -->
+      </v-flex>
+      
+      <v-flex offset-xs4 xs4>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
           <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark>
             <v-card-text> 
               <v-container>
                 <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
-                <p>{{ person.age }} / {{ person.gender }}</p>
-                <p>{{ person.occupation }}</p>
+                {{ person.age }} / {{ person.gender }}<br>
+                {{ person.occupation }}<br>
                 <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
               </v-container>
             </v-card-text>
           </v-card>
         </div>
-
       </v-flex>
+      </v-col>
 
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -95,6 +125,8 @@ import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
 import NewUserRating from "../NewUserRating";
+import { Carousel, Slide } from 'vue-carousel';
+
 // import MovieSearchForm from "../searchform/MovieSearchForm";
 // import MovieList from "../MovieList";
 
@@ -104,7 +136,9 @@ export default {
     // MovieSearchForm,
     // MovieList,
     Subscription,
-    NewUserRating
+    NewUserRating,
+    Carousel,
+    Slide
   },
   data: () => ({
     user: null,
@@ -115,14 +149,17 @@ export default {
     profile_data:'',
     dialog: false,
     modal: false,
+    checkCSV: false,
+    movie_show: false,
+    pageNum: 4,
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters'
     ],
     user_data:'',
     subscription_date:'',
-    now_date:''
-    // movielist:[],
+    now_date:'',
+    movielist:[],
   }),
   created() {
     this.fetchdata();
@@ -139,8 +176,9 @@ export default {
       const apiUrl = '/api'
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
+      console.log(profile)
       this.profile_data = profile.data
-      console.log(this.profile_data)
+      console.log(this.profile_data[6])
 
       // 구독 날짜 확인하기,
       // 오늘 날짜 : this.now_date , ex) 20190910
@@ -173,6 +211,14 @@ export default {
     SELECT_UserDetail(id, username) {
       var user_data = {'id':id, 'username':username}
       router.push({name:'user-detail', params : {'id':user_data.id, 'user_data':user_data}})
+    },
+
+    userMovie() {
+      const apiUrl = '/api'
+      let user_pk = this.$session.get('id_number')
+      axios.post(`${apiUrl}/user/${user_pk}/movies/`).then(res => {
+        this.movielist = res.data
+      })
     },
 
     NewRate() {

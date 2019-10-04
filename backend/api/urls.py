@@ -31,6 +31,7 @@ urlpatterns = [
 
     path('users/', user_views.users, name='user_list'),
     path('users/<int:user_id>', user_views.detail, name='user_list'),
+    path('user/<int:user_id>/movies/', user_views.userMovie),
 
     # parse_data / rating 관련
     path('ratings/', rate_views.ratings, name='rate_list'),
@@ -84,5 +85,6 @@ urlpatterns = [
     path('KNN/checkCSV/', KNN_views.checkCSV),
 
     # Rating CRUD
+    path('movie/<int:movie_pk>/score/check/', rate_views.checkRating),
     path('movie/<int:movie_pk>/score/cdu/', rate_views.cduRating),
 ]

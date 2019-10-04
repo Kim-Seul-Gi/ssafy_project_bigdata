@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     SELECT_MovieDetail() {
-
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
                   'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
                   'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}

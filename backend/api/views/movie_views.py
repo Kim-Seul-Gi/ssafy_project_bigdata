@@ -5,7 +5,7 @@ from api.serializers import MovieSerializer, Movie_Age_Serializer
 from rest_framework.response import Response
 from django.db.models import Avg
 import pandas as pd
-import random
+import random, pprint
 
 @api_view(['GET', 'POST', 'DELETE'])
 def movies(request):
@@ -160,12 +160,14 @@ def genders(request):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def detail(request, movie_id):
+    pprint.pprint(request.data)
     movie = Movie.objects.get(pk=movie_id)
     movie.watch_count += 1
     movie.save()
     cluster = Cluster.objects.get(pk=1)
     result = []
     serializer = MovieSerializer(movie)
+    # rate = Rate.objects.get(UserID)
     result.append(serializer.data)
 
     # H clustering
@@ -215,7 +217,6 @@ def detail(request, movie_id):
         movie = Movie.objects.get(title=t.MovieId)
         serializer = MovieSerializer(movie)
         result.append(serializer.data)
-
     return Response(data=result, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
