@@ -6,7 +6,7 @@
       <!-- 검색 폼 by 영화이름-->
       <v-flex xs6 v-if="bymoviename">
 
-        <div class="display-2 pa-10">영화 검색</div>
+        <div class="display-2 pa-10" style="color: white">영화 검색</div>
 
         <v-btn @click="changesearch1()">다른 검색</v-btn>
 
@@ -24,19 +24,19 @@
         <v-btn @click="changesearch4()">직업 기준</v-btn>
         <v-btn @click="changesearch5()">성별 기준</v-btn>
 
-        <div v-if="bygenre" class="display-2 pa-10">장르 검색
+        <div v-if="bygenre" class="display-2 pa-10" style="color: white">장르 검색
           <GenreSearchForm :submit="searchGenres" />
         </div>
 
-        <div v-if="byage" class="display-2 pa-10">연령대 검색
+        <div v-if="byage" class="display-2 pa-10" style="color: white">연령대 검색
           <AgeSearchForm :submit="searchAges" />
         </div>
 
-        <div v-if="byoccupation" class="display-2 pa-10">직업 검색
+        <div v-if="byoccupation" class="display-2 pa-10" style="color: white">직업 검색
           <OccupationSearchForm :submit="searchOccupations" />
         </div>
 
-        <div v-if="bygender" class="display-2 pa-10">성별 검색
+        <div v-if="bygender" class="display-2 pa-10" style="color: white">성별 검색
           <GenderSearchForm :submit="searchGenders" />
         </div>
       </v-flex>

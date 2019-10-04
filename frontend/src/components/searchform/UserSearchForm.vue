@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <v-text-field v-model="username" @keyup.enter="onSubmit" label="유저 이름" />
+    <v-text-field v-model="username" @keyup.enter="onSubmit" background-color="#424242" label="유저 이름" />
 
     <!-- enter 치면 리렌더링 방지용 -->
     <v-text-field v-show="false"/>
