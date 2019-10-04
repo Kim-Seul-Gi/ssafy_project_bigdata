@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form">
-    <v-text-field v-model="title" @keyup.enter="onSubmit" label="영화 제목" />
+    <v-text-field v-model="title" @keyup.enter="onSubmit" background-color="#424242" label="영화 제목" />
 
     <!-- enter 치면 리렌더링 방지용 -->
     <v-text-field v-show="false"/>

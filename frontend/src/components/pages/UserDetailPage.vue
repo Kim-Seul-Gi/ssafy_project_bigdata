@@ -2,77 +2,41 @@
 <template>
   <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-
       <!-- 검색 폼 by 영화이름-->
-      <v-flex xs12>
-
-        <div class="display-2 pa-10">
-        유저 상세 내용<br>
-
-        <p>{{profile_data[0]['is_username']}}</p>
-        <div v-if="profile_data[0]['gender'] == 'F'">성별 : 여</div>
-        <div v-else-if="profile_data[0]['gender'] == 'M'">성별 : 남</div>
-        <p>직업 : {{profile_data[0]['occupation']}}</p>
-        <div v-if="profile_data[0]['age'] == '1'">연령대 : 18세이하</div>
-        <div v-else-if="profile_data[0]['age'] == '18'">연령대 : 18-24세</div>
-        <div v-else-if="profile_data[0]['age'] == '25'">연령대 : 25-34세</div>
-        <div v-else-if="profile_data[0]['age'] == '35'">연령대 : 35-44세</div>
-        <div v-else-if="profile_data[0]['age'] == '45'">연령대 : 45-49세</div>
-        <div v-else-if="profile_data[0]['age'] == '50'">연령대 : 50-55세</div>
-        <div v-else-if="profile_data[0]['age'] == '56'">연령대 : 56세이상</div>
-
-
-        <br>
-
-        <v-flex v-for="(person,idx) in profile_data.slice(1)" :key='idx' pa-2>
-
-        <v-hover v-slot:default="{ hover }">
-
-          <v-card :elevation="hover ? 8 : 2">
-            <v-layout align-center py-4 pl-4>
-              <v-flex text-center>
-                <v-container grid-list-lg pa-0>
-
-                  <v-layout column @click="SELECT_UserDetail(person.id, person.username)">
-                    <v-list-item>
-                      <v-list-item-content>
-                        <v-list-item-title class="headline">
-                          {{person.id}}
-                          
-                          <!-- ID : {{ id }}, username : {{ username }} -->
-
-                        </v-list-item-title>
-                        <!-- <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle> -->
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-card-text>
-                      <v-layout justify-center>
-
-                      </v-layout>
-                    </v-card-text>
-                    <v-card-text>
-                      <v-layout justify-center>
-                        프로필 보러가기
-                        <v-icon color="black">mdi-eye</v-icon>
-                        <!-- <div class="grey--text ml-4">{{ viewCnt }}</div> -->
-                      </v-layout>
-                    </v-card-text>
-                  </v-layout>
-
-                </v-container>
-              </v-flex>
-            </v-layout>
-          </v-card>
-        </v-hover>
-
+      <v-flex>
+        <div style="color:rgb(255,255,255)">No. {{profile_data[0].id}}</div>
+        <v-card class="mx-auto" max-width="600px" color="#424242" dark>
+          <v-col>
+            <h1>{{profile_data[0].username}}</h1>
+            <div v-if="profile_data[0]['gender'] == 'F'" class="grey--text">Gender: 여</div>
+            <div v-else-if="profile_data[0]['gender'] == 'M'" class="grey--text">Gender: 남</div>
+            <div class="grey--text">Occupation: {{profile_data[0]['occupation']}}</div>
+            <div v-if="profile_data[0]['age'] == '1'" class="grey--text">Age: 18세이하</div>
+            <div v-else-if="profile_data[0]['age'] == '18'" class="grey--text">Age: 18-24세</div>
+            <div v-else-if="profile_data[0]['age'] == '25'" class="grey--text">Age: 25-34세</div>
+            <div v-else-if="profile_data[0]['age'] == '35'" class="grey--text">Age: 35-44세</div>
+            <div v-else-if="profile_data[0]['age'] == '45'" class="grey--text">Age: 45-49세</div>
+            <div v-else-if="profile_data[0]['age'] == '50'" class="grey--text">Age: 50-55세</div>
+            <div v-else-if="profile_data[0]['age'] == '56'" class="grey--text">Age: 56세이상</div>
+          </v-col>
+        </v-card>
+        <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
       </v-flex>
-
-        <br>
-        <v-btn @click="search()">검색으로 이동</v-btn>
-        </div>
-
-      </v-flex>
-
+      <v-layout pa-5 v-if="profile_data.length > 1">
+        <v-flex>
+          <carousel :per-page="3">
+            <slide v-for="person in this.profile_data.slice(1,6)" style="height: 6rem; width: 15rem;">
+              <v-card style="margin:10px; height: 5rem; width: 20rem; border-radius:15px;" color="#424242" dark>
+                <v-card-text>
+                  <div>{{person.id}} | {{person.username}}</div>
+                  <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                </v-card-text>
+              </v-card>
+            </slide>
+          </carousel>
+        </v-flex>
+      </v-layout>
+    <v-btn @click="search()">이전으로 이동</v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -80,9 +44,12 @@
 <script>
 import router from "../../router";
 import axios from 'axios'
+import { Carousel, Slide } from 'vue-carousel'
 
 export default {
   components: {
+    Carousel,
+    Slide
   },
   props: {
     id : {type:Number | String},

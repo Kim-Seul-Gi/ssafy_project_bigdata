@@ -6,7 +6,7 @@
       <!-- 검색 폼 by username-->
       <v-flex xs6>
 
-        <div class="display-2 pa-10">유저 검색</div>
+        <div class="display-2 pa-10" style="color: white">유저 검색</div>
         <UserSearchForm :submit="searchUsers" />
       </v-flex>
 

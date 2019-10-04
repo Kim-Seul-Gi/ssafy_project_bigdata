@@ -1,13 +1,13 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
 
-    <div v-if="movieListCards.length">
+    <div v-if="movieListCards.length" style="color: white">
       {{movieListCards.length}}개가 조회되었습니다.
       <v-btn @click="seemode_rate = true">평점 순</v-btn>
       <v-btn @click="seemode_rate = false">조회 순</v-btn>
     </div>
 
-    <div v-if="!movieListCards.length">
+    <div v-if="!movieListCards.length" style="color: white">
       영화가 없어요!!!
     </div>
     <v-layout row wrap>
