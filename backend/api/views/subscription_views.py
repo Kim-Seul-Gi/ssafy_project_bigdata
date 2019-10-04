@@ -66,6 +66,9 @@ def manager(request):
 
 @api_view(['GET','POST'])
 def itembased_movies(request, profile_pk):
+    # csv 파일을 토대로 하는 것이므로, 새로운 회원에게 적용되어선 안됩니다. 그래서 이 함수는 사실상 쓰이지 않고
+    # 아래에 있는 itembased_movies2 함수가 쓰일 것입니다.
+
     # 이 함수는 구독서비스를 이용하는 사용자에게 itembased 추천을 하는 함수입니다.
     # 과정은 아래와 같습니다.
     # 0. 나의 선호 영화 장르 파악하기(box)
@@ -156,16 +159,15 @@ def userbased_movies(request, profile_pk):
     # 1. 그 사람들이 남긴 평점들을 가져옵니다.
     # 2. 해당 평점들을 예쁘게 나열, 정렬시킵니다.
     # 3. 일부분 영화를 추가하고, 해당 영화들을 반환합니다.
-    print(1111111111111)
     if request.method == 'POST':
     # 0 : 나와 유사한 사람(resemble_users), 유사한 영화들을 담을 movie_box(나중에 배열로 형변환됨.)
         resemble_users = request.data.get('resemble_users')
         movie_box = {}
     # 1
-        for i in resemble_users:
-            profile = Profile.objects.get(pk=i['id'])
+        for i in range(len(resemble_users)-1):
+            num = resemble_users[i]['id']
+            profile = Profile.objects.get(pk=num)
             rates = profile.profile_rate.order_by('rating')[:5]
-
             for rate in rates:
                 # movie_box = {'영화키값':[평점sum, 평점count]}
                 if movie_box.get(rate.MovieID)==None:
@@ -177,32 +179,31 @@ def userbased_movies(request, profile_pk):
     # 2
         movie_box = sorted(movie_box.items(), key=lambda x : (x[1][0]/x[1][1], x[1][1]), reverse=True)
         movie_box = movie_box[:10]
+
     # 3
         movie_array = []
         for i in movie_box:
             movie_array.append(i[0])
 
         serializer = MovieSerializer(movie_array, many=True)
-        print(2222222222222)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST'])
 def itembased_movies2(request, profile_pk):
     # 이 함수는 구독서비스를 이용하는 사용자에게 itembased 추천을 하는 함수입니다.
     # 과정은 아래와 같습니다.
-    # 0. 나의 선호 영화 장르 파악하기(box)
-    # 1. csv 가져오기
-    # 2. 1에 box 추가하고
-    # 3. 저장된 방식의 클러스터링 알고리즘 적용(K-means, H, EM, KNN, MF 인지 확인)한 이후 적합한 방법으로 ㄱ
-    # 4. 마지막 클러스터링 넘버랑 같은 넘버 영화를 가져온다
 
-    ## 1. 변수 정의
-    # 1-1. array : array 에 있는 데이터를 csv로 변환할 것입니다.
-    # 예시 array[0] = [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 'Toy Story (1995)']
-    # toy story라는 영화는 0011100000000000이라는 장르데이터를 가진다는 것을 의미합니다.
+    # 1. 영화 장르 데이터를 2차 배열로 생성 (array)
+    # 2. 사용자의 평점을 기반으로 좋아하는 장르 분포도 조사 (box)
+    # 3. array에 box를 추가하고 clustering 실시
+    # 4. box와 같은 군집에 해당하는 영화들 중에서 random 10개 추출
 
-    # 하나의 영화가 어떠한 장르를 포함하는지 0, 1로 표시할 것이며 행에는 하나의 영화 데이터를 넣을 것입니다.
-    # 열에는 장르 이름을 의미합니다.
+
+    ## 1.
+    # array : 특정 영화 id에 어떤 장르가 있는지 0,1 로 저장할 것입니다. 즉 2차배열입니다.
+    # 예시 array[0] = [1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # toy story(1 id를 가지는 movie)라는 영화는 0011100000000000이라는 장르데이터를 가진다는 것을 의미합니다.
+
     array = []
 
     # 1-2. genre_number: array에 들어가는 장르의 인덱스입니다. ( 열 ) / 총 19개(18+영화이름넣을공간1) 입니다.
@@ -210,15 +211,13 @@ def itembased_movies2(request, profile_pk):
                     'Drama':7,'Fantasy':8,'Film-Noir':9, 'Horror':10, 'Musical':11, 'Mystery':12,
                     'Romance':13,'Sci-Fi':14,'Thriller':15,'War':16,'Western':17}
 
-    ## 2. array 만들기
-    # 2-1. 전체 영화를 가져오고, 총 몇개의 영화인지 확인합니다.
     movies = Movie.objects.all()
     # last_movie_id = movies[len(movies)-1].id
     movies_count = len(movies)
     '''
     id,Action,Adventure,Animation,Children's,Comedy,Crime,Documentary,Drama,Fantasy,Film-Noir,Horror,Musical,Mystery,Romance,Sci-Fi,Thriller,War,Western
     '''
-    # 2-2. 하나의 영화데이터를 tmp_array 에 담아서 array로 보내기.
+    # 하나의 영화데이터를 tmp_array 에 담아서 array로 보내기.
     for i in range(movies_count):
         # print(movies[i], '이게 정보이다.')
         tmp_array = [0]*19
@@ -233,18 +232,11 @@ def itembased_movies2(request, profile_pk):
 
         array.append(tmp_array)
 
-
-    # 2-3. csv 파일로 array 를 저장하자.
-    # df = pd.DataFrame(array)
-    # print(df)
-    # print()
-    # df_slice = df.loc[:,1:]
-    # print(df_slice)
-
-    # # 여기 profile pk 를 변수로 설정해야한다!!!!!!!!!!!!!
+    ## 2.
+    # 여기 profile pk 를 변수로 설정해야한다!!!!!!!!!!!!!
     profile = Profile.objects.get(pk=profile_pk)
     rates = Rate.objects.filter(UserID=profile.user.id).order_by('-rating')[:5]
-    #
+
     # # 평점을 잘 준 댓글들의 영화 장르들을 파악합니다.
     box = [0]*19
     box[0] = profile.id
@@ -260,13 +252,14 @@ def itembased_movies2(request, profile_pk):
 
     array.append(box)
     df = pd.DataFrame(array)
+
+    ## 3.
     data_slice = df.loc[:, 1:]
 
     cluster = Cluster.objects.get(pk=1)
     cluster_n = cluster.n_component
     cluster_way = cluster.way
 
-    # 3. 클러스터링 합니다.
     if cluster_way == 'H':
         data_scaled = StandardScaler().fit_transform(data_slice)
         df_end = pd.DataFrame(data_scaled)
@@ -301,7 +294,8 @@ def itembased_movies2(request, profile_pk):
         y_predict = model.fit_predict(df_end)
 
     # print(y_predict)
-    # 4. 나의 넘버(y_predict[-1]를 통해 클러스터링 영화들을 가져옵니다.)
+
+    ## 4. 나의 넘버(y_predict[-1]를 통해 클러스터링 영화들을 가져옵니다.)
     cluster_number = y_predict[-1]
     # print(cluster_number)
     cluster_movies = [int(df[x:x+1].values[0][0]) for x in range(len(y_predict)-1) if y_predict[x]==y_predict[-1]]

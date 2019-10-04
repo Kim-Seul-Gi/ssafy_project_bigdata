@@ -111,8 +111,8 @@ export default {
             return 'Password is required'
           }
           // 길이 제한 체크
-          if (v.length < 6 || v.length > 20) {
-            return 'Name must be less than 6~20 characters'
+          if (v.length < 5 || v.length > 20) {
+            return 'Password must be 5~20 characters'
           }
           // 공백 체크
           if (v!==v.replace(/(\s*)/g,"")) {
