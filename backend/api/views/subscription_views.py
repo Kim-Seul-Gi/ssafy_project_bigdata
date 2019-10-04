@@ -164,10 +164,10 @@ def userbased_movies(request, profile_pk):
         resemble_users = request.data.get('resemble_users')
         movie_box = {}
     # 1
-        for i in resemble_users:
-            profile = Profile.objects.get(pk=i['id'])
+        for i in range(len(resemble_users)-1):
+            num = resemble_users[i]['id']
+            profile = Profile.objects.get(pk=num)
             rates = profile.profile_rate.order_by('rating')[:5]
-
             for rate in rates:
                 # movie_box = {'영화키값':[평점sum, 평점count]}
                 if movie_box.get(rate.MovieID)==None:
@@ -179,6 +179,7 @@ def userbased_movies(request, profile_pk):
     # 2
         movie_box = sorted(movie_box.items(), key=lambda x : (x[1][0]/x[1][1], x[1][1]), reverse=True)
         movie_box = movie_box[:10]
+
     # 3
         movie_array = []
         for i in movie_box:

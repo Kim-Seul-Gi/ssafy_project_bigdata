@@ -25,7 +25,7 @@
           @click="dialog=true">
           Edit
         </v-btn>
-        <v-btn color="lighten-2" dark 
+        <v-btn color="lighten-2" dark
           @click="userMovie(); movie_show=!movie_show">
           내가봤던 영화
         </v-btn>
@@ -49,19 +49,19 @@
               </carousel>
             </v-flex>
           </v-layout>
-        
+
         <!-- <div v-show="!profile_data[6]">
           <v-btn @click="NewRate()" v-if="!modal">장르별 평점 등록하기</v-btn>
           <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
         </div>
         <NewUserRating :modal="modal" v-if="modal"/> -->
       </v-flex>
-      
+
       <v-flex offset-xs4 xs4>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
-          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
-            <v-card-text> 
+          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person.username">
+            <v-card-text>
               <v-container>
                 <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
                 {{ person.age }} / {{ person.gender }}<br>
