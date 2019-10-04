@@ -168,7 +168,12 @@ def userMovie(request, user_id):
     user_profile = Profile.objects.get(user=user_id)
     movies = []
     rates = user_profile.profile_rate.all();
+    cnt=0
+    print(len(rates))
     for rate in rates:
         serializer = MovieSerializer(rate.MovieID)
         movies.append(serializer.data)
+        cnt+=1;
+        if cnt==10:
+            break
     return Response(data = movies, status=status.HTTP_200_OK)

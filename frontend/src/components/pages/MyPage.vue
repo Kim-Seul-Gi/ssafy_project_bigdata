@@ -5,7 +5,7 @@
 
       <!-- 검색 폼 by 영화이름-->
       <v-col>
-      <v-flex xs12>
+      <v-flex>
         <!-- <div>
           <Subscription
             :user_data="profile_data[0]"
@@ -28,11 +28,11 @@
           @click="userMovie(); movie_show=!movie_show">
           내가봤던 영화
         </v-btn>
-        <div v-show="movie_show">
-          <v-layout pa-5>
-            <carousel :per-page="pageNum">
-              <slide v-if="movielist.length > 1" v-for="movie in this.movielist" style="height: 22rem; width: 15rem;">
-                <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+          <v-layout row pa-5 v-show="movie_show">
+            <v-flex>
+              <carousel :per-page="pageNum">
+                <slide v-if="movielist.length > 1" v-for="movie in this.movielist" style="height: 22rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                     <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                     <v-card-text>
                       <div class="movietitle">
@@ -42,17 +42,17 @@
                         <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                         <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
                     </v-card-text>
-                </v-card>
-              </slide>
-            </carousel>
+                  </v-card>
+                </slide>
+              </carousel>
+            </v-flex>
           </v-layout>
-        </div>
         
-        <div v-show="!profile_data[6]">
+        <!-- <div v-show="!profile_data[6]">
           <v-btn @click="NewRate()" v-if="!modal">장르별 평점 등록하기</v-btn>
           <v-btn @click="modal=!modal" v-if="modal">취소</v-btn>
         </div>
-        <NewUserRating :modal="modal" v-if="modal"/>
+        <NewUserRating :modal="modal" v-if="modal"/> -->
       </v-flex>
       
       <v-flex offset-xs4 xs4>
@@ -124,6 +124,8 @@ import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
 import NewUserRating from "../NewUserRating";
+import { Carousel, Slide } from 'vue-carousel';
+
 // import MovieSearchForm from "../searchform/MovieSearchForm";
 // import MovieList from "../MovieList";
 
@@ -133,7 +135,9 @@ export default {
     // MovieSearchForm,
     // MovieList,
     Subscription,
-    NewUserRating
+    NewUserRating,
+    Carousel,
+    Slide
   },
   data: () => ({
     user: null,
