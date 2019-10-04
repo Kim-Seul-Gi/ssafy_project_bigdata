@@ -30,11 +30,14 @@
             <div class="grey--text">{{movie_data[0].averagerate}} ({{movie_data[0].watch_count}})</div>
             <div class="grey--text">Director: {{movie_data[0].director}}</div>
           </v-col>
-          {{this.movie_data[0].castings}}
+          <!-- {{this.movie_data[0].castings.split("|")}} -->
+          {{this.castingList}}
+          <!-- {{this.movie_data[0].castings}} -->
           <br>
           <v-btn icon @click="show = !show">
             <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-          </v-btn>          
+          </v-btn>
+
           <v-expand-transition>
             <div v-show="show">
               <v-card-text>{{movie_data[0].plot}}</v-card-text>
@@ -103,6 +106,7 @@ export default {
   }),
   mounted() {
     this.fetchdata()
+    // this.castingList = movie_data[0].casting.split("|")
   },
   methods: {
     async fetchdata() {
@@ -110,6 +114,7 @@ export default {
         const id = this.$route.params.id
         var movie = await axios.get(`${apiUrl}/movies/${id}`)
         this.movie_data = movie.data
+        this.castingList = this.movie_data[0].castings.split("|")
         // console.log(this.movie_data)
     },
     search() {

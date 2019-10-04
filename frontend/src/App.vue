@@ -2,8 +2,8 @@
   <v-app id="app">
     <v-navigation-drawer v-model="drawer" app permanent dark floating fixed color="#000">
       <v-list dense dark color="#000">
-        <div style="margin-left: 1.5rem; margin-top: 1.5rem;">
-        <router-link to="/"><img src="../public/img/popcorn.png" style="height: 4rem; width: 4rem; margin-right: 0.5rem;"/></router-link><span style="font-size: 2rem; height: 4rem; line-height: 4rem; vertical-align: middle; font-family: 'Raleway', sans-serif;">Fluid</span>
+        <div style="margin-left: 1.5rem; margin-top: 2rem; margin-bottom: 1.7rem;">
+        <router-link to="/" style="text-decoration:none;"><img src="../public/img/popcorn.png" style="height: 4rem; width: 4rem; margin-right: 0.9rem; margin-bottom: -1.2rem;"/><span style="font-size: 2rem; height: 4rem; line-height: 4rem; vertical-align: middle; font-family: 'Raleway', sans-serif; color: white;">Fluid</span></router-link>
         </div>
         <template v-for="(choice, i) in choices">
           <v-list-item
@@ -165,8 +165,9 @@ export default {
       this.user = ''
       this.$session.set('id', '')
       this.$session.set('admin', false)
+      router.push({name:'home'})
       window.location.reload()
-      router.push('/')
+      // router.push('/')
     },
 
     // get_array() {

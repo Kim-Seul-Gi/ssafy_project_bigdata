@@ -104,7 +104,7 @@ def ages(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -126,7 +126,7 @@ def occupations(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -149,10 +149,10 @@ def genders(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
-
+    
     serializer = Movie_Age_Serializer(rates, many=True)
 
     return Response(data=serializer.data, status=status.HTTP_200_OK)

@@ -9,7 +9,7 @@ from .models import Subscription_manager
 class ProfileAdmin(admin.ModelAdmin):
    list_display = ['id', 'user', 'gender', 'age','occupation', 'approval', 'subscription']
 class MovieAdmin(admin.ModelAdmin):
-   list_display = ['id', 'title', 'genres', 'watch_count', 'plot']
+   list_display = ['id', 'title', 'genres', 'watch_count', 'plot', 'url']
 class RateAdmin(admin.ModelAdmin):
    list_display = ['id', 'UserID', 'MovieID', 'rating', 'Timestamp']
 # cluster
