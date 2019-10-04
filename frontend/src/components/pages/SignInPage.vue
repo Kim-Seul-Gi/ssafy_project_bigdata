@@ -50,7 +50,7 @@ export default {
       ],
       passwordRules: [
         v => !!v || 'Password is required',
-        v => (v && v.length >= 2) || 'Name must be more than 2 characters'
+        v => (v && v.length >= 5 && v.length <= 20) || 'Password must be 5~20 characters'
       ],
     }
   },
