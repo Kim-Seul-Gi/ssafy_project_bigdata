@@ -29,10 +29,11 @@
           @click="userMovie(); movie_show=!movie_show">
           내가봤던 영화
         </v-btn>
-          <v-layout row pa-5 v-show="movie_show">
+          <p v-show="movie_show" v-if="movielist.length < 1">보신 영화가 없습니다..</p>
+          <v-layout row pa-5 v-show="movie_show" v-if="movielist.length > 1">
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-if="movielist.length > 1" v-for="movie in this.movielist" style="height: 22rem; width: 15rem;">
+                <slide v-for="movie in this.movielist" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                     <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                     <v-card-text>
@@ -59,7 +60,7 @@
       <v-flex offset-xs4 xs4>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
-          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark>
+          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
             <v-card-text> 
               <v-container>
                 <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
