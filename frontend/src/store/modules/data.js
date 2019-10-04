@@ -5,13 +5,15 @@ import api from '../../api'
 const state = {
     // shape: [{ id, title, genres, viewCnt, rating }]
     movieSearchList: [],
+    temp_movie: [],
     movieSearchList_admin: [],
     movieList_homepage: [],
     movieList_homepage_itembased: [],
     movieList_homepage_userbased: [],
     userSearchList: [],
     userSearchList_admin: [],
-    username: ''
+    username: '',
+    cnt: 10
 }
 
 // actions
@@ -19,9 +21,9 @@ const actions = {
     async searchMovies({ commit }, params) {
         // document.style.opacity = 0.1
         var preload = document.querySelector('#searching')
-        preload.style.display = 'block'
+            // preload.style.display = 'block'
         const resp = await api.searchMovies(params)
-        preload.style.display = 'none'
+            // preload.style.display = 'none'
         if (!resp.data.length) {
             alert('해당 이름의 영화는 없습니다.')
         }
@@ -240,7 +242,14 @@ const actions = {
 // mutations
 const mutations = {
     setMovieSearchList(state, movies) {
-        state.movieSearchList = movies.map(m => m)
+        console.log(movies)
+        state.temp_movie = movies.map(m => m)
+        movies.forEach(element => {
+                state.movieSearchList.push(element)
+            })
+            // state.movieSearchList = state.movieSearchList.concat(movies.map(m => m))
+            // console.log(state.movieSearchList)
+            // state.movieSearchList = movies.map(m => m)
     },
     setMovieSearchList_admin(state, movies) {
         state.movieSearchList_admin = movies.map(m => m)

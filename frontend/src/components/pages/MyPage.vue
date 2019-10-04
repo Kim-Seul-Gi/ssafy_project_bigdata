@@ -60,7 +60,7 @@
       <v-flex offset-xs4 xs4>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
-          <v-card v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
+          <v-card v-for="person in this.profile_data.slice(1, 6)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
             <v-card-text> 
               <v-container>
                 <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>

@@ -12,9 +12,11 @@ def movies(request):
     if request.method == 'GET':
         id = request.GET.get('id', request.GET.get('movie_id', None))
         title = request.GET.get('title', None)
-        # genre = request.GET.get('genre', None)
-        # watch_count = request.GET.get('watch_count', None)
-        movies = Movie.objects.all().order_by('-watch_count')
+        cnt = int(request.GET.get('cnt'))
+        print(cnt)
+
+        movies = Movie.objects.all()[cnt-10:cnt]
+        pprint.pprint(movies)
 
         if id:
             movies = movies.filter(pk=id)

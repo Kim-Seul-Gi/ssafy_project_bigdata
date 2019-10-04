@@ -1,13 +1,13 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
 
-    <div v-if="movieListCards.length">
-      {{movieListCards.length}}개가 조회되었습니다.
+    <div v-if="movielist.length">
+      {{movielist.length}}개가 조회되었습니다.
       <v-btn @click="seemode_rate = true">평점 순</v-btn>
       <v-btn @click="seemode_rate = false">조회 순</v-btn>
     </div>
 
-    <div v-if="!movieListCards.length">
+    <div v-if="!movielist.length">
       영화가 없어요!!!
     </div>
     <v-layout row wrap>
@@ -40,7 +40,6 @@
           :casting="card.casting"
         />
       </v-flex>
-      <!--  -->
 
       <!-- 선택옵션 - 평점 순 -->
       <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
@@ -57,9 +56,8 @@
           :casting="card.casting"
         />
       </v-flex>
-      <!--  -->
 
-      <v-pagination v-if="maxPages > 1" v-model="page" :length="maxPages" />
+      <!-- <v-pagination v-if="maxPages > 1" v-model="page" :length="maxPages" /> -->
 
     </v-layout>
   </v-container>
@@ -67,14 +65,14 @@
 
 <script>
 import MovieListCard from "./MovieListCard"
+
 export default {
   components: {
     MovieListCard,
   },
   props: {
     movieListCards: {
-      type: Array,
-      default: () => new Array(),
+      type: Array
     },
   },
   data: () => ({
@@ -82,19 +80,22 @@ export default {
     page: 1,
     seemode_rate:true,
     tmp_movieList:[],
+    movielist:[],
   }),
   computed: {
     // pagination related variables
     movieListEmpty: function() {
-      return this.movieListCards.length === 0;
+      return this.movielist.length === 0;
     },
     maxPages: function() {
-      return Math.floor((this.movieListCards.length + this.cardsPerPage - 1) / this.cardsPerPage)
+      return Math.floor((this.movielist.length + this.cardsPerPage - 1) / this.cardsPerPage)
     },
     movieListCardsSliced: function() {
       this.tmp_movieList = JSON.parse(JSON.stringify(this.movieListCards))
-      return this.movieListCards.slice(this.cardsPerPage * (this.page - 1), this.cardsPerPage * this.page)
-    },
+      this.movielist = this.movielist.concat(JSON.parse(JSON.stringify(this.movieListCards)))
+      console.log(this.movielist)
+      return this.movielist.slice(this.cardsPerPage * (this.page - 1), this.cardsPerPage * this.page)
+    }, 
     movieListCardsSliced2: function() {
       return this.tmp_movieList.slice(this.cardsPerPage * (this.page - 1), this.cardsPerPage * this.page)
     },
