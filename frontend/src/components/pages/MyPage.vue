@@ -15,14 +15,15 @@
         </div> -->
 
         <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">User Profile</p>
-        <p><span style="margin-right: 1rem; font-weight: bold;">name</span><span>{{ user.username }}</span></p>
-        <p><span style="margin-right: 1rem; font-weight: bold;">gender</span><span>{{ user.gender }}</span></p>
-        <p><span style="margin-right: 1rem; font-weight: bold;">age</span><span>{{ user.age }}</span></p>
-        <p><span style="margin-right: 1rem; font-weight: bold;">occupation</span><span>{{ user.occupation }}</span></p>
+        <p class="profile"><span style="margin-right: 1rem; font-weight: bold;">name</span><span>{{ user.username }}</span></p>
+        <p class="profile"><span style="margin-right: 1rem; font-weight: bold;">gender</span><span>{{ user.gender }}</span></p>
+        <p class="profile"><span style="margin-right: 1rem; font-weight: bold;">age</span><span>{{ user.age }}</span></p>
+        <p class="profile" style="margin-bottom: 3rem;"><span style="margin-right: 1rem; font-weight: bold;">occupation</span><span>{{ user.occupation }}</span></p>
         <v-btn
           color="red lighten-2"
           dark
-          @click="dialog=true">
+          @click="dialog=true"
+          style="margin-right: 1rem;">
           Edit
         </v-btn>
         <v-btn color="lighten-2" dark 
@@ -57,19 +58,23 @@
         <NewUserRating :modal="modal" v-if="modal"/> -->
       </v-flex>
       
-      <v-flex offset-xs4 xs4>
+      <v-flex>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
-          <v-card v-for="person in this.profile_data.slice(1,6)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
-            <v-card-text> 
-              <v-container>
-                <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
-                {{ person.age }} / {{ person.gender }}<br>
-                {{ person.occupation }}<br>
-                <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
-              </v-container>
-            </v-card-text>
-          </v-card>
+          <carousel :per-page="pageNum">
+            <slide v-for="person in this.profile_data.slice(1)" style="height: 13rem; width: 15rem;" v-bind:key="person">
+              <v-card style="margin:10px; border-radius:15px;" color="#424242" dark>
+                <v-card-text> 
+                  <v-container>
+                    <p style="color: white; font-size: 1.4rem;">{{ person.username }}</p>
+                    {{ person.age }} / {{ person.gender }}<br>
+                    {{ person.occupation }}<br>
+                    <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </slide>
+          </carousel>
         </div>
       </v-flex>
       </v-col>
@@ -256,3 +261,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .profile {
+    color:  rgba(255, 255, 255, 0.7);
+    font-size: 2rem;
+  }
+</style>
