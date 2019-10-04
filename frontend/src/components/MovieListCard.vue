@@ -8,7 +8,7 @@
           <!-- <v-container> -->
           <div class="movietitle">
             {{title.substring(0, title.indexOf("("))}}<br>
-            <span class="hovertext2">{{title.substring(0, title.indexOf("("))}}</span>
+            <span class="hovertext2">{{title.substring(0)}}</span>
           </div>
           <i class="fas fa-star" style="color: #FFB600;"></i><span>평점 </span><span style="font-weight: bold;">{{Math.round(averagerate*100)/100}}</span>
           <span><v-btn text color="primary" @click="SELECT_MovieDetail()">explore</v-btn></span>
@@ -105,6 +105,6 @@ export default {
   }
   .movietitle:hover .hovertext2 {
     visibility: visible;
-    -webkit-transform:translate(-70px, 0)
+    -webkit-transform:translate(-70px, 0);
   }
 </style>
