@@ -4,83 +4,100 @@
     <v-layout justify-center wrap>
 
       <!-- 검색 폼 by 영화이름-->
-      <v-flex xs6>
+      <v-flex>
+        <div style="color:rgb(255,255,255)">No. {{movie_data[0].id}}</div>
+        <v-card class="mx-auto" max-width="600px" color="#424242" dark>
+          <v-img :src="movie_data[0].url"
+            height="400px" contain
+          ></v-img>
+          <v-col>
+            <h1>{{movie_data[0].title}}</h1>
+            <v-btn icon @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 남기기'}}</v-btn>
+            <v-flex v-show="rate_show">
+              <div class="mx-auto" style="width:200px">
+                <v-text-field
+                  v-model="score"
+                  label="score"
+                  :rules="scoreRules"
+                  type="number"
+                  required>
+                </v-text-field>
+                <v-btn @click="createRating(movie_data[0].id)">등록</v-btn>
+                <v-btn @click="updateRating(movie_data[0].id)">수정</v-btn>
+                <v-btn @click="deleteRating(movie_data[0].id)">삭제</v-btn>
+              </div>
+            </v-flex>
+            <div class="grey--text">{{movie_data[0].averagerate}} ({{movie_data[0].watch_count}})</div>
+            <div class="grey--text">Director: {{movie_data[0].director}}</div>
+          </v-col>
+          <!-- {{this.movie_data[0].castings.split("|")}} -->
+          {{this.castingList}}
+          <!-- {{this.movie_data[0].castings}} -->
+          <br>
+          <v-btn icon @click="show = !show">
+            <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+          </v-btn>
 
-        <div class="display-2 pa-10">
-        영화 상세 내용<br>
-        <!-- {{movie_data[0]}} -->
-        {{movie_data[0].id}}, {{movie_data[0].title}}, {{movie_data[0].watch_count}}
-        <br><br>
-        <p>{{movie_data[0].plot}}</p>
-        <img :src="movie_data[0].url"/>
-        <p>{{movie_data[0].director}}</p>
-        <p>{{movie_data[0].casting}}</p>
-
-        <v-flex v-for="movie in movie_data.slice(1)" pa-2>
-
-          <v-hover v-slot:default="{ hover }">
-
-            <v-card :elevation="hover ? 8 : 2">
-              <v-layout align-center py-4 pl-4>
-                <v-flex text-center>
-                  <v-container grid-list-lg pa-0>
-
-                    <v-layout column @click="SELECT_MovieDetail(movie)">
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title class="headline">
-                            {{movie.id}}
-                            <!-- ID : {{ id }}, username : {{ username }} -->
-
-                          </v-list-item-title>
-                          <!-- <v-list-item-subtitle>{{ genresStr }}</v-list-item-subtitle> -->
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-card-text>
-                        <v-layout justify-center>
-
-                        </v-layout>
-                      </v-card-text>
-                      <v-card-text>
-                        <v-layout justify-center>
-                          프로필 보러가기
-                          <v-icon color="black">mdi-eye</v-icon>
-                          <!-- <div class="grey--text ml-4">{{ viewCnt }}</div> -->
-                        </v-layout>
-                      </v-card-text>
-                    </v-layout>
-
-                  </v-container>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </v-hover>
-        </v-flex>
-
-        <v-btn @click="search()">이전으로 이동</v-btn>
-        </div>
-
+          <v-expand-transition>
+            <div v-show="show">
+              <v-card-text>{{movie_data[0].plot}}</v-card-text>
+            </div>
+          </v-expand-transition>
+        </v-card>
+        <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">
+          Similar Movies</p>
       </v-flex>
-    </v-layout>
+      <v-layout row pa-5 v-if="movie_data.length > 1">
+          <v-flex>
+            <carousel :per-page="4">
+              <slide v-for="movie in this.movie_data.slice(1)" style="height: 22rem; width: 15rem;">
+                <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+                  <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                  <v-card-text>
+                    <div class="movietitle">
+                      {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                      <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                    </div>
+                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                      <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                    </v-card-text>
+                  </v-card>
+                </slide>
+              </carousel>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    <v-btn @click="search()">이전으로 이동</v-btn>
   </v-container>
 </template>
 
 <script>
 import router from "../../router";
 import axios from 'axios'
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   components: {
+    Carousel,
+    Slide
   },
   props: {
     id : {type:Number | String},
     // movie_data : {type:Object}
   },
   data: () => ({
+    score: 0.0,
+    show: false,
+    rate_show: false,
+    scoreRules: [
+      v => (v < 6) || 'score is maximum of 5',
+    ],
+    castingList: [],
     movie_data:[
       {"id":''},
       {"averagerate":''},
-      {"casting":''},
+      {"castings":''},
       {"director":''},
       {"genres_array":''},
       {"plot":''},
@@ -88,11 +105,11 @@ export default {
       {"title":''},
       {"url":''},
       {"watch_count":''}
-
     ],
   }),
   mounted() {
     this.fetchdata()
+    // this.castingList = movie_data[0].casting.split("|")
   },
   methods: {
     async fetchdata() {
@@ -100,6 +117,7 @@ export default {
         const id = this.$route.params.id
         var movie = await axios.get(`${apiUrl}/movies/${id}`)
         this.movie_data = movie.data
+        this.castingList = this.movie_data[0].castings.split("|")
         // console.log(this.movie_data)
     },
     search() {
@@ -112,6 +130,48 @@ export default {
 
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()
+    },
+    // checkRating(id) {
+    //   const apiUrl = '/api'
+    //   axios.post(`${apiUrl}/movie/${id}/score/check/`, {
+    //     user_pk:this.$session.get('id_number')
+    //   }).then(res => {
+    //     if(res==true) {alert("이미 평점을 남겼습니다.");}
+    //     else {this.rate_show = true;}
+    //   })
+    // },
+    createRating(id) {
+      const apiUrl = '/api'
+      axios.post(`${apiUrl}/movie/${id}/score/cdu/`, {
+        user_pk:this.$session.get('id_number'),
+        score:this.score
+      }).then(res => {
+        if(res.data==false) alert("이미 평점을 등록하셨습니다.")
+        else alert("평점을 등록했습니다.")
+        this.rate_show = !this.rate_show
+      })
+    },
+    updateRating(id) {
+      const apiUrl = '/api'
+      axios.put(`${apiUrl}/movie/${id}/score/cdu/`, {
+        user_pk:this.$session.get('id_number'),
+        score:this.score
+      }).then(res => {
+        if(res.data==false) alert("등록된 평점이 없습니다.")
+        else alert("평점을 수정했습니다.")
+        this.rate_show = !this.rate_show
+      })
+    },
+    deleteRating(id) {
+      const apiUrl = '/api'
+      axios.delete(`${apiUrl}/movie/${id}/score/cdu/`, {
+        data: {user_pk:this.$session.get('id_number')}
+      }).then(res => {
+        console.log(res.data)
+        if(res.data==false) alert("등록된 평점이 없습니다.")
+        else alert("평점을 삭제했습니다.")
+        this.rate_show = !this.rate_show
+      })
     }
   }
 };

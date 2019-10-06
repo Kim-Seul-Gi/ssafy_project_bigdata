@@ -21,10 +21,19 @@ class ProfileSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     genres_array = serializers.ReadOnlyField()
     averagerate = serializers.SerializerMethodField('get_averagerate')
+    castings = serializers.SerializerMethodField('get_castings')
 
     class Meta:
         model = Movie
-        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director','casting')
+        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director','castings')
+        # fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director')
+
+    def get_castings(self, obj):
+        casting = Movie.objects.get(id=obj.id).casting
+        if casting.count('|') >= 3:
+            casting = casting.split('|')
+            casting = '|'.join(casting[:3])
+        return casting
 
     def get_averagerate(self, obj):
 
@@ -57,11 +66,14 @@ class Movie_Age_Serializer(serializers.ModelSerializer):
     genres_array = serializers.SerializerMethodField('get_genres_array')
     watch_count = serializers.SerializerMethodField('get_watch_count')
     averagerate = serializers.SerializerMethodField('get_averagerate')
-
+    plot = serializers.SerializerMethodField('get_plot')
+    url = serializers.SerializerMethodField('get_url')
+    director = serializers.SerializerMethodField('get_director')
+    casting = serializers.SerializerMethodField('get_casting')
     class Meta:
         model = Movie
         # fields = ('id', 'title', 'genres_array', 'watch_count', 'averagerate')
-        fields = ('id', 'title', 'genres_array','watch_count','averagerate')
+        fields = ('id', 'title', 'genres_array','watch_count','averagerate', 'plot','url','director','casting')
     def get_id(self, obj):
         return obj['MovieID']
     def get_title(self, obj):
@@ -72,6 +84,20 @@ class Movie_Age_Serializer(serializers.ModelSerializer):
         return obj['MovieID__watch_count']
     def get_averagerate(self, obj):
         return obj['rating__avg']
+
+    def get_plot(self, obj):
+        return obj['MovieID__plot']
+    def get_url(self, obj):
+        return obj['MovieID__url']
+    def get_director(self, obj):
+        return obj['MovieID__director']
+    def get_casting(self, obj):
+        tmp = obj['MovieID__casting']
+        if tmp.count('|') >= 3:
+            tmp = tmp.split('|')
+            tmp = '|'.join(tmp[:3])
+        return tmp
+        # return obj['MovieID__casting']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

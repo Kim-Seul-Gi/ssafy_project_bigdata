@@ -5,11 +5,15 @@ import api from '../../api'
 const state = {
     // shape: [{ id, title, genres, viewCnt, rating }]
     movieSearchList: [],
+    temp_movie: [],
     movieSearchList_admin: [],
     movieList_homepage: [],
+    movieList_homepage_itembased: [],
+    movieList_homepage_userbased: [],
     userSearchList: [],
     userSearchList_admin: [],
-    username: ''
+    username: '',
+    cnt: 10
 }
 
 // actions
@@ -17,9 +21,9 @@ const actions = {
     async searchMovies({ commit }, params) {
         // document.style.opacity = 0.1
         var preload = document.querySelector('#searching')
-        preload.style.display = 'block'
+            // preload.style.display = 'block'
         const resp = await api.searchMovies(params)
-        preload.style.display = 'none'
+            // preload.style.display = 'none'
         if (!resp.data.length) {
             alert('해당 이름의 영화는 없습니다.')
         }
@@ -37,7 +41,7 @@ const actions = {
         }))
         commit('setMovieSearchList', movies)
     },
-    async searchMovies_admin({ commit }, params) {
+    async searchMovies_admin({ commit }) {
         const resp = await api.searchMovies(params)
         if (!resp.data.length) {
             alert('해당 이름의 영화는 없습니다.')
@@ -57,23 +61,80 @@ const actions = {
         commit('setMovieSearchList_admin', movies)
     },
     async getMovies_homepage({ commit }) {
-        const resp = await api.getMovies_homepage()
-        if (!resp.data.length) {
-            alert('해당 이름의 영화는 없습니다.')
+        if (state.movieList_homepage.length !== 0) {
+            return
+        } else {
+            const resp = await api.getMovies_homepage()
+            if (!resp.data.length) {
+                alert('해당 이름의 영화는 없습니다.')
+            }
+            const movies = resp.data.map(d => ({
+                id: d.id,
+                title: d.title,
+                genres_array: d.genres_array,
+                watch_count: d.watch_count,
+                averagerate: d.averagerate,
+                score_users: d.score_users,
+                plot: d.plot,
+                url: d.url,
+                director: d.director,
+                casting: d.casting
+            }))
+            commit('setMovieList_homepage', movies)
         }
-        const movies = resp.data.map(d => ({
-            id: d.id,
-            title: d.title,
-            genres_array: d.genres_array,
-            watch_count: d.watch_count,
-            averagerate: d.averagerate,
-            score_users: d.score_users,
-            plot: d.plot,
-            url: d.url,
-            director: d.director,
-            casting: d.casting
-        }))
-        commit('setMovieList_homepage', movies)
+    },
+    async getMovies_subscription_itembased({ commit }, params) {
+        var id = params.id
+        if (state.movieList_homepage_itembased.length !== 0) {
+            return
+        } else {
+            const resp = await api.getMovies_homepage_itembased(id)
+            const movies = resp.data.map(d => ({
+                id: d.id,
+                title: d.title,
+                genres_array: d.genres_array,
+                watch_count: d.watch_count,
+                averagerate: d.averagerate,
+                score_users: d.score_users,
+                plot: d.plot,
+                url: d.url,
+                director: d.director,
+                casting: d.casting
+            }))
+            var data = {
+                movies: movies,
+                params: params
+            }
+            commit('setMovieList_homepage_itembased', data)
+        }
+    },
+    async getMovies_subscription_userbased({ commit }, params) {
+        var id = params.id
+        if (state.movieList_homepage_itembased.length !== 0) {
+            // if (params.approval===true) {
+            //   console.log(document.querySelector('#item'))
+            // }
+            return
+        } else {
+            const resp = await api.getMovies_homepage_userbased(params)
+            const movies = resp.data.map(d => ({
+                id: d.id,
+                title: d.title,
+                genres_array: d.genres_array,
+                watch_count: d.watch_count,
+                averagerate: d.averagerate,
+                score_users: d.score_users,
+                plot: d.plot,
+                url: d.url,
+                director: d.director,
+                casting: d.casting
+            }))
+            var data = {
+                movies: movies,
+                params: params
+            }
+            commit('setMovieList_homepage_userbased', data)
+        }
     },
     async searchGenres({ commit }, params) {
         const resp = await api.searchGenre(params)
@@ -174,14 +235,21 @@ const actions = {
             user_id: d.id,
             username: d.username
         }))
-        commit('setUserSearchList_admin', users)
+        commit('setUserSearchList_admin', users, params.approval)
     },
 }
 
 // mutations
 const mutations = {
     setMovieSearchList(state, movies) {
-        state.movieSearchList = movies.map(m => m)
+        console.log(movies)
+        state.temp_movie = movies.map(m => m)
+        movies.forEach(element => {
+                state.movieSearchList.push(element)
+            })
+            // state.movieSearchList = state.movieSearchList.concat(movies.map(m => m))
+            // console.log(state.movieSearchList)
+            // state.movieSearchList = movies.map(m => m)
     },
     setMovieSearchList_admin(state, movies) {
         state.movieSearchList_admin = movies.map(m => m)
@@ -201,7 +269,20 @@ const mutations = {
     },
     setUser(state, username) {
         state.username = username
-    }
+    },
+    setMovieList_homepage_itembased(state, data) {
+        if (data.params.approval) {
+            // document.querySelector('#item').style.display = 'block';
+        }
+        // console.log(data)
+        state.movieList_homepage_itembased = data.movies.map(m => m)
+    },
+    setMovieList_homepage_userbased(state, data) {
+        if (data.params.approval) {
+            // document.querySelector('#user').style.display = 'block';
+        }
+        state.movieList_homepage_userbased = data.movies.map(m => m)
+    },
 }
 
 // getters

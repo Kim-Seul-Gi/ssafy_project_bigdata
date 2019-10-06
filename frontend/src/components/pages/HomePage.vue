@@ -1,93 +1,88 @@
 <template>
-  <v-container>
-    <v-layout row wrap>
-      <v-flex xs12>
-
-        <!-- <span class="display-3 grey--text">Select menu</span> -->
-
-        <!-- Homepage에서 보여주고자 하는 기능들은 아래와 같습니다. -->
-            <!-- (1) 로그인 하셨습니까? -->
-            <!-- (2) 구독 관리 -->
-            <!-- (3) MovieBased 영화 추천 -->
-            <!-- (4) UserBased 영화 추천 -->
-            <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
-            <!-- (6) 단순한 유사유저 리스트 -->
-
-
-        <!-- 유저의 상태는 로그인 여부(this.user) / 구독 여부(Subscription) 에서 다룹니다. -->
-            <!-- 1. 로그인 X / 보여줄 기능 : (1), (5) -->
-            <!-- 2. 로그인 O , 구독 X / 보여줄 기능 : (1), (2), (5), (6) -->
-            <!-- 3. 로그인 O , 구독 O / 보여줄 기능 : (1), (2), (3), (4), (5), (6) -->
-
-        <!-- <h1>(1) 로그인하셨습니까?</h1> -->
-        <!-- 1. 로그인 여부 -->
-        <div v-if="!this.user">
-          <!-- 로그인을 하지 않았습니다!! -->
-          로그인을 하시면 영화를 추천해드릴게요.<br>
-          클러스터링 알고리즘 을 이용하여 영화를 추천합니다.<br>
-          사용된 알고리즘 : K-means, H, EM, MatrixFactorization<br><br>
-          <!-- (1) 로그인 하러가기 -->
-          <!-- <v-btn @click="goTo()">로그인하기</v-btn> -->
-
+  <div>
+    <v-container style="padding-top: 0;">
+      <v-layout row align-center style="min-height: 100vh; min-width: 100vw; position: relative; background-size: cover; background-image: url('../../img/background.jpg');">
+        <div id="container" style="margin-left: 18rem;">
+          <p class="a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
+          <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
+          <!-- 1. 로그인 여부 -->
+          <p v-if="!this.user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
+          <p v-else><a class="a" @click="logout()">See you again</a></p>
         </div>
+      </v-layout>
+      <v-layout row wrap >
+        <v-flex xs12>
+          <!-- <h1>(1) 로그인하셨습니까?</h1> -->
+          <!-- 1. 로그인 여부 -->
+          <div v-if="this.user">
+            <!-- 로그인 ID : {{this.user}}<br><br> -->
 
-        <div v-else>
-          로그인 ID : {{this.user}}<br><br>
+            <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
+            <div>
+              <Subscription
+                :user="user"
+                :profile_data="profile_data"
+                :now_date="now_date"
+                :sub_date="subscription_date"
+                :approval="this.user_data.approval"
+              />
+            </div>
 
-          <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
-          <div>
-            <Subscription
-              :profile_data="profile_data"
-              :now_date="now_date"
-              :sub_date="subscription_date"
-              :approval="this.user_data.approval"
-            />
           </div>
 
-        </div>
+          <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
+          <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
 
-        <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
-        <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
-        <h1> (5) 기능 : 단순 영화 나열입니다</h1>
-        <v-layout row wrap>
-        <v-flex v-for="movie in this.$store.state.data.movieList_homepage" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-
-            <v-card style="margin:10px;">
-                <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:25vw;"></v-img>
-                <v-card-text>
-                  <v-container>
-                    {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                    평점 : {{movie.averagerate}}
-                    <v-btn text color="primary" @click="SELECT_MovieDetail(movie)">explore</v-btn>
-                  </v-container>
-                </v-card-text>
-            </v-card>
-        </v-flex>
-        </v-layout>
-
-        <div v-if="this.user">
-          <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
-          <h1>(6) 기능 : 유사 유저 리스트입니다</h1>
-          <v-layout row wrap>
-          <v-flex v-for="person in this.profile_data.slice(1)" style="margin-bottom: 2rem;" xs12 sm6 md4 lg3 xl2>
-              <v-card style="margin:10px;">
-                  <v-card-text>
-                    <v-container>
-                      <p style="color: black; font-size: 1.4rem;">id: {{person.id}}, {{ person.username }}</p>
-                      <p>{{ person.age }} / {{ person.gender }}</p>
-                      <p>{{ person.occupation }}</p>
-                      <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
-                    </v-container>
-                  </v-card-text>
-              </v-card>
-          </v-flex>
+          <v-layout row wrap pa-8>
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
+            <v-flex>
+              <carousel :per-page="pageNum">
+                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
+                  <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                    <v-card-text>
+                      <!-- <v-container> -->
+                      <div class="movietitle">
+                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
+                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                      </div>
+                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
+                      <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                      <!-- </v-container> -->
+                    </v-card-text>
+                  </v-card>
+                </slide>
+              </carousel>
+            </v-flex>
           </v-layout>
-        </div>
 
-      </v-flex>
-    </v-layout row wrap>
+          <div v-if="this.user && this.user != 'admin'">
+            <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
 
-  </v-container>
+            <v-layout row wrap pa-8>
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-account</v-icon> {{this.user}}님과 유사한 이용자</span>
+              <v-flex>
+                <carousel :per-page="pageNum">
+                  <slide v-for="person in this.profile_data.slice(1)" style="height: 21rem; width: 15rem;" v-bind:key="person">
+                    <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
+                        <v-card-text>
+                          <v-container style="margin-top: 1.2rem;">
+                            <p style="color: white; font-size: 1.5rem;">{{ person.username }}</p>
+                            <p style="font-size: 1rem; margin-top: 2.2rem;">{{ person.age }} / {{ person.gender }}</p>
+                            <p style="font-size: 1rem;">{{ person.occupation }}</p>
+                            <v-btn text style="margin-left: 2.6rem;" color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+                          </v-container>
+                        </v-card-text>
+                    </v-card>
+                  </slide>
+                </carousel>
+              </v-flex>
+            </v-layout>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -95,11 +90,13 @@ import { mapState, mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
-
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   components:{
     Subscription,
+    Carousel,
+    Slide
   },
   data() {
     return {
@@ -109,6 +106,7 @@ export default {
       subscription_date:'',
       now_date:'',
       movie_row: '',
+      pageNum: 4
     }
   },
   computed: {
@@ -116,11 +114,14 @@ export default {
   created() {
     this.getMovies_homepage()
     this.fetchdata()
-  },
+    },
   methods : {
     ...mapActions("data", ["getMovies_homepage"]),
     // getmoveis 는 단순 영화 나열을 위한 것입니다 = 로그인 여부와 관련 없는 것.
     async fetchdata() {
+      if (this.$session.get('id')==undefined) {
+        this.$session.set('id', '')
+      }
       this.user = this.$session.get('id')
       if (this.$session.get('id')=='') {
       } else {
@@ -164,8 +165,116 @@ export default {
     },
     goTo() {
       router.push({name:"sign-in"})
+    },
+    logout() {
+      // let __this = this
+      let tmp = axios.get('/api/auth/logout').then(res => {
+        // console.log(res)
+      })
+      this.user = ''
+      this.$session.set('id', '')
+      this.$session.set('admin', false)
+      window.location.reload()
+      router.push('/')
     }
-  },
-
+  }
 }
 </script>
+<style>
+  #container {
+    width: 500px;
+    margin: auto;
+  }
+
+  /*Neon*/
+  p {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 20px 0 20px 0;
+  }
+
+  .a {
+    text-decoration: none;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    transition: all 0.5s;
+  }
+
+  /* p:nth-child(1) .a {
+    color: #fff;
+    font-family: 'Monoton', cursive;
+    -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+    animation: neon1 1.5s ease-in-out infinite alternate;
+  } */
+
+  p:nth-child(3) .a {
+    color: #FFDD1B;
+    font-family: 'Pacifico', cursive;
+  }
+
+  p:nth-child(3) .a:hover {
+    -webkit-animation: neon3 1.5s ease-in-out infinite alternate;
+    -moz-animation: neon3 1.5s ease-in-out infinite alternate;
+    animation: neon3 1.5s ease-in-out infinite alternate;
+  }
+
+  p .a:hover {
+    color: #ffffff;
+  }
+
+  @-webkit-keyframes neon1 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #DD00FF, 0 0 70px #DD00FF, 0 0 80px #DD00FF, 0 0 100px #DD00FF, 0 0 150px #DD00FF;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #DD00FF, 0 0 35px #DD00FF, 0 0 40px #DD00FF, 0 0 50px #DD00FF, 0 0 75px #DD00FF;
+    }
+  }
+
+  @-moz-keyframes neon1 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #DD00FF, 0 0 70px #DD00FF, 0 0 80px #DD00FF, 0 0 100px #DD00FF, 0 0 150px #DD00FF;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #DD00FF, 0 0 35px #DD00FF, 0 0 40px #DD00FF, 0 0 50px #DD00FF, 0 0 75px #DD00FF;
+    }
+  }
+
+  @keyframes neon1 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #DD00FF, 0 0 70px #DD00FF, 0 0 80px #DD00FF, 0 0 100px #DD00FF, 0 0 150px #DD00FF;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #DD00FF, 0 0 35px #DD00FF, 0 0 40px #DD00FF, 0 0 50px #DD00FF, 0 0 75px #DD00FF;
+    }
+  }
+
+  @-webkit-keyframes neon3 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FFDD1B, 0 0 70px #FFDD1B, 0 0 80px #FFDD1B, 0 0 100px #FFDD1B, 0 0 150px #FFDD1B;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FFDD1B, 0 0 35px #FFDD1B, 0 0 40px #FFDD1B, 0 0 50px #FFDD1B, 0 0 75px #FFDD1B;
+    }
+  }
+
+  @-moz-keyframes neon3 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FFDD1B, 0 0 70px #FFDD1B, 0 0 80px #FFDD1B, 0 0 100px #FFDD1B, 0 0 150px #FFDD1B;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FFDD1B, 0 0 35px #FFDD1B, 0 0 40px #FFDD1B, 0 0 50px #FFDD1B, 0 0 75px #FFDD1B;
+    }
+  }
+
+  @keyframes neon3 {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #FFDD1B, 0 0 70px #FFDD1B, 0 0 80px #FFDD1B, 0 0 100px #FFDD1B, 0 0 150px #FFDD1B;
+    }
+    to {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FFDD1B, 0 0 35px #FFDD1B, 0 0 40px #FFDD1B, 0 0 50px #FFDD1B, 0 0 75px #FFDD1B;
+    }
+  }
+
+</style>

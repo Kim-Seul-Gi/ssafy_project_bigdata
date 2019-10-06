@@ -19,7 +19,7 @@ label = ["Action","Adventure","Animation","Children's",
                 "Film-Noir","Horror","Musical","Mystery","Romance",
                 "Sci-Fi","Thriller","War","Western"]
 
-# # # # # # # # # # # # # # # # ## # # # # # Movie KNN # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # ## # # # # # Movie KNN # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 새로운 영화 저장하기
 def new_movie(request):
   title = request.data.get('title')
@@ -106,7 +106,7 @@ def CheckCluster(data, Nearest_data, input_data, target):
     Movie_Cluster_EM(MovieId=input_data, EM3=EM_list[0], EM4=EM_list[1], EM5=EM_list[2], EM6=EM_list[3], EM7=EM_list[4]).save()
   elif(target=="USER"):
     User_Cluster_EM(UserID=input_data, EM3=EM_list[0], EM4=EM_list[1], EM5=EM_list[2], EM6=EM_list[3], EM7=EM_list[4]).save()
-  
+
   # H
   H_list = [];
   for k in range(3,8):
@@ -144,12 +144,12 @@ def CheckCluster(data, Nearest_data, input_data, target):
         clu_list[predict[pk-2]] += 1;
     K_list.append(clu_list.index(max(clu_list)))
   if(target=="MOVIE"):
-    Movie_Cluster_Kmeans(MovieId=input_data, K3=K_list[0], K4=K_list[1], K5=K_list[2], K6=K_list[3], K7=K_list[4]).save()
+    Movie_Cluster_Kmeans(MovieId=input_data, K3=K_list[0]+1, K4=K_list[1]+1, K5=K_list[2]+1, K6=K_list[3]+1, K7=K_list[4]+1).save()
   elif(target=="USER"):
-    User_Cluster_Kmeans(UserID=input_data, K3=K_list[0], K4=K_list[1], K5=K_list[2], K6=K_list[3], K7=K_list[4]).save()
+    User_Cluster_Kmeans(UserID=input_data, K3=K_list[0]+1, K4=K_list[1]+1, K5=K_list[2]+1, K6=K_list[3]+1, K7=K_list[4]+1).save()
 
 
-# # # # # # # # # # # # # # # # ## # # # # # User KNN # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # ## # # # # # User KNN # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 def create_User():
   Users = pd.read_csv('./api/fixtures/user_rating.csv', header=0)
   users_pk = Users['user_pk']

@@ -5,16 +5,18 @@ from api.serializers import MovieSerializer, Movie_Age_Serializer
 from rest_framework.response import Response
 from django.db.models import Avg
 import pandas as pd
-import random
+import random, pprint
 
 @api_view(['GET', 'POST', 'DELETE'])
 def movies(request):
     if request.method == 'GET':
         id = request.GET.get('id', request.GET.get('movie_id', None))
         title = request.GET.get('title', None)
-        # genre = request.GET.get('genre', None)
-        # watch_count = request.GET.get('watch_count', None)
-        movies = Movie.objects.all().order_by('-watch_count')
+        cnt = int(request.GET.get('cnt'))
+        print(cnt)
+
+        movies = Movie.objects.all()[cnt-10:cnt]
+        pprint.pprint(movies)
 
         if id:
             movies = movies.filter(pk=id)
@@ -104,7 +106,7 @@ def ages(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -126,7 +128,7 @@ def occupations(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -149,10 +151,10 @@ def genders(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
-
+    
     serializer = Movie_Age_Serializer(rates, many=True)
 
     return Response(data=serializer.data, status=status.HTTP_200_OK)
@@ -160,12 +162,14 @@ def genders(request):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def detail(request, movie_id):
+    pprint.pprint(request.data)
     movie = Movie.objects.get(pk=movie_id)
     movie.watch_count += 1
     movie.save()
     cluster = Cluster.objects.get(pk=1)
     result = []
     serializer = MovieSerializer(movie)
+    # rate = Rate.objects.get(UserID)
     result.append(serializer.data)
 
     # H clustering
@@ -215,7 +219,6 @@ def detail(request, movie_id):
         movie = Movie.objects.get(title=t.MovieId)
         serializer = MovieSerializer(movie)
         result.append(serializer.data)
-
     return Response(data=result, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])

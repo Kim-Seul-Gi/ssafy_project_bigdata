@@ -43,7 +43,7 @@
 
       <!-- 검색 결과 -->
       <v-flex xs12>
-        <MovieList :movie-list-cards="movieList" />
+        <MovieList :movie-list-cards="movieList"/>
       </v-flex>
     </v-layout>
   </v-container>

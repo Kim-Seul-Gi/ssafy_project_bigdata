@@ -1,22 +1,10 @@
 <template>
   <v-app id="app">
-    <v-app-bar app clipped-left color="indigo">
-      <v-app-bar-nav-icon class="white--text" @click="drawer = !drawer" />
-      <span class="title ml-3 mr-5 white--text" style="cursor:pointer;" @click="homepage()">영화 추천 서비스</span>
-      <!-- <router-link :to="{name:'home'}">
-        <span class="title ml-3 mr-5 white--text" router-link :to="{ name: 'home'}">2영화 추천 서비스</span>
-      </router-link> -->
-
-
-
-      <!-- 이거 영화 데이터 장르별로 구하는 array>csv 코드입니다. 안쓰면 주석처리하세용 -->
-      <!-- <v-btn @click="get_array()">데이터를 구해보자~</v-btn> -->
-
-      <v-spacer />
-    </v-app-bar>
-
-    <v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
-      <v-list dense class="grey lighten-4">
+    <v-navigation-drawer v-model="drawer" app permanent dark floating fixed color="#000">
+      <v-list dense dark color="#000">
+        <div style="margin-left: 1.5rem; margin-top: 2rem; margin-bottom: 1.7rem;">
+        <router-link to="/" style="text-decoration:none;"><img src="../public/img/popcorn.png" style="height: 4rem; width: 4rem; margin-right: 0.9rem; margin-bottom: -1.2rem;"/><span style="font-size: 2rem; height: 4rem; line-height: 4rem; vertical-align: middle; font-family: 'Raleway', sans-serif; color: white;">Fluid</span></router-link>
+        </div>
         <template v-for="(choice, i) in choices">
           <v-list-item
             :key="i"
@@ -33,16 +21,15 @@
               <v-icon>{{ choice.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title class="subtitle-2 font-weight-bold black--text">{{ choice.text }}</v-list-item-title>
+              <v-list-item-title class="subtitle-2 white--text">{{ choice.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
-
     <v-content>
-      <v-container fluid fill-height class="grey lighten-4">
-        <v-layout justify-center align-center>
+      <v-container fluid fill-height style="background-color: #303030; padding: 0;">
+        <v-layout align-center>
           <div style="width:100%; height:100%; position:absolute;
           z-index:10; display:none; background-color:#a6a6a6; opacity:.6;" id="searching">
 
@@ -85,7 +72,7 @@ import axios from 'axios';
 
 export default {
   data: () => ({
-    drawer: null,
+    drawer: true,
     choices: [
       {
         icon: "mdi-account-circle",
@@ -98,7 +85,7 @@ export default {
         path: "movie-search"
       },
       {
-        icon: "mdi-account",
+        icon: "fa-search",
         text: "유저 검색",
         path: "user-search"
       },
@@ -109,7 +96,7 @@ export default {
         auth: false,
       },
       {
-        icon: "mdi-account",
+        icon: "mdi-wrench",
         text: "관리자 페이지",
         path: "admin-page",
         auth: false,
@@ -178,8 +165,9 @@ export default {
       this.user = ''
       this.$session.set('id', '')
       this.$session.set('admin', false)
+      router.push({name:'home'})
       window.location.reload()
-      router.push('/')
+      // router.push('/')
     },
 
     // get_array() {

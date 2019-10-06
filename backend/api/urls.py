@@ -31,6 +31,7 @@ urlpatterns = [
 
     path('users/', user_views.users, name='user_list'),
     path('users/<int:user_id>', user_views.detail, name='user_list'),
+    path('user/<int:user_id>/movies/', user_views.userMovie),
 
     # parse_data / rating 관련
     path('ratings/', rate_views.ratings, name='rate_list'),
@@ -74,7 +75,7 @@ urlpatterns = [
     path('subscription/manager/', subscription_views.manager, name="subscription_manager"),
     path('subscription/itembasedmovies/<int:profile_pk>', subscription_views.itembased_movies, name="subscription_itembasedmovies"),
     path('subscription/userbasedmovies/<int:profile_pk>', subscription_views.userbased_movies, name="subscription_userbasedmovies"),
-
+    path('subscription/itembasedmovies2/<int:profile_pk>', subscription_views.itembased_movies2, name="subscription_itembasedmovies2"),
     # brightics 관련된 것입니다. 사실상 쓸 일은 없을 것입니다 : 김슬기
     path('brightics/', brightics_views.make),
 
@@ -82,4 +83,8 @@ urlpatterns = [
     path('KNN/movie/', KNN_views.KNN_algorithm_movie),
     path('KNN/user/', KNN_views.KNN_algorithm_user),
     path('KNN/checkCSV/', KNN_views.checkCSV),
+
+    # Rating CRUD
+    # path('movie/<int:movie_pk>/score/check/', rate_views.checkRating),
+    path('movie/<int:movie_pk>/score/cdu/', rate_views.cduRating),
 ]
