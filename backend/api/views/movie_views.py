@@ -12,20 +12,36 @@ def movies(request):
     if request.method == 'GET':
         id = request.GET.get('id', request.GET.get('movie_id', None))
         title = request.GET.get('title', None)
-        cnt = int(request.GET.get('cnt'))
-        print(cnt)
+        # cnt = int(request.GET.get('cnt'))
+        # print(cnt)
 
-        movies = Movie.objects.all()[cnt-10:cnt]
-        pprint.pprint(movies)
+        movies = Movie.objects.all()
+        # pprint.pprint(movies)
 
         if id:
             movies = movies.filter(pk=id)
+
         if title:
             movies = movies.filter(title__icontains=title)
+        # else:
+        #     movies = Movie.objects.all()[cnt-10:cnt]
+        num = request.GET.get('num', None)
 
+        canmore = True
+        if len(movies) >= 13:
+            if num:
+                num = int(num)
+                movies = movies[num*13:(num+1)*13]
+                if len(movies) < 13:
+                    canmore = False
+            else:
+                movies = movies[:13]
+        else:
+            canmore = False
+        # print(len(movies))
         serializer = MovieSerializer(movies, many=True)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=[serializer.data, canmore], status=status.HTTP_200_OK)
 
     if request.method == 'DELETE':
         movie = Movie.objects.all()
@@ -154,7 +170,7 @@ def genders(request):
     rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
-    
+
     serializer = Movie_Age_Serializer(rates, many=True)
 
     return Response(data=serializer.data, status=status.HTTP_200_OK)

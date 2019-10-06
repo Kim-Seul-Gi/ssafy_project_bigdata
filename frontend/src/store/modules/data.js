@@ -13,21 +13,25 @@ const state = {
     userSearchList: [],
     userSearchList_admin: [],
     username: '',
-    cnt: 10
+    cnt: 10,
+    recent_SearchName:"",
+    canmore: true
 }
 
 // actions
 const actions = {
     async searchMovies({ commit }, params) {
+        state.recent_SearchName = params.title
         // document.style.opacity = 0.1
         var preload = document.querySelector('#searching')
             // preload.style.display = 'block'
         const resp = await api.searchMovies(params)
+        // console.log(resp)
             // preload.style.display = 'none'
-        if (!resp.data.length) {
+        if (!resp.data[0].length) {
             alert('해당 이름의 영화는 없습니다.')
         }
-        const movies = resp.data.map(d => ({
+        const movies = resp.data[0].map(d => ({
             id: d.id,
             title: d.title,
             genres_array: d.genres_array,
@@ -40,6 +44,26 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList', movies)
+    },
+    async plusMovies({ commit }, params) {
+        // document.style.opacity = 0.1
+        // var preload = document.querySelector('#searching')
+        //     // preload.style.display = 'block'
+        const resp = await api.searchMovies(params)
+        state.canmore = resp.data[1]
+        const movies = resp.data[0].map(d => ({
+            id: d.id,
+            title: d.title,
+            genres_array: d.genres_array,
+            watch_count: d.watch_count,
+            averagerate: d.averagerate,
+            score_users: d.score_users,
+            plot: d.plot,
+            url: d.url,
+            director: d.director,
+            casting: d.casting
+        }))
+        commit('plusMovieSearchList', movies)
     },
     async searchMovies_admin({ commit }) {
         const resp = await api.searchMovies(params)
@@ -241,15 +265,13 @@ const actions = {
 
 // mutations
 const mutations = {
-    setMovieSearchList(state, movies) {
-        console.log(movies)
-        state.temp_movie = movies.map(m => m)
+    plusMovieSearchList(state, movies) {
         movies.forEach(element => {
                 state.movieSearchList.push(element)
             })
-            // state.movieSearchList = state.movieSearchList.concat(movies.map(m => m))
-            // console.log(state.movieSearchList)
-            // state.movieSearchList = movies.map(m => m)
+    },
+    setMovieSearchList(state, movies) {
+      state.movieSearchList = movies.map(m => m)
     },
     setMovieSearchList_admin(state, movies) {
         state.movieSearchList_admin = movies.map(m => m)

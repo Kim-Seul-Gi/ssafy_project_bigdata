@@ -11,7 +11,7 @@
         <v-btn @click="changesearch1()">다른 검색</v-btn>
 
         <div>
-          <MovieSearchForm :submit="searchMovies" />
+          <MovieSearchForm :submit="before_searchMovies" />
         </div>
       </v-flex>
 
@@ -43,7 +43,7 @@
 
       <!-- 검색 결과 -->
       <v-flex xs12>
-        <MovieList :movie-list-cards="movieList"/>
+        <MovieList :movie-list-cards="movieList" :reset="reset"/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -73,7 +73,7 @@ export default {
     byage:false,
     byoccupation:false,
     bygender:false,
-
+    reset : true,
   }),
   computed: {
     ...mapState({
@@ -85,6 +85,10 @@ export default {
   },
   methods: {
     ...mapActions("data", ["searchMovies", "searchGenres", "searchAges", "searchOccupations", "searchGenders", "resetMovieList"]),
+    before_searchMovies(params) {
+      this.reset = !this.reset
+      this.searchMovies(params)
+    },
     changesearch1() {
       this.bymoviename = !this.bymoviename
       this.bygenre = false

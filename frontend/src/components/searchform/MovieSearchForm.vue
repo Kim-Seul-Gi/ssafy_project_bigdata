@@ -6,9 +6,10 @@
     <v-text-field v-show="false"/>
 
     <v-layout justify-center pa-5>
-      <v-btn v-show="cnt<=10" large color="indigo white--text" @click="onSubmit">Search</v-btn>
+      <!-- <v-btn v-show="cnt<=10" large color="indigo white--text" @click="onSubmit">Search</v-btn> -->
+      <v-btn large color="indigo white--text" @click="onSubmit">Search</v-btn>
     </v-layout>
-    <v-btn v-show="cnt>10" large color="indigo white--text" @click="onSubmit">더보기</v-btn>
+    <!-- <v-btn v-show="cnt>10" large color="indigo white--text" @click="onSubmit">더보기</v-btn> -->
   </v-form>
 </template>
 
@@ -24,7 +25,7 @@ export default {
   },
   data: () => ({
     title: "",
-    cnt: 10,
+    // cnt: 10,
     movielist:[]
   }),
   methods: {
@@ -32,10 +33,10 @@ export default {
       const apiUrl = '/api'
       const params = {
         title: this.title,
-        cnt: this.cnt
+        // cnt: this.cnt
       };
       this.submit(params);
-      this.cnt=this.cnt + 10
+      // this.cnt=this.cnt + 10
     },
   }
 };
