@@ -12,18 +12,36 @@ def movies(request):
     if request.method == 'GET':
         id = request.GET.get('id', request.GET.get('movie_id', None))
         title = request.GET.get('title', None)
-        # genre = request.GET.get('genre', None)
-        # watch_count = request.GET.get('watch_count', None)
-        movies = Movie.objects.all().order_by('-watch_count')
+        # cnt = int(request.GET.get('cnt'))
+        # print(cnt)
+
+        movies = Movie.objects.all()
+        # pprint.pprint(movies)
 
         if id:
             movies = movies.filter(pk=id)
+
         if title:
             movies = movies.filter(title__icontains=title)
+        # else:
+        #     movies = Movie.objects.all()[cnt-10:cnt]
+        num = request.GET.get('num', None)
 
+        canmore = True
+        if len(movies) >= 13:
+            if num:
+                num = int(num)
+                movies = movies[num*13:(num+1)*13]
+                if len(movies) < 13:
+                    canmore = False
+            else:
+                movies = movies[:13]
+        else:
+            canmore = False
+        # print(len(movies))
         serializer = MovieSerializer(movies, many=True)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=[serializer.data, canmore], status=status.HTTP_200_OK)
 
     if request.method == 'DELETE':
         movie = Movie.objects.all()
