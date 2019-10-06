@@ -143,6 +143,7 @@ export default {
       if (this.$session.get('id')==undefined || this.$session.get('id')=="" ) {
         // console.log('로그인 안 한 상태입니다.')
         this.$session.set('id', '')
+        this.$session.set('id_number', '')
         this.$session.set('admin', false)
         this.choices[0] = {icon: "mdi-account-circle", text: "로그인", path: "sign-in"}
       } else {
@@ -164,6 +165,7 @@ export default {
       this.choices[4].auth = false
       this.user = ''
       this.$session.set('id', '')
+      this.$session.set('id_number', '')
       this.$session.set('admin', false)
       router.push({name:'home'})
       window.location.reload()

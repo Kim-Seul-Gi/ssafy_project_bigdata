@@ -12,8 +12,10 @@
           ></v-img>
           <v-col>
             <h1>{{movie_data[0].title}}</h1>
-            <v-btn icon v-if="!this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 남기기'}}</v-btn>
-            <v-btn icon v-if="this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 수정하기'}}</v-btn>
+            <div v-if="this.$session.get('id_number')!=''">
+              <v-btn icon v-if="!this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 남기기'}}</v-btn>
+              <v-btn icon v-if="this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 수정하기'}}</v-btn>
+            </div>
             <v-flex v-show="rate_show">
               <div class="mx-auto" style="width:200px">
                 <v-text-field
@@ -59,8 +61,8 @@
               <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
               <v-card-text>
                 <div class="movietitle">
-                  {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                  <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                  <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
+                  <!-- <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span> -->
                 </div>
                   <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                   <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>

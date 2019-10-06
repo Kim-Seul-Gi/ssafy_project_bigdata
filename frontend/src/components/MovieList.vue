@@ -1,13 +1,16 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
 
-    <div v-if="movieListCards.length" style="color: white">
-      {{movieListCards.length}}개가 조회되었습니다.
+    <!-- {{this.$store.state.data.movieSearchList.length}} -->
+    <!-- {{this}} -->
+    <div v-if="this.$store.state.data.movieSearchList.length">
+      {{this.$store.state.data.movieSearchList.length}}개가 조회되었습니다.
+      <!-- <v-btn @click="seemode_rate = false">조회 순</v-btn> -->
+      <v-btn @click="seemode_rate = false">라이브러리 순</v-btn>
       <v-btn @click="seemode_rate = true">평점 순</v-btn>
-      <v-btn @click="seemode_rate = false">조회 순</v-btn>
     </div>
 
-    <div v-if="!movieListCards.length" style="color: white">
+    <div v-else>
       영화가 없어요!!!
     </div>
     <v-layout row wrap>
@@ -40,7 +43,6 @@
           :casting="card.casting"
         />
       </v-flex>
-      <!--  -->
 
       <!-- 선택옵션 - 평점 순 -->
       <v-flex v-if="seemode_rate" v-for="(card, i) in movieListCardsSliced2" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
@@ -57,7 +59,15 @@
           :casting="card.casting"
         />
       </v-flex>
-      <!--  -->
+
+      <v-flex v-if="maxPages>1 && page==maxPages && $store.state.data.canmore" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
+
+        <!-- {{this.$store.state.data.recent_SearchName}} -->
+        <v-btn @click="before_plusMovies()">더 보러가기</v-btn>
+        <!-- {{this.$store.state.data.canmore}} -->
+        <!-- <v-btn @click="plusMovies({title:$store.state.data.recent_SearchName})">더 보러가기</v-btn> -->
+        <!-- <v-btn @click="gogo($store.state.data.recent_SearchName)">더 보러가기</v-btn> -->
+      </v-flex>
 
       <v-pagination v-if="maxPages > 1" v-model="page" :length="maxPages" />
 
@@ -67,29 +77,47 @@
 
 <script>
 import MovieListCard from "./MovieListCard"
+import { mapState, mapActions } from "vuex";
+
 export default {
   components: {
     MovieListCard,
   },
   props: {
     movieListCards: {
-      type: Array,
-      default: () => new Array(),
+      type: Array
     },
+    reset : {
+      type: Boolean
+    }
   },
   data: () => ({
     cardsPerPage: 12,
     page: 1,
-    seemode_rate:true,
+    seemode_rate:false,
     tmp_movieList:[],
+    // movielist:[],
+    num:1,
   }),
+  methods: {
+    ...mapActions("data", ["plusMovies"]),
+    before_plusMovies() {
+      this.plusMovies({'title':this.$store.state.data.recent_SearchName, 'num':this.num})
+      this.num += 1
+    },
+  },
+  watch: {
+    reset: function () {
+      this.page = 1
+    },
+  },
   computed: {
     // pagination related variables
     movieListEmpty: function() {
-      return this.movieListCards.length === 0;
+      return this.$store.state.data.movieSearchList.length === 0;
     },
     maxPages: function() {
-      return Math.floor((this.movieListCards.length + this.cardsPerPage - 1) / this.cardsPerPage)
+      return Math.floor((this.$store.state.data.movieSearchList.length + this.cardsPerPage - 1) / this.cardsPerPage)
     },
     movieListCardsSliced: function() {
       this.tmp_movieList = JSON.parse(JSON.stringify(this.movieListCards))
@@ -110,7 +138,6 @@ export default {
         return 0;
       })
     },
-
   },
 };
 </script>

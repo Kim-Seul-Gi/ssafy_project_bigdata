@@ -57,12 +57,12 @@
         </div>
         <NewUserRating :modal="modal" v-if="modal"/> -->
       </v-flex>
-      
+
       <v-flex>
         <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
           <carousel :per-page="pageNum">
-            <slide v-for="person in this.profile_data.slice(1)" style="height: 13rem; width: 15rem;" v-bind:key="person">
+            <slide v-for="person in this.profile_data.slice(1, 6)" style="height: 13rem; width: 15rem;" v-bind:key="person.username">
               <v-card style="margin:10px; border-radius:15px;" color="#424242" dark>
                 <v-card-text>
                   <v-container>
@@ -75,6 +75,16 @@
               </v-card>
             </slide>
           </carousel>
+          <!-- <v-card v-for="person in this.profile_data.slice(1, 6)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
+            <v-card-text>
+              <v-container>
+                <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
+                {{ person.age }} / {{ person.gender }}<br>
+                {{ person.occupation }}<br>
+                <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
+              </v-container>
+            </v-card-text>
+          </v-card> -->
         </div>
       </v-flex>
       </v-col>
