@@ -4,50 +4,61 @@
           여러분의 작은 후원이 모이면 큰 희망이 됩니다</p>
   <p style="font-size: 1.5rem; color: orange;">고맙습니다.</p>
   <p style="font-size: 2.5rem; color: red;">감사합니다.</p>
+  <v-alert
+      v-model="alert"
+      dismissible
+      color="red"
+      border="left"
+      elevation="2"
+      colored-border
+      icon="mdi-cancel"
+    >
+      We stole your <strong>1000</strong> won. Thank you!!
+  </v-alert>
   <v-row>
-  <v-col v-for="(user, i) in this.users"
-        v-bind:key=i
-        cols="3">
-      <v-card
-        class="mx-auto my-12"
-        max-width="374"
-      >
-        <v-img
-          :src="user.url"
-          height="250"
-        ></v-img>
+    <v-col v-for="(user, i) in this.users"
+          v-bind:key=i
+          cols="3">
+        <v-card
+          class="mx-auto my-12"
+          max-width="374"
+        >
+          <v-img
+            :src="user.url"
+            height="250"
+          ></v-img>
 
-        <v-card-title>{{user.name}}</v-card-title>
-        <v-card-text>
+          <v-card-title>{{user.name}}</v-card-title>
+          <v-card-text>
 
-          <div>{{user.title}}</div>
-        </v-card-text>
+            <div>{{user.title}}</div>
+          </v-card-text>
 
-        <v-card-text>
-          <div class="title text--primary">Availability</div>
-          <v-chip-group
-            active-class="deep-purple accent-4 white--text"
-            column
-          >
-            <v-chip v-for="(skill, i) in user.skills" v-bind:key=i>{{skill}}</v-chip>
-          </v-chip-group>
-        </v-card-text>
+          <v-card-text>
+            <div class="title text--primary">Availability</div>
+            <v-chip-group
+              active-class="deep-purple accent-4 white--text"
+              column
+            >
+              <v-chip v-for="(skill, i) in user.skills" v-bind:key=i>{{skill}}</v-chip>
+            </v-chip-group>
+          </v-card-text>
 
-        <v-card-actions>
-          <v-btn
-            :href="user.bank"
-            color="deep-purple accent-4"
-            text
-          >
-            {{user.AccountNumber}}
-          </v-btn>
-        </v-card-actions>
-          <v-btn @click="support(i)">
-            후원하기
-          </v-btn>
-          {{user.cnt}}
-      </v-card>
-  </v-col>
+          <v-card-actions>
+            <v-btn
+              :href="user.bank"
+              color="deep-purple accent-4"
+              text
+            >
+              {{user.AccountNumber}}
+            </v-btn>
+          </v-card-actions>
+            <v-btn @click="support(i)" color="light-blue lighten-4">
+              후원하기
+            </v-btn>
+            {{user.cnt}}
+        </v-card>
+    </v-col>
   </v-row>
 </div>
 </template>
@@ -57,11 +68,12 @@ export default {
 
   },
   data: () => ({
+    alert: false,
     users:[
       {
         url:"https://avatars0.githubusercontent.com/u/43327544?s=460&v=4",
         name:"Hwang yeo jin",
-        title:"즐, 인생이란...",
+        title:"인생이란....",
         skills:[
           "Python",
           "Java",
@@ -76,7 +88,7 @@ export default {
         cnt:0
       },
       {
-        url:"http://edu.ssafy.com/edu/comm/imgDownload.do?userId=Z%2B13nx9qVOUU0%2B%2BMS1BMEQ%3D%3D",
+        url:"https://avatars2.githubusercontent.com/u/45933817?s=400&u=52a75bb63157d2a969445cf444f0ecf5c58f5dad&v=4",
         name:"Kim seung hoon",
         title:"인간의 수면 욕구는 어디까지인가",
         skills:[
@@ -93,7 +105,7 @@ export default {
         cnt:0
       },
       {
-        url:"http://edu.ssafy.com/edu/comm/imgDownload.do?userId=2aqyWVSrd2GKXlkYag2L%2FQ%3D%3D",
+        url:"https://avatars0.githubusercontent.com/u/45776030?s=400&u=698bdc20878f35c1f5dcf1197c91a1cc89241e59&v=4",
         name:"Kim seul gi",
         title:"잘하자",
         skills:[
@@ -130,10 +142,13 @@ export default {
   }),
   methods: {
     support(id) {
-      this.users[id].cnt += 1;
+      this.users[id].cnt += 1000;
       Swal.fire({
         text: '1000원 후원에 성공하셨습니다!',
         type: 'success'
+      }).then((result) => {
+        this.alert = !this.alert
+        scroll(0,0);
       })
     }
   }
