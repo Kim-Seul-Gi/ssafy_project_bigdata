@@ -9,7 +9,7 @@
       <v-switch v-model="switch4" :label="`subscription`" @click="four()" />
       <v-btn @click="check()">초기화</v-btn>
     </v-flex>
-    
+
     <v-flex v-if="switch1" xs12 wrap>
       <div class="display-2 pa-10">영화 검색</div>
       <v-flex xs6 offset-3>
@@ -53,13 +53,14 @@ import AdminUserList from "../AdminUserList";
 import AdminClustering from "../AdminClustering";
 import AdminSubscriptionList from "../AdminSubscriptionList";
 import CreateMovieForm from "../CreateMovieForm";
+import router from "../../router";
 
 export default {
   components: {
     AdminMovieList,
     AdminUserList,
     AdminSubscriptionList,
-    
+
     MovieSearchForm,
     UserSearchForm,
 
@@ -81,6 +82,16 @@ export default {
       movieList: state => state.data.movieSearchList_admin,
       userList: state => state.data.userSearchList_admin
     })
+  },
+  created() {
+    if (this.$session.get('admin')!=true) {
+      Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '관리자 권한이 없습니다!',
+        })
+      router.push({name:"home"})
+    }
   },
   methods: {
     ...mapActions("data", ["searchMovies_admin", "searchUsers_admin"]),

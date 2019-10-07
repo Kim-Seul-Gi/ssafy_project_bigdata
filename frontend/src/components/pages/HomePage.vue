@@ -62,10 +62,13 @@
             <v-layout row wrap pa-8>
 
             <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-account</v-icon> {{this.user}}님과 유사한 이용자</span>
+
               <v-flex xs12>
-                <carousel :per-page="pageNum">
-                  <slide v-for="person in this.profile_data.slice(1)" style="height: 22rem; width: 16rem;" v-bind:key="person.username">
-                    <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
+                <div style="margin-top: 3rem;" v-if="typeof(profile_data[1])!='boolean'">
+                  <!-- <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p> -->
+                  <carousel :per-page="pageNum">
+                    <slide v-for="person in this.profile_data.slice(1, 6)" style="height: 21rem; width: 15rem;" v-bind:key="person.username">
+                      <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
                         <v-card-text>
                           <v-container style="margin-top: 1.2rem;">
                             <p style="color: white; font-size: 1.5rem;">{{ person.username }}</p>
@@ -74,10 +77,20 @@
                             <v-btn text style="margin-left: 2.6rem;" color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
                           </v-container>
                         </v-card-text>
-                    </v-card>
-                  </slide>
-                </carousel>
+                      </v-card>
+                    </slide>
+                  </carousel>
+                </div>
+
+                <div style="margin-top: 3rem;" v-else>
+                  <p class="profile">
+                    <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
+                  </p>
+                </div>
+
               </v-flex>
+
+
             </v-layout>
           </div>
         </v-flex>
@@ -278,4 +291,11 @@ export default {
     }
   }
 
+</style>
+
+<style scoped>
+  .profile {
+    color:  rgba(255, 255, 255, 0.7);
+    font-size: 2rem;
+  }
 </style>
