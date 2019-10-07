@@ -152,8 +152,17 @@ export default {
         age: __this.age,
         occupation: __this.occupation
       }).then(res => {
-        if (res.status == 201) {
+        if (res.data == true) {
+          Swal.fire({
+            title:'회원가입 성공!',
+            type: 'success'
+          })
           this.$router.push('/users/signin');
+        } else {
+          Swal.fire({
+            title:'중복된 name입니다!',
+            type: 'error'
+          })
         }
       })
     },
