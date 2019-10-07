@@ -38,9 +38,7 @@ def movies(request):
                 movies = movies[:12]
         else:
             canmore = False
-        # print(len(movies))
         serializer = MovieSerializer(movies, many=True)
-
         return Response(data=[serializer.data, canmore], status=status.HTTP_200_OK)
 
     if request.method == 'DELETE':

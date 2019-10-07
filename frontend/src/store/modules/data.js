@@ -26,6 +26,7 @@ const actions = {
         var preload = document.querySelector('#searching')
             // preload.style.display = 'block'
         const resp = await api.searchMovies(params)
+        state.canmore = resp.data[1]
         // console.log(resp)
             // preload.style.display = 'none'
         if (!resp.data[0].length) {

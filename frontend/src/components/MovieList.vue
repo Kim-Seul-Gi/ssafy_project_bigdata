@@ -1,6 +1,5 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
-
     <!-- {{this.$store.state.data.movieSearchList.length}} -->
     <!-- {{this}} -->
     <div v-if="this.$store.state.data.movieSearchList.length">
