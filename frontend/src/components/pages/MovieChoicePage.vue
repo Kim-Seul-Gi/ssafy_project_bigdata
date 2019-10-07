@@ -105,7 +105,10 @@ export default {
                     title: '평점등록 성공!',
                     type: 'success'
                 })
-                router.push({name:"home"})
+                .then((result) => {
+                  router.push({name:"home"})
+                  window.location.reload()
+                })                            
             } else {
                 Swal.fire({
                     title: '이미 평점등록을 하셨습니다!',

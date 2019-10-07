@@ -1,15 +1,18 @@
 <template>
     <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-    <span class="display-3 grey--text">Admin page</span>
+    <!-- <span class="display-3 grey--text">Admin page</span> -->
+    <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Admin page</p>
     <v-flex fluid row justify-center style="width:100%;">
-      <v-switch v-model="switch1" :label="`movie`" @click="one()" />
-      <v-switch v-model="switch2" :label="`user`" @click="two()" />
-      <v-switch v-model="switch3" :label="`clustering`" @click="three()" />
-      <v-switch v-model="switch4" :label="`subscription`" @click="four()" />
-      <v-btn @click="check()">초기화</v-btn>
-    </v-flex>
+      <v-switch v-model="switch1" :label="`movie`" @click="one()" dark />
+      <v-switch v-model="switch2" :label="`user`" @click="two()"dark  />
+      <v-switch v-model="switch3" :label="`clustering`" @click="three()" dark />
+      <v-switch v-model="switch4" :label="`subscription`" @click="four()" dark />
 
+    </v-flex>
+    <div>
+      <v-btn @click="check()">초기화</v-btn>
+    </div>
     <v-flex v-if="switch1" xs12 wrap>
       <div class="display-2 pa-10">영화 검색</div>
       <v-flex xs6 offset-3>
