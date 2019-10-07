@@ -2,7 +2,6 @@
 <template>
   <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-
       <!-- 검색 폼 by 영화이름-->
       <v-col>
       <v-flex>
@@ -40,7 +39,7 @@
                     <v-card-text>
                       <div class="movietitle">
                         {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        <span class="hovertext" style="vertical-align: middle;">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
                       </div>
                         <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                         <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
@@ -59,7 +58,7 @@
       </v-flex>
 
       <v-flex>
-        <div style="margin-top: 3rem;" v-if="profile_data.length > 1">
+        <div style="margin-top: 3rem;" v-if="typeof(profile_data[1])!='boolean'">
           <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
           <carousel :per-page="pageNum">
             <slide v-for="person in this.profile_data.slice(1, 6)" style="height: 13rem; width: 15rem;" v-bind:key="person.username">
@@ -75,18 +74,17 @@
               </v-card>
             </slide>
           </carousel>
-          <!-- <v-card v-for="person in this.profile_data.slice(1, 6)" style="margin-bottom: 2rem;" color="#424242" dark v-bind:key="person">
-            <v-card-text>
-              <v-container>
-                <p style="color: black; font-size: 1.4rem;">{{ person.username }}</p>
-                {{ person.age }} / {{ person.gender }}<br>
-                {{ person.occupation }}<br>
-                <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
-              </v-container>
-            </v-card-text>
-          </v-card> -->
         </div>
+
+        <div style="margin-top: 3rem;" v-else>
+          <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p>
+          <p class="profile">
+            <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
+          </p>
+        </div>
+
       </v-flex>
+
       </v-col>
 
     </v-layout>
@@ -178,7 +176,16 @@ export default {
     movielist:[],
   }),
   created() {
-    this.fetchdata();
+    if (this.$session.get('id')=="") {
+      Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '로그인을 해주세요!',
+        })
+        router.push({name:"sign-in"})
+    } else {
+      this.fetchdata();
+    }
   },
   computed: {
     // ...mapState({
@@ -192,7 +199,7 @@ export default {
       const apiUrl = '/api'
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
-      console.log(profile)
+      console.log(profile, 123123)
       this.profile_data = profile.data
       console.log(this.profile_data[6])
 
@@ -267,6 +274,9 @@ export default {
         this.profile_data = profile.data
         this.user = this.profile_data[0]
       })
+    },
+    go_loginpage() {
+      console.log(123123)
     }
   }
 }
