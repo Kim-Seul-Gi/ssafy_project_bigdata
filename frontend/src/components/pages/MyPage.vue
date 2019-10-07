@@ -39,7 +39,7 @@
                     <v-card-text>
                       <div class="movietitle">
                         {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        <span class="hovertext" style="vertical-align: middle;">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
                       </div>
                         <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                         <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>

@@ -97,13 +97,12 @@ export default {
     border-radius: 6px;
     padding: 5px;
     bottom: 20%;
-
+    white-space:normal;
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
   }
   .movietitle:hover .hovertext2 {
     visibility: visible;
-    -webkit-transform:translate(-70px, 0);
   }
 </style>

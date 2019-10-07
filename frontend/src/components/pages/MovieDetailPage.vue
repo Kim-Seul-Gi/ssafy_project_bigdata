@@ -76,7 +76,7 @@
 
       </v-layout>
 
-    <v-btn @click="search()">이전으로 이동</v-btn>
+    <v-btn @click="search()">검색으로 이동</v-btn>
   </v-container>
 </template>
 
@@ -139,7 +139,7 @@ export default {
 
     },
     search() {
-      router.go(-1)
+      router.push({name:'movie-search'})
     },
     SELECT_MovieDetail(movie) {
       var movie_data = {'id':movie.id, 'title':movie.title, 'genres_array':movie.genres_array,

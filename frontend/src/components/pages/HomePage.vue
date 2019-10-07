@@ -37,14 +37,14 @@
             <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 15rem;">
+                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 16rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                     <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                     <v-card-text>
                       <!-- <v-container> -->
                       <div class="movietitle">
                         {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        <span class="hovertext" style="vertical-align: middle;">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
                       </div>
                       <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
                       <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>

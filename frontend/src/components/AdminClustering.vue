@@ -60,7 +60,7 @@ export default {
       }).then(res => {
         this.saved_n = this.picked_n
         this.saved_way = this.picked_way
-        console.log('성공했습니다.')
+        // console.log('성공했습니다.')
       })
     },
     cancel() {
