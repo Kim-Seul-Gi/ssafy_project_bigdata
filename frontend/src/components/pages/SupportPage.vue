@@ -61,7 +61,7 @@ export default {
       {
         url:"https://avatars0.githubusercontent.com/u/43327544?s=460&v=4",
         name:"Hwang yeojin",
-        title:"즐",
+        title:"인생이란...",
         skills:[
           "Python",
           "Java",

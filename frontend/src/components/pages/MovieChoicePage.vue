@@ -3,7 +3,9 @@
   <v-container grid-list-md text-center>
     <div>
         <p style="color: white; font-size: 1.4rem; font-family: 'Jua', sans-serif;">10개 이상 평점을 매겨주세요. 더 많이 평점을 줄수록 정확한 추천을 드립니다 :)</p>
-        <v-btn color="red lighten-2" dark style="margin-bottom: 1rem; font-family: 'Jua', sans-serif;" @click="save()">평가 완료</v-btn>
+        <v-btn color="red lighten-2" 
+            dark style="margin-bottom: 1rem; font-family: 'Jua', sans-serif;" 
+            @click="save()">평가 완료</v-btn>
     </div>
     <v-layout justify-center wrap>
         <!-- 처음에 보여주는 것 : 조회수 순 -->
@@ -88,14 +90,13 @@ export default {
         })
     },
     save() {
-        // let tmp_list = []
-        // this.movielist.forEach(ele => {
-        //     if (ele.rating > 0) {
-        //         tmp_list.push(ele)
-        //     }
-        // })
-        console.log(this.$session.get('id_number'))
-        console.log(this.rating_box)
+        const apiUrl = '/api'
+        axios.post(`${apiUrl}/signup/new_cluster/`, {
+            user_pk:this.$session.get("id_number"),
+            movies:this.rating_box,
+        }).then(res => {
+
+        })
     },
     plus(id, rating) {
       this.rating_box[id]=rating
