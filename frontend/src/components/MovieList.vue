@@ -60,7 +60,7 @@
         />
       </v-flex>
 
-      <v-flex v-if="maxPages>1 && page==maxPages && $store.state.data.canmore" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
+      <v-flex v-if="page==maxPages && $store.state.data.canmore" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
 
         <!-- {{this.$store.state.data.recent_SearchName}} -->
         <v-btn @click="before_plusMovies()">더 보러가기</v-btn>
