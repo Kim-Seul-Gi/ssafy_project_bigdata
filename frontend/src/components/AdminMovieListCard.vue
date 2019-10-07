@@ -167,7 +167,7 @@ export default {
     movie_detail: async function(id) {
       const apiUrl = '/api'
       var movie = await axios.get(`${apiUrl}/movies/${id}`)
-      console.log(movie.data[0])
+      // console.log(movie.data[0])
       // this.title = movie.data[0].title
       // this.genres_array = movie.data[0].genres_array
     },
