@@ -30,6 +30,7 @@
       </v-flex>
     </v-layout>
     <v-btn @click="before_plusMovies()" style="margin-top: 1.5rem; margin-bottom: 2rem;" fab><v-icon dark>mdi-plus</v-icon></v-btn>
+    <v-btn href="#" style="margin-top: 1.5rem; margin-bottom: 2rem; position:fixed; bottom:0%; right:1%;" fab><v-icon dark>mdi-chevron-double-up</v-icon></v-btn>
   </v-container>
 </template>
 
