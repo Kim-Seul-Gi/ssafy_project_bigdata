@@ -36,7 +36,7 @@
                         <!-- <v-container> -->
                           <div class="movietitle">
                             {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                            <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                            <span class="hovertext" style="vertical-align: middle;">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
                           </div>
                           <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
                           <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
@@ -219,7 +219,7 @@ export default {
     border-radius: 6px;
     padding: 5px;
     bottom: 20%;
-
+    white-space:normal;
     /* Position the tooltip */
     position: absolute;
     z-index: 1;

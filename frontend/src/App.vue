@@ -100,10 +100,23 @@ export default {
         text: "관리자 페이지",
         path: "admin-page",
         auth: false,
-      }
+      },
+      {
+        icon: "mdi-thumb-up",
+        text: "후원하기",
+        path: "support-page"
+      },
     ],
     user: '',
     user2: "",
+    links: [
+        'Home',
+        'About Us',
+        'Team',
+        'Services',
+        'Blog',
+        'Contact Us',
+      ],
   }),
   mounted() {
     this.setUser();

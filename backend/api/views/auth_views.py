@@ -10,31 +10,35 @@ from django.contrib.auth.decorators import login_required
 
 @api_view(['POST'])
 def signup_many(request):
-    if request.method == 'POST':
-        profiles = request.data.get('profiles', None)
-        for profile in profiles:
-            username = profile.get('username', None)
-            password = profile.get('password', None)
-            age = profile.get('age', None)
-            occupation = profile.get('occupation', None)
-            gender = profile.get('gender', None)
+  print("회원가입!")
+  if request.method == 'POST':
+      profiles = request.data.get('profiles', None)
+      for profile in profiles:
+          username = profile.get('username', None)
+          password = profile.get('password', None)
+          age = profile.get('age', None)
+          occupation = profile.get('occupation', None)
+          gender = profile.get('gender', None)
 
-            create_profile(username=username, password=password, age=age,
-                           occupation=occupation, gender=gender)
+          create_profile(username=username, password=password, age=age,
+                          occupation=occupation, gender=gender)
 
-        return Response(status=status.HTTP_201_CREATED)
+      return Response(status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 def signup(request):
-    if request.method == 'POST':
-        username = request.data.get('username', None)
-        age = request.data.get('age', None)
-        gender = request.data.get('gender', None)
-        occupation = request.data.get('occupation', None)
-        password = request.data.get('password')
-        create_profile(username=username, password=password, age=age, occupation=occupation, gender=gender)
+  if request.method == 'POST':
+      name = request.data.get('username', None)
+      if(User.objects.filter(username=name)):
+        return Response(data=False, status=status.HTTP_201_CREATED)
+        
+      age = request.data.get('age', None)
+      gender = request.data.get('gender', None)
+      occupation = request.data.get('occupation', None)
+      password = request.data.get('password')
+      create_profile(username=name, password=password, age=age, occupation=occupation, gender=gender)
 
-        return Response(status=status.HTTP_201_CREATED)
+      return Response(data=True, status=status.HTTP_201_CREATED)
 
 @api_view(['POST'])
 def signin(request):
