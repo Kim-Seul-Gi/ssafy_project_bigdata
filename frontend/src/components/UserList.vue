@@ -4,9 +4,9 @@
       {{userListCards.length}}명이 조회되었습니다.
     </div>
 
-    <div v-if="!userListCards.length" style="color: white">
+    <!-- <div v-if="!userListCards.length" style="color: white">
       검색하신 유저가 없습니다!
-    </div>
+    </div> -->
 
     <v-layout row wrap>
       <!-- {{userListCards}} -->

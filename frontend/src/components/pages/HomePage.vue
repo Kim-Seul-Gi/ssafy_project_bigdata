@@ -82,7 +82,7 @@
                   </carousel>
                 </div>
 
-                <div style="margin-top: 3rem;" v-else>
+                <div style="margin-top: 4rem;" v-else>
                   <p class="profile">
                     <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
                   </p>

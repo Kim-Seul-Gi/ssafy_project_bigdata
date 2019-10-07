@@ -201,7 +201,7 @@ export default {
       var profile = await axios.get(`${apiUrl}/users/${id}`)
       console.log(profile, 123123)
       this.profile_data = profile.data
-      console.log(this.profile_data[6])
+      // console.log(this.profile_data[6])
 
       // 구독 날짜 확인하기,
       // 오늘 날짜 : this.now_date , ex) 20190910
