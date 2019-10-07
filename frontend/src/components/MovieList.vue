@@ -9,7 +9,7 @@
       <v-btn @click="seemode_rate = true">평점 순</v-btn>
     </div>
 
-    <!-- <div v-else>
+    <!-- <div v-else style="color: white">
       영화가 없어요!!!
     </div> -->
     <v-layout row wrap>
