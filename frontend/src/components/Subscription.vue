@@ -22,12 +22,15 @@
             <v-card-text>연장 신청이 완료되었어요. 관리자 승인 중입니다. :)</v-card-text>
           </v-card>
 
+          <div id="item">
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> {{this.user}}님을 위한 영화 추천</span>
+          </div>
           <!-- <div id="item" style="display:none;"> -->
-          <v-layout row wrap pa-8>
-            <div id="item">
-              <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> {{this.user}}님을 위한 영화 추천</span>
-            </div>
-            <v-flex>
+          <v-layout row wrap >
+            <!-- {{this.$store.state.data.movieList_homepage_itembased.length}}<br>
+            {{this.$store.state.data.movieList_homepage_userbased.length}}<br> -->
+
+            <v-flex v-if="this.$store.state.data.movieList_homepage_itembased.length!=0">
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage_itembased" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark class="rounded-card">
@@ -47,14 +50,30 @@
                 </slide>
               </carousel>
             </v-flex>
+
+            <v-flex v-else>
+              <div style="margin-top: 3rem;">
+                <p class="profile">
+                  <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
+                </p>
+                <p>
+                  <v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn>
+                </p>
+              </div>
+            </v-flex>
           </v-layout>
 
           <!-- <div id="user" style="display:none;"> -->
-          <v-layout row wrap pa-8>
-            <div id="user">
-              <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> 유사한 사용자의 선호 영화</span>
-            </div>
-            <v-flex>
+
+          <div id="user">
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> 유사한 사용자의 선호 영화</span>
+          </div>
+
+          <v-layout row wrap >
+
+
+            <v-flex v-if="this.$store.state.data.movieList_homepage_userbased.length!=0">
+
               <carousel :per-page="pageNum">
                 <slide v-for="movie in this.$store.state.data.movieList_homepage_userbased" style="height: 22rem; width: 15rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
@@ -73,6 +92,18 @@
                 </slide>
               </carousel>
             </v-flex>
+
+            <v-flex v-else>
+              <div style="margin-top: 3rem;">
+                <p class="profile">
+                  <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
+                </p>
+                <p>
+                  <v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn>
+                </p>
+              </div>
+            </v-flex>
+
           </v-layout>
 
 
@@ -226,5 +257,12 @@ export default {
   }
   .movietitle:hover .hovertext {
     visibility: visible;
+  }
+</style>
+
+<style scoped>
+  .profile {
+    color:  rgba(255, 255, 255, 0.7);
+    font-size: 2rem;
   }
 </style>
