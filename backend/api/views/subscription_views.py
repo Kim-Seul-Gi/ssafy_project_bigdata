@@ -237,6 +237,12 @@ def itembased_movies2(request, profile_pk):
     profile = Profile.objects.get(pk=profile_pk)
     rates = Rate.objects.filter(UserID=profile.user.id).order_by('-rating')[:5]
 
+    # 그런데 내가 남긴 평점이 없다면 애초에 itembase 를 못하잖아!
+    if len(rates)==0:
+        return Response(data=[], status=status.HTTP_200_OK)
+
+
+
     # # 평점을 잘 준 댓글들의 영화 장르들을 파악합니다.
     box = [0]*19
     box[0] = profile.id
