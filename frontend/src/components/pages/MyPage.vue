@@ -2,7 +2,6 @@
 <template>
   <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-
       <!-- 검색 폼 by 영화이름-->
       <v-col>
       <v-flex>
@@ -177,7 +176,16 @@ export default {
     movielist:[],
   }),
   created() {
-    this.fetchdata();
+    if (this.$session.get('id')=="") {
+      Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '로그인을 해주세요!',
+        })
+        router.push({name:"sign-in"})
+    } else {
+      this.fetchdata();
+    }
   },
   computed: {
     // ...mapState({
@@ -266,6 +274,9 @@ export default {
         this.profile_data = profile.data
         this.user = this.profile_data[0]
       })
+    },
+    go_loginpage() {
+      console.log(123123)
     }
   }
 }
