@@ -11,10 +11,11 @@
         <v-card style="margin:10px; height: 23rem; width: 15rem; border-radius:15px;" color="#424242" dark>
             <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
             <v-card-text>
-                <div class="movietitle">
+                <!-- <p style="font-size: 1rem;">{{ card.title }}</p> -->
+                <p class="movietitle" style="font-size: 1rem; -webkit-transition: 0.5;" >
                     {{card.title.substring(0, card.title.indexOf("("))}}<br>
                     <span class="hovertext2">{{card.title.substring(0)}}</span>
-                </div>
+                </p>
                 <div class="text-center mt-1" @click="plus(card.id, card.rating)">
                     <v-rating
                         v-model="card.rating"
@@ -119,23 +120,3 @@ export default {
   }
 }
 </script>
-<style>
-  .movietitle .hovertext2 {
-    visibility: hidden;
-    /* width: 250px; */
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    bottom: 20%;
-    white-space:normal;
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-  }
-  .movietitle:hover .hovertext2 {
-    visibility: visible;
-  }
-</style>
-
