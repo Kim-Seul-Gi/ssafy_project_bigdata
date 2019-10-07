@@ -5,21 +5,20 @@
         <p style="color: white; font-size: 1.4rem; font-family: 'Jua', sans-serif;">10개 이상 평점을 매겨주세요. 더 많이 평점을 줄수록 정확한 추천을 드립니다 :)</p>
         <v-btn color="red lighten-2" dark style="margin-bottom: 1rem; font-family: 'Jua', sans-serif;" @click="save()">평가 완료</v-btn>
     </div>
-    <v-layout justify-center wrap> 
+    <v-layout justify-center wrap>
         <!-- 처음에 보여주는 것 : 조회수 순 -->
       <v-flex v-for="(card,i) in movielist" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 26rem; width: 28rem;">
         <v-card style="margin:10px; height: 25rem; width: 15rem; border-radius:15px;" color="#424242" dark>
             <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
             <v-card-text>
                 <p style="font-size: 1rem;">{{ card.title }}</p>
-                <div class="text-center mt-1">
+                <div class="text-center mt-1" @click="plus(card.id, card.rating)">
                     <v-rating
                         v-model="card.rating"
                         color="yellow darken-3"
                         background-color="grey darken-1"
                         half-increments
                         hover
-                        @click="plus(card.id)"
                     ></v-rating>
                 </div>
             </v-card-text>
@@ -47,7 +46,8 @@ export default {
     bygender:false,
     reset : true,
     num:1,
-    rating: 0
+    rating: 0,
+    rating_box:{}
   }),
   watch: {
 
@@ -88,13 +88,19 @@ export default {
         })
     },
     save() {
-        let tmp_list = []
-        this.movielist.forEach(ele => {
-            if (ele.rating > 0) {
-                tmp_list.push(ele)
-            }
-        })
+        // let tmp_list = []
+        // this.movielist.forEach(ele => {
+        //     if (ele.rating > 0) {
+        //         tmp_list.push(ele)
+        //     }
+        // })
+        console.log(this.$session.get('id_number'))
+        console.log(this.rating_box)
     },
+    plus(id, rating) {
+      this.rating_box[id]=rating
+      console.log(this.rating_box)
+    }
   }
 }
 </script>
