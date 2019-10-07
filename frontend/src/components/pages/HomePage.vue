@@ -37,7 +37,7 @@
             <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 16rem;">
+                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 16rem;" v-bind:key=index>
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                     <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
                     <v-card-text>
