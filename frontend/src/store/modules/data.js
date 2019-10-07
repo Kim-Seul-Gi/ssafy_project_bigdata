@@ -64,14 +64,21 @@ const actions = {
             director: d.director,
             casting: d.casting
         }))
+        if (params.where) {
+          commit('plusMovieSearchList_admin', movies)
+        } else
         commit('plusMovieSearchList', movies)
     },
-    async searchMovies_admin({ commit }) {
+    async searchMovies_admin({ commit }, params) {
+        state.recent_SearchName = params.title
+        var preload = document.querySelector('#searching')
+
         const resp = await api.searchMovies(params)
-        if (!resp.data.length) {
+        state.canmore = resp.data[1]
+        if (!resp.data[0].length) {
             alert('해당 이름의 영화는 없습니다.')
         }
-        const movies = resp.data.map(d => ({
+        const movies = resp.data[0].map(d => ({
             id: d.id,
             title: d.title,
             genres_array: d.genres_array,
@@ -274,6 +281,11 @@ const mutations = {
         movies.forEach(element => {
                 state.movieSearchList.push(element)
             })
+    },
+    plusMovieSearchList_admin(state, movies) {
+      movies.forEach(element => {
+              state.movieSearchList_admin.push(element)
+          })
     },
     setMovieSearchList(state, movies) {
       state.movieSearchList = movies.map(m => m)
