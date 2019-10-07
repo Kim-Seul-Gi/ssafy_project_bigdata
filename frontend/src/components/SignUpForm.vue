@@ -59,7 +59,7 @@
 
     </form>
     <div style="padding-top: 1.3rem; padding-bottom: 3rem;">
-    <router-link to="signin">로그인하러 가실게요.</router-link>
+    <router-link to="signin">계정이 있으신가요?</router-link>
     </div>
     </v-card-text>
   </v-card>
@@ -152,8 +152,17 @@ export default {
         age: __this.age,
         occupation: __this.occupation
       }).then(res => {
-        if (res.status == 201) {
+        if (res.data == true) {
+          Swal.fire({
+            title:'회원가입 성공!',
+            type: 'success'
+          })
           this.$router.push('/users/signin');
+        } else {
+          Swal.fire({
+            title:'중복된 name입니다!',
+            type: 'error'
+          })
         }
       })
     },
