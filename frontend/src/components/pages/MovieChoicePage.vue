@@ -32,6 +32,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import axios from 'axios';
+import router from "../../router";
 
 export default {
   mounted() {
@@ -93,7 +94,19 @@ export default {
             user_pk:this.$session.get("id_number"),
             movies:this.rating_box,
         }).then(res => {
-
+            if(res.data==true) {
+                Swal.fire({
+                    title: '평점등록 성공!',
+                    type: 'success'
+                })
+                router.push({name:"home"})
+            } else {
+                Swal.fire({
+                    title: '이미 평점등록을 하셨습니다!',
+                    type: 'error'
+                })
+                router.push({name:"home"})
+            }
         })
     },
     plus(id, rating) {
