@@ -74,21 +74,25 @@ export default {
       let tmp = await axios.post(`${apiUrl}/auth/signin/`, {
         username: __this.username,
         password: __this.password
-      }).then(res => {
+      }).then(async res => {
         if (res.data.user != '') {
           this.$store.commit('data/setUser', __this.username)
-          console.log(res.data)
           this.$session.set('id', res.data.user)
           this.$session.set('id_number', res.data.id_number)
           this.$session.set('admin', res.data.admin)
-          // console.log(this.$store.state.data.username)
-          // alert('로그인완료!')
+          var profile = await axios.get(`/api/users/${res.data.id_number}`)
+          const flag = typeof(profile.data[1])
           Swal.fire({
             title: '로그인 완료!',
             type: 'success'
           }).then((result) => {
-            router.push('/')
-            window.location.reload()
+            if (flag != 'boolean' || res.data.id_number < 6042) {
+              router.push('/')
+              window.location.reload()
+            } else {
+              router.push('/choices/')
+              window.location.reload()
+            }
           })
         }
          else {
