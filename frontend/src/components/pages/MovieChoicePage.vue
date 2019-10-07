@@ -11,7 +11,11 @@
         <v-card style="margin:10px; height: 25rem; width: 15rem; border-radius:15px;" color="#424242" dark>
             <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
             <v-card-text>
-                <p style="font-size: 1rem;">{{ card.title }}</p>
+                <!-- <p style="font-size: 1rem;">{{ card.title }}</p> -->
+                <p class="movietitle" style="font-size: 1rem; -webkit-transition: 0.5;" >
+                    {{card.title.substring(0, card.title.indexOf("("))}}<br>
+                    <span class="hovertext2">{{card.title.substring(0)}}</span>
+                </p>
                 <div class="text-center mt-1" @click="plus(card.id, card.rating)">
                     <v-rating
                         v-model="card.rating"
