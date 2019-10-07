@@ -82,20 +82,6 @@
           <p class="profile">
             <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
           </p>
-          <!-- <carousel :per-page="pageNum">
-            <slide v-for="person in this.profile_data.slice(1, 6)" style="height: 13rem; width: 15rem;" v-bind:key="person.username">
-              <v-card style="margin:10px; border-radius:15px;" color="#424242" dark>
-                <v-card-text>
-                  <v-container>
-                    <p style="color: white; font-size: 1.4rem;">{{ person.username }}</p>
-                    {{ person.age }} / {{ person.gender }}<br>
-                    {{ person.occupation }}<br>
-                    <v-btn text color="primary" @click="SELECT_UserDetail(person.id, person.username)">explore</v-btn>
-                  </v-container>
-                </v-card-text>
-              </v-card>
-            </slide>
-          </carousel> -->
         </div>
 
       </v-flex>
