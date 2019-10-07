@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from api.models import create_profile, Profile, User, Movie
+from api.models import create_profile, Profile, User, Movie, Rate
 from api.serializers import ProfileSerializer
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -169,6 +169,14 @@ def new_cluster(request):
   if request.method == 'POST':
     Users, users_pk = create_User()
     user = request.data.get('user_pk')
+    flag = False
+    Users = pd.read_csv('./api/fixtures/user_rating.csv', header=0)
+    Users = Users['user_pk']
+    for user_pk in Users:
+      if(user_pk==user):
+        flag = True; break;
+    if(flag): return Response(data=False, status=status.HTTP_200_OK)
+
     movies = request.data.get('movies')
     profile = Profile.objects.get(user=user)
 
@@ -179,6 +187,7 @@ def new_cluster(request):
     for key, val in movies.items():
       key = int(key)
       val = float(val)
+      Rate(UserID=profile,MovieID=Movie.objects.get(pk=key),rating=val,Timestamp=0).save()
       genres = Movie.objects.get(pk=key).genres.split("|")
       for genre in genres:
         num = genre_number[genre]
@@ -202,4 +211,4 @@ def new_cluster(request):
       users_distance[idx] = 100
     print(Nearest_user)
     CheckCluster(Nearest_user, profile)
-    return Response(status=status.HTTP_200_OK)
+    return Response(data=True, status=status.HTTP_200_OK)
