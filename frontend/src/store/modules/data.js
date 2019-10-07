@@ -26,6 +26,7 @@ const actions = {
         var preload = document.querySelector('#searching')
             // preload.style.display = 'block'
         const resp = await api.searchMovies(params)
+        state.canmore = resp.data[1]
         // console.log(resp)
             // preload.style.display = 'none'
         if (!resp.data[0].length) {
@@ -161,6 +162,7 @@ const actions = {
         }
     },
     async searchGenres({ commit }, params) {
+      state.canmore = false
         const resp = await api.searchGenre(params)
         if (!resp.data.length) {
             alert('해당 장르의 영화는 없습니다.')
@@ -180,6 +182,7 @@ const actions = {
         commit('setMovieSearchList', movies)
     },
     async searchAges({ commit }, params) {
+      state.canmore = false
         const resp = await api.searchAges(params)
         if (!resp.data.length) {
             alert('해당 연령대의 데이터는 없습니다.')
@@ -199,6 +202,7 @@ const actions = {
         commit('setMovieSearchList', movies)
     },
     async searchOccupations({ commit }, params) {
+      state.canmore = false
         const resp = await api.searchOccupations(params)
         if (!resp.data.length) {
             alert('해당 직업의 데이터는 없습니다.')
@@ -218,6 +222,7 @@ const actions = {
         commit('setMovieSearchList', movies)
     },
     async searchGenders({ commit }, params) {
+      state.canmore = false
         const resp = await api.searchGenders(params)
         if (!resp.data.length) {
             alert('해당 성별의 데이터는 없습니다.')
