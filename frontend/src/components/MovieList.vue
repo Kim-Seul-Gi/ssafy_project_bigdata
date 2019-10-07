@@ -10,9 +10,9 @@
       <v-btn @click="seemode_rate = true">평점 순</v-btn>
     </div>
 
-    <div v-else>
+    <!-- <div v-else>
       영화가 없어요!!!
-    </div>
+    </div> -->
     <v-layout row wrap>
 
       <!-- movieList 설명 -->
@@ -60,7 +60,7 @@
         />
       </v-flex>
 
-      <v-flex v-if="page==maxPages && $store.state.data.canmore" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
+      <v-flex v-if="page==maxPages && $store.state.data.canmore==true" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
 
         <!-- {{this.$store.state.data.recent_SearchName}} -->
         <v-btn @click="before_plusMovies()">더 보러가기</v-btn>
