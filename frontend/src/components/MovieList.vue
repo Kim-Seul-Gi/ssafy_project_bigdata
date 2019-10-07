@@ -62,7 +62,7 @@
       <v-flex v-if="page==maxPages && $store.state.data.canmore==true" xs12 sm6 md4 lg3 xl2 style="height: 22rem; width: 28rem;">
 
         <!-- {{this.$store.state.data.recent_SearchName}} -->
-        <v-btn @click="before_plusMovies()">더 보러가기</v-btn>
+        <v-btn @click="before_plusMovies()" style="margin-top: 1.5rem; margin-bottom: 2rem;" fab><v-icon dark>mdi-plus</v-icon></v-btn>
         <!-- {{this.$store.state.data.canmore}} -->
         <!-- <v-btn @click="plusMovies({title:$store.state.data.recent_SearchName})">더 보러가기</v-btn> -->
         <!-- <v-btn @click="gogo($store.state.data.recent_SearchName)">더 보러가기</v-btn> -->

@@ -9,7 +9,7 @@
         <!-- 처음에 보여주는 것 : 조회수 순 -->
       <v-flex v-for="(card,i) in movielist" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 26rem; width: 28rem;">
         <v-card style="margin:10px; height: 25rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-            <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+            <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'"  style="height:16rem; width: 15rem;"></v-img>
             <v-card-text>
                 <p style="font-size: 1rem;">{{ card.title }}</p>
                 <div class="text-center mt-1" @click="plus(card.id, card.rating)">
@@ -88,6 +88,9 @@ export default {
         })
     },
     save() {
+      // console.log(Object.keys(this.rating_box).length)
+      if (Object.keys(this.rating_box).length >= 10) {
+
         const apiUrl = '/api'
         axios.post(`${apiUrl}/signup/new_cluster/`, {
             user_pk:this.$session.get("id_number"),
@@ -95,10 +98,17 @@ export default {
         }).then(res => {
 
         })
+      } else {
+        Swal.fire({
+          title:'10개 이상 해주세요',
+          text: `현재까지 평가한 영화갯수 : ${Object.keys(this.rating_box).length}개`,
+          type: 'error'
+        })
+      }
     },
     plus(id, rating) {
       this.rating_box[id]=rating
-      console.log(this.rating_box)
+      // console.log(this.rating_box)
     }
   }
 }
