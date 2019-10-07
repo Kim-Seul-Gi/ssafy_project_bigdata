@@ -5,7 +5,7 @@
   <p style="font-size: 1.5rem; color: orange;">고맙습니다.</p>
   <p style="font-size: 2.5rem; color: red;">감사합니다.</p>
   <v-row>
-  <v-col v-for="(user, i) in this.users" 
+  <v-col v-for="(user, i) in this.users"
         v-bind:key=i
         cols="3">
       <v-card
@@ -58,8 +58,8 @@ export default {
     users:[
       {
         url:"https://avatars0.githubusercontent.com/u/43327544?s=460&v=4",
-        name:"Hwang yeojin",
-        title:"즐",
+        name:"Hwang yeo jin",
+        title:"즐, 인생이란...",
         skills:[
           "Python",
           "Java",
@@ -74,7 +74,7 @@ export default {
       },
       {
         url:"http://edu.ssafy.com/edu/comm/imgDownload.do?userId=Z%2B13nx9qVOUU0%2B%2BMS1BMEQ%3D%3D",
-        name:"Kim seoung hoon",
+        name:"Kim seung hoon",
         title:"인간의 수면 욕구는 어디까지인가",
         skills:[
           "Python",
