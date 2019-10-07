@@ -59,7 +59,7 @@
 
     </form>
     <div style="padding-top: 1.3rem; padding-bottom: 3rem;">
-    <router-link to="signin">로그인하러 가실게요.</router-link>
+    <router-link to="signin">계정이 있으신가요?</router-link>
     </div>
     </v-card-text>
   </v-card>

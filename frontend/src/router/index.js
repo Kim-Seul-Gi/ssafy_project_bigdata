@@ -11,6 +11,7 @@ import SignUpPage from '../components/pages/SignUpPage'
 import SignInPage from '../components/pages/SignInPage'
 import AdminPage from '../components/pages/AdminPage'
 import MyPage from '../components/pages/MyPage'
+import SupportPage from '../components/pages/SupportPage'
 
 Vue.use(VueRouter)
 Vue.use(VueSession)
@@ -27,6 +28,7 @@ const router = new VueRouter({
         { path: '/users/signin', component: SignInPage, name: 'sign-in' },
         { path: '/admin/', component: AdminPage, name: 'admin-page' },
         { path: '/mypage/', component: MyPage, name: 'my-page' },
+        { path: '/support/', component: SupportPage, name: 'support-page' },
     ],
     scrollBehavior() {
         return { x: 0, y: 0 }
