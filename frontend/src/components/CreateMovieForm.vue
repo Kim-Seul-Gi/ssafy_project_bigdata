@@ -10,7 +10,8 @@
         :counter="30"
         :rules="titleRules"
         label="Title"
-        required>
+        required
+        dark>
       </v-text-field>
 
       <v-select
@@ -19,19 +20,22 @@
         :rules="[v => !!v || 'Item is required']"
         label="Genre"
         multiple
-        required>
+        required
+        dark>
       </v-select>
 
       <v-text-field
         v-model="url"
         label="ImageURL"
-        required>
+        required
+        dark>
       </v-text-field>
       <v-text-field
         v-model="director"
         :rules="titleRules"
         label="Director"
-        required>
+        required
+        dark>
       </v-text-field>
       <v-combobox
         v-model="casting"
@@ -40,7 +44,8 @@
         persistent-hint
         small-chips
         multiple
-        required>
+        required
+        dark>
       </v-combobox>
       <v-textarea
         solo
