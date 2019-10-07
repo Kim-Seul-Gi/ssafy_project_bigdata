@@ -88,14 +88,13 @@ export default {
         })
     },
     save() {
-        // let tmp_list = []
-        // this.movielist.forEach(ele => {
-        //     if (ele.rating > 0) {
-        //         tmp_list.push(ele)
-        //     }
-        // })
-        console.log(this.$session.get('id_number'))
-        console.log(this.rating_box)
+        const apiUrl = '/api'
+        axios.post(`${apiUrl}/signup/new_cluster/`, {
+            user_pk:this.$session.get("id_number"),
+            movies:this.rating_box,
+        }).then(res => {
+
+        })
     },
     plus(id, rating) {
       this.rating_box[id]=rating
