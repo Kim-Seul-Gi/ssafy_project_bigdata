@@ -22,6 +22,7 @@ class MovieSerializer(serializers.ModelSerializer):
     genres_array = serializers.ReadOnlyField()
     averagerate = serializers.SerializerMethodField('get_averagerate')
     castings = serializers.SerializerMethodField('get_castings')
+    
 
     class Meta:
         model = Movie

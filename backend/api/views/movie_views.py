@@ -28,14 +28,14 @@ def movies(request):
         num = request.GET.get('num', None)
 
         canmore = True
-        if len(movies) >= 13:
+        if len(movies) >= 12:
             if num:
                 num = int(num)
-                movies = movies[num*13:(num+1)*13]
-                if len(movies) < 13:
+                movies = movies[num*12:(num+1)*12]
+                if len(movies) < 12:
                     canmore = False
             else:
-                movies = movies[:13]
+                movies = movies[:12]
         else:
             canmore = False
         # print(len(movies))
