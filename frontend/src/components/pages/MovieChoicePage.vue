@@ -8,7 +8,7 @@
     <v-layout justify-center wrap>
         <!-- 처음에 보여주는 것 : 조회수 순 -->
       <v-flex v-for="(card,i) in movielist" :key="i" xs12 sm6 md4 lg3 xl2 style="height: 26rem; width: 28rem;">
-        <v-card style="margin:10px; height: 25rem; width: 15rem; border-radius:15px;" color="#424242" dark>
+        <v-card style="margin:10px; height: 23rem; width: 15rem; border-radius:15px;" color="#424242" dark>
             <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
             <v-card-text>
                 <!-- <p style="font-size: 1rem;">{{ card.title }}</p> -->
