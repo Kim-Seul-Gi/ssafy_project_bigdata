@@ -40,6 +40,10 @@ def signup(request):
 
       return Response(data=True, status=status.HTTP_201_CREATED)
 
+# @api_view(['POST'])
+# def new_cluster(request):
+
+
 @api_view(['POST'])
 def signin(request):
     if request.method == 'POST':
