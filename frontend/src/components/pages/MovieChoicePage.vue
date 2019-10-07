@@ -11,7 +11,10 @@
         <v-card style="margin:10px; height: 25rem; width: 15rem; border-radius:15px;" color="#424242" dark>
             <v-img :src="card.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'"  style="height:16rem; width: 15rem;"></v-img>
             <v-card-text>
-                <p style="font-size: 1rem;">{{ card.title }}</p>
+                <div class="movietitle">
+                    {{card.title.substring(0, card.title.indexOf("("))}}<br>
+                    <span class="hovertext2">{{card.title.substring(0)}}</span>
+                </div>
                 <div class="text-center mt-1" @click="plus(card.id, card.rating)">
                     <v-rating
                         v-model="card.rating"
@@ -32,6 +35,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import axios from 'axios';
+import router from "../../router";
 
 export default {
   mounted() {
@@ -96,7 +100,19 @@ export default {
             user_pk:this.$session.get("id_number"),
             movies:this.rating_box,
         }).then(res => {
-
+            if(res.data==true) {
+                Swal.fire({
+                    title: '평점등록 성공!',
+                    type: 'success'
+                })
+                router.push({name:"home"})
+            } else {
+                Swal.fire({
+                    title: '이미 평점등록을 하셨습니다!',
+                    type: 'error'
+                })
+                router.push({name:"home"})
+            }
         })
       } else {
         Swal.fire({
@@ -113,3 +129,22 @@ export default {
   }
 }
 </script>
+<style>
+  .movietitle .hovertext2 {
+    visibility: hidden;
+    /* width: 250px; */
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    bottom: 20%;
+    white-space:normal;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  .movietitle:hover .hovertext2 {
+    visibility: visible;
+  }
+</style>
