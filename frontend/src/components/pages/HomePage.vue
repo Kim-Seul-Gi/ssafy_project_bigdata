@@ -86,6 +86,9 @@
                   <p class="profile">
                     <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
                   </p>
+                  <p>
+                    <v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn>
+                  </p>
                 </div>
 
               </v-flex>
