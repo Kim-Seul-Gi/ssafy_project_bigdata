@@ -10,13 +10,12 @@
           <p v-else><a class="a" @click="logout()">See you again</a></p>
         </div>
       </v-layout>
-      <v-layout row wrap >
+      <v-layout row wrap>
         <v-flex xs12>
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
           <div v-if="this.user">
             <!-- 로그인 ID : {{this.user}}<br><br> -->
-
             <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
             <div>
               <Subscription
@@ -27,27 +26,24 @@
                 :approval="this.user_data.approval"
               />
             </div>
-
           </div>
-
           <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
           <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
-
           <v-layout row wrap pa-8>
             <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 16rem;" v-bind:key=index>
+                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" :key="index" style="height: 22rem; width: 16rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;" />
                     <v-card-text>
                       <!-- <v-container> -->
                       <div class="movietitle">
-                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        <span class="hovertext" style="vertical-align: middle;">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        {{ movie.title.substring(0, movie.title.indexOf("(")) }}<br>
+                        <span class="hovertext" style="vertical-align: middle;">{{ movie.title.substring(0, movie.title.indexOf("(")) }}</span>
                       </div>
-                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
-                      <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;" /><span>평점 </span><span style="font-weight: bold;">{{ movie.averagerate }}</span>
+                      <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_MovieDetail(movie)">explore</v-btn>
                       <!-- </v-container> -->
                     </v-card-text>
                   </v-card>
@@ -55,19 +51,17 @@
               </carousel>
             </v-flex>
           </v-layout>
-
           <div v-if="this.user && this.user != 'admin'">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
-
             <v-layout row wrap pa-8>
-
-            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-account</v-icon> {{this.user}}님과 유사한 이용자</span>
-
+              <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;">
+                <v-icon size="2rem" color="white">mdi-account</v-icon> {{ this.user }}님과 유사한 이용자
+              </span>
               <v-flex xs12>
-                <div style="margin-top: 3rem;" v-if="typeof(profile_data[1])!='boolean'">
+                <div v-if="typeof(profile_data[1])!='boolean'" style="margin-top: 3rem;">
                   <!-- <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p> -->
                   <carousel :per-page="pageNum">
-                    <slide v-for="person in this.profile_data.slice(1, 6)" style="height: 21rem; width: 15rem;" v-bind:key="person.username">
+                    <slide v-for="person in this.profile_data.slice(1, 6)" :key="person.username" style="height: 21rem; width: 15rem;">
                       <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
                         <v-card-text>
                           <v-container style="margin-top: 1.2rem;">
