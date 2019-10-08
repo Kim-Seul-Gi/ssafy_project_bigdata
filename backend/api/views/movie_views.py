@@ -176,7 +176,7 @@ def genders(request):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def detail(request, movie_id):
-    pprint.pprint(request.data)
+    # pprint.pprint(request.data)
     movie = Movie.objects.get(pk=movie_id)
     movie.watch_count += 1
     movie.save()
