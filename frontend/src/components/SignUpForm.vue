@@ -153,13 +153,13 @@ export default {
         occupation: __this.occupation
       }).then(res => {
         if (res.data == true) {
-          Swal.fire({
+          this.$swal.fire({
             title:'회원가입 성공!',
             type: 'success'
           })
           this.$router.push('/users/signin');
         } else {
-          Swal.fire({
+          this.$swal.fire({
             title:'중복된 name입니다!',
             type: 'error'
           })

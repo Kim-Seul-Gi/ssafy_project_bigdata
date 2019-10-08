@@ -143,7 +143,7 @@ export default {
   methods: {
     support(id) {
       this.users[id].cnt += 1000;
-      Swal.fire({
+      this.$swal.fire({
         text: '1000원 후원에 성공하셨습니다!',
         type: 'success'
       }).then((result) => {
