@@ -22,7 +22,8 @@
                 color="yellow darken-3"
                 background-color="grey darken-1"
                 half-increments
-                hover />
+                hover
+              />
             </div>
           </v-card-text>
         </v-card>
@@ -34,14 +35,11 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import axios from 'axios';
 import router from "../../router";
 
 export default {
-  mounted() {
-      this.onSubmit();
-  },
   data: () => ({
     movielist:[],
     bymoviename:true,
@@ -54,6 +52,9 @@ export default {
     rating: 0,
     rating_box:{}
   }),
+  mounted() {
+      this.onSubmit();
+  },
   methods: {
     ...mapActions("data", ["searchMovies", "plusMovies"]),
     onSubmit: function() {

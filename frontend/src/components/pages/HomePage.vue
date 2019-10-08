@@ -6,7 +6,7 @@
           <p class="animated flash infinite a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
           <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
           <!-- 1. 로그인 여부 -->
-          <p v-if="!this.user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
+          <p v-if="!user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
           <p v-else><a class="a" @click="logout()">See you again</a></p>
         </div>
       </v-layout>
@@ -14,16 +14,16 @@
         <v-flex xs12>
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
-          <div v-if="this.user">
+          <div v-if="user">
             <!-- 로그인 ID : {{this.user}}<br><br> -->
             <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
             <div>
               <Subscription
                 :user="user"
-                :profile_data="profile_data"
-                :now_date="now_date"
-                :sub_date="subscription_date"
-                :approval="this.user_data.approval"
+                :profiledata="profile_data"
+                :nowdate="now_date"
+                :subdate="subscription_date"
+                :approval="user_data.approval"
               />
             </div>
           </div>
@@ -51,17 +51,17 @@
               </carousel>
             </v-flex>
           </v-layout>
-          <div v-if="this.user && this.user != 'admin'">
+          <div v-if="user && user != 'admin'">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
             <v-layout row wrap pa-8>
               <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;">
-                <v-icon size="2rem" color="white">mdi-account</v-icon> {{ this.user }}님과 유사한 이용자
+                <v-icon size="2rem" color="white">mdi-account</v-icon> {{ user }}님과 유사한 이용자
               </span>
               <v-flex xs12>
                 <div v-if="typeof(profile_data[1])!='boolean'" style="margin-top: 3rem;">
                   <!-- <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p> -->
                   <carousel :per-page="pageNum">
-                    <slide v-for="person in this.profile_data.slice(1, 6)" :key="person.username" style="height: 21rem; width: 15rem;">
+                    <slide v-for="person in profile_data.slice(1, 6)" :key="person.username" style="height: 21rem; width: 15rem;">
                       <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
                         <v-card-text>
                           <v-container style="margin-top: 1.2rem;">
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
@@ -108,7 +108,7 @@ export default {
   data() {
     return {
       user:'',
-      profile_data:'',
+      profile_data:[],
       user_data:'',
       subscription_date:'',
       now_date:'',

@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
     <div v-if="userListCards.length" style="color: white">
-      {{userListCards.length}}명이 조회되었습니다.
+      {{ userListCards.length }}명이 조회되었습니다.
     </div>
 
     <!-- <div v-if="!userListCards.length" style="color: white">

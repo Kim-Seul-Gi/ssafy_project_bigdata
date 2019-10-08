@@ -29,19 +29,19 @@ export default {
       type: String,
       default: ""
     },
-    genres_array: {
-      type: Array | String ,
+    genresarray: {
+      type: Array,
       default: () => new Array()
     },
     averagerate: {
       type: Number,
       default: 0.0
     },
-    watch_count: {
+    watchcount: {
       type: Number,
       default: 0
     },
-    score_users: {
+    scoreusers: {
       type: Array,
       default: () => new Array()
     },
@@ -76,8 +76,6 @@ export default {
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
                   'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
                   'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}
-      // console.log(movie_data)
-      // router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       router.push({name:'movie-detail', params : {'id':movie_data.id}})
     }
   }

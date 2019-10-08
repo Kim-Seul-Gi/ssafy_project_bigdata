@@ -2,7 +2,7 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
-        <div v-for="(subscription, index) in this.subscriptions" :key="index">
+        <div v-for="(subscription, index) in subscriptions" :key="index">
           <v-icon dark>mdi-account</v-icon>
           <span v-if="subscription.approval==false" style="font-size: 1rem; font-family: 'Jua', sans-serif; color:white">
             <strong style="font-size: 2rem;">{{ subscription.username }}</strong>님이 

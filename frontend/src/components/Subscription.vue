@@ -1,10 +1,10 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
-      <v-flex v-if="this.user != 'admin'">
-        <div v-if="this.approval" class="mx-auto">
+      <v-flex v-if="user != 'admin'">
+        <div v-if="approval" class="mx-auto">
           <v-card v-if="before_extend" color="#424242" dark class="mx-3 my-3 px-8 py-3">
-            <v-card-title style="font-size: 1.2rem;">{{ this.user }}님의 구독 유효 기간 <span style="padding-left: 0.7rem;">{{ sub_date }}</span></v-card-title>
+            <v-card-title style="font-size: 1.2rem;">{{ user }}님의 구독 유효 기간 <span style="padding-left: 0.7rem;">{{ subdate }}</span></v-card-title>
             <v-card-text>
               <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
                 <v-radio value="30" label="30 days" color="" />
@@ -17,7 +17,7 @@
             <v-card-text>연장 신청이 완료되었어요. 관리자 승인 중입니다. :)</v-card-text>
           </v-card>
           <div id="item">
-            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> {{ this.user }}님을 위한 영화 추천</span>
+            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> {{ user }}님을 위한 영화 추천</span>
           </div>
           <v-layout row wrap>
             <v-flex v-if="this.$store.state.data.movieList_homepage_itembased.length!=0">
@@ -89,7 +89,7 @@
         <div v-else class="mx-auto">
           <v-card v-if="before_create" color="#424242" dark class="mx-3 my-3 px-8 py-3">
             <v-card-text>
-              <p style="font-size: 1rem; text-align: left;">{{ this.user }}님은 구독 서비스를 이용한 적이 없어요.</p>
+              <p style="font-size: 1rem; text-align: left;">{{ user }}님은 구독 서비스를 이용한 적이 없어요.</p>
               <p style="font-size: 1rem; text-align: left;">영화 추천을 위한 구독을 원하시나요?</p>
               <v-radio-group v-model="picked_amount" style="display:inline-block;" row>
                 <v-radio value="30" label="30 days" color="" />
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import axios from 'axios';
 import router from "../router";
 import { Carousel, Slide } from 'vue-carousel';
@@ -117,6 +117,28 @@ export default {
   components:{
     Carousel,
     Slide
+  },
+  props : {
+    profiledata : {
+      type : Array,
+      default: () => new Array()
+    },
+    nowdate : { 
+      type : String,
+      default: ''
+    },
+    user : { 
+      type : String,
+      default: ''
+    },
+    subdate : { 
+      type : String,
+      default: ''
+    },
+    approval : { 
+      type : Boolean,
+      default: true
+    },
   },
   data: () => ({
     amounts: [30, 90],
@@ -127,22 +149,12 @@ export default {
     itembased_movies:'',
     pageNum: 4
   }),
-  props : {
-    profile_data : {
-      type : Object | Array,
-      default:[]
-    },
-    now_date : { type : String },
-    user : { type : String },
-    sub_date : { type : String },
-    approval : { type : Boolean },
-  },
   watch: {
-    profile_data() {
+    profiledata() {
       const params = {
         id : this.$session.get('id_number'),
-        approval : this.profile_data[0].approval,
-        resemble_users : this.profile_data.slice(1)
+        approval : this.profiledata[0].approval,
+        resemble_users : this.profiledata.slice(1)
       }
       this.getMovies_subscription_itembased(params)
       this.getMovies_subscription_userbased(params)
