@@ -199,7 +199,7 @@ export default {
       const apiUrl = '/api'
       const id = this.$session.get('id_number')
       var profile = await axios.get(`${apiUrl}/users/${id}`)
-      console.log(profile, 123123)
+      // console.log(profile, 123123)
       this.profile_data = profile.data
       // console.log(this.profile_data[6])
 
@@ -249,7 +249,7 @@ export default {
       axios.post(`${apiUrl}/KNN/checkCSV/`,{
         pk:this.$session.get('id_number')
       }).then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         if(res.data==false)
           this.modal = !(this.modal)
         else
@@ -275,9 +275,6 @@ export default {
         this.user = this.profile_data[0]
       })
     },
-    go_loginpage() {
-      console.log(123123)
-    }
   }
 }
 </script>
