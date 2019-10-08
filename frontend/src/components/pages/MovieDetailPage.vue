@@ -130,11 +130,13 @@ export default {
         this.castingList = this.movie_data[0].castings.split("|")
         // console.log(this.movie_data)
 
-        // 내가 댓글을 남겼다면..? 해당점수를 가져와야죠!
-        var myrate = await axios.get(`${apiUrl}/movies/${id}/${this.$session.get('id_number')}`)
-        if (myrate.data.flag===true) {
-          this.rate_flag = true
-          this.score = myrate.data.rate
+        if (this.$session.get('id_number')) {
+          // 내가 댓글을 남겼다면..? 해당점수를 가져와야죠!
+          var myrate = await axios.get(`${apiUrl}/movies/${id}/${this.$session.get('id_number')}`)
+          if (myrate.data.flag===true) {
+            this.rate_flag = true
+            this.score = myrate.data.rate
+          }
         }
 
     },
