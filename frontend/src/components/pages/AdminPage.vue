@@ -4,17 +4,17 @@
     <!-- <span class="display-3 grey--text">Admin page</span> -->
     <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Admin page</p>
     <v-flex fluid row justify-center style="width:100%;">
-      <v-switch v-model="switch1" :label="`movie`" @click="one()" dark />
-      <v-switch v-model="switch2" :label="`user`" @click="two()"dark  />
+      <v-switch v-model="switch1" :label="`movie`" @click="one()" dark/>
+      <v-switch v-model="switch2" :label="`user`" @click="two()" dark/>
       <v-switch v-model="switch3" :label="`clustering`" @click="three()" dark />
       <v-switch v-model="switch4" :label="`subscription`" @click="four()" dark />
 
     </v-flex>
-    <div>
+    <v-flex xs12>
       <v-btn @click="check()">초기화</v-btn>
-    </div>
+    </v-flex>
     <v-flex v-if="switch1" xs12 wrap>
-      <div class="display-2 pa-10">영화 검색</div>
+      <div class="display-2 pa-10" style="color:white">영화 검색</div>
       <v-flex xs6 offset-3>
         <v-btn @click="createMovie()" v-if="!create">create</v-btn>
         <v-btn @click="createMovie()" v-if="create">cancel</v-btn>
@@ -26,7 +26,7 @@
       </v-flex>
     </v-flex>
     <v-flex v-if="switch2" xs12>
-      <div class="display-2 pa-10">유저 검색</div>
+      <div class="display-2 pa-10" style="color:white">유저 검색</div>
       <v-flex xs6 offset-3>
         <UserSearchForm :submit="searchUsers_admin" />
       </v-flex>
@@ -34,13 +34,16 @@
         <AdminUserList :user-list-cards="userList" />
       </v-flex>
     </v-flex>
-    <v-flex v-if="switch3" xs12>
-      <p>clustering 파라미터 설정하기!</p>
-      여기에서 누르면 클러스터링 값이 변경될 것입니다.
-      <AdminClustering />
+    <v-flex v-if="switch3" xs8>
+      <v-card color="#424242" dark>
+        <p style="font-size: 3rem; font-family: 'Jua', sans-serif; color:black"
+          >Clustering 파라미터 설정하기</p>
+        <AdminClustering />
+      </v-card>
     </v-flex>
     <v-flex v-if="switch4" xs12>
-      <p>여기에서 사람들이 구독 신청한 것들을 관리합시다~</p>
+      <p style="font-size: 3rem; font-family: 'Jua', sans-serif; color:black"
+          >구독자들의 신청목록 관리</p>
       <AdminSubscriptionList />
     </v-flex>
   </v-layout>
