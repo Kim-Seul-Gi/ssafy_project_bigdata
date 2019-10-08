@@ -2,17 +2,14 @@
   <v-container class="pa-2" fluid grid-list-md>
     <v-layout column>
       <v-flex>
-        <div v-for="(subscription, index) in this.subscriptions" v-bind:key="index">
+        <div v-for="(subscription, index) in subscriptions" :key="index">
           <v-icon dark>mdi-account</v-icon>
-          <span style="font-size: 1rem; font-family: 'Jua', sans-serif; color:white"
-            v-if="subscription.approval==false"
-            >
-            <strong style="font-size: 2rem;">{{subscription.username}}</strong>님이 
-            <strong style="font-size: 2rem;">{{subscription.request}}</strong>일 구독 신청하였습니다.</span><br>
+          <span v-if="subscription.approval==false" style="font-size: 1rem; font-family: 'Jua', sans-serif; color:white">
+            <strong style="font-size: 2rem;">{{ subscription.username }}</strong>님이 
+            <strong style="font-size: 2rem;">{{ subscription.request }}</strong>일 구독 신청하였습니다.</span><br>
           <v-btn @click="approval(subscription, index)">승인</v-btn>
         </div>
       </v-flex>
-
     </v-layout>
   </v-container>
 </template>

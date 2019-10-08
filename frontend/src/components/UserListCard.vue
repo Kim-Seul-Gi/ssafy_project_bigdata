@@ -2,8 +2,8 @@
   <v-hover v-slot:default="{ hover }">
     <v-card :elevation="hover ? 8 : 2" style="margin:10px; height: 5rem; width: 20rem; border-radius:15px;" color="#424242" dark>
       <v-card-text>
-        <div>{{id}} | {{username}}</div>
-        <v-btn text color="primary" @click="SELECT_UserDetail()" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
+        <div>{{ id }} | {{ username }}</div>
+        <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_UserDetail()">explore</v-btn>
       </v-card-text>
     </v-card>
   </v-hover>

@@ -1,19 +1,15 @@
 <template>
-  <v-layout row wrap text-left >
-    <!-- <v-layout row wrap pa-5> -->
+  <v-layout row wrap text-left>
     <v-flex>
       <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-        <v-img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+        <v-img :src="url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;" />
         <v-card-text>
-          <!-- <v-container> -->
           <div class="movietitle">
-            {{title.substring(0, title.indexOf("("))}}<br>
-            <span class="hovertext2">{{title.substring(0)}}</span>
+            {{ title.substring(0, title.indexOf("(")) }}<br>
+            <span class="hovertext2">{{ title.substring(0) }}</span>
           </div>
-          <i class="fas fa-star" style="color: #FFB600;"></i><span>평점 </span><span style="font-weight: bold;">{{Math.round(averagerate*100)/100}}</span>
+          <i class="fas fa-star" style="color: #FFB600;" /><span>평점 </span><span style="font-weight: bold;">{{ Math.round(averagerate*100)/100 }}</span>
           <span><v-btn text color="primary" @click="SELECT_MovieDetail()">explore</v-btn></span>
-          <!-- <v-btn text color="primary" @click="SELECT_MovieDetail()" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn> -->
-          <!-- </v-container> -->
         </v-card-text>
       </v-card>
     </v-flex>
@@ -33,19 +29,19 @@ export default {
       type: String,
       default: ""
     },
-    genres_array: {
-      type: Array | String ,
+    genresarray: {
+      type: Array,
       default: () => new Array()
     },
     averagerate: {
       type: Number,
       default: 0.0
     },
-    watch_count: {
+    watchcount: {
       type: Number,
       default: 0
     },
-    score_users: {
+    scoreusers: {
       type: Array,
       default: () => new Array()
     },
@@ -80,8 +76,6 @@ export default {
       var movie_data = {'id':this.id, 'title':this.title, 'genres_array':this.genres_array,
                   'watch_count' : this.watch_count, 'score_users':this.score_users, 'averagerate':this.averagerate,
                   'plot':this.plot,'url':this.url,'director':this.director,'casting':this.casting}
-      // console.log(movie_data)
-      // router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       router.push({name:'movie-detail', params : {'id':movie_data.id}})
     }
   }
