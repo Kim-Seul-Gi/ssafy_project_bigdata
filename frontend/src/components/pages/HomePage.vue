@@ -136,8 +136,7 @@ export default {
         this.$session.set('id', '')
       }
       this.user = this.$session.get('id')
-      if (this.$session.get('id')=='') {
-      } else {
+      if (this.$session.get('id')!=='') {
         const apiUrl = '/api';
         const id = this.$session.get('id_number')
         var profile = await axios.get(`${apiUrl}/users/${id}`)

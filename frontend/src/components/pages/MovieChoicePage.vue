@@ -103,7 +103,7 @@ export default {
             movies:this.rating_box,
         }).then(res => {
             if(res.data==true) {
-                Swal.fire({
+                this.$swal.fire({
                     title: '평점등록 성공!',
                     type: 'success'
                 })
@@ -120,7 +120,7 @@ export default {
             }
         })
       } else {
-        Swal.fire({
+        this.$swal.fire({
           title:'10개 이상 해주세요',
           text: `현재까지 평가한 영화갯수 : ${Object.keys(this.rating_box).length}개`,
           type: 'error'
