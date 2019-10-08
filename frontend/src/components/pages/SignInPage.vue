@@ -55,11 +55,12 @@ export default {
     }
   },
   mounted() {
+    // console.log(this.$swal)
     // this.usercheck();
   },
   created() {
     if (this.$session.get('id')!='') {
-      Swal.fire({
+      this.$swal.fire({
           type: 'error',
           title: 'Oops...',
           text: '이미 로그인한 상태입니다!',
@@ -82,7 +83,7 @@ export default {
           this.$session.set('admin', res.data.admin)
           var profile = await axios.get(`/api/users/${res.data.id_number}`)
           const flag = typeof(profile.data[1])
-          Swal.fire({
+          this.$swal.fire({
             title: '로그인 완료!',
             type: 'success'
           }).then((result) => {
@@ -99,7 +100,7 @@ export default {
           __this.username = ''
           __this.password = ''
           // alert('ID 또는 비밀번호가 다릅니다. 확인해주세요!')
-          Swal.fire({
+          this.$swal.fire({
             text: 'ID 또는 비밀번호가 다릅니다. 확인해주세요!',
             type: 'error'
           })

@@ -88,7 +88,7 @@ export default {
   },
   created() {
     if (this.$session.get('admin')!=true) {
-      Swal.fire({
+      this.$swal.fire({
           type: 'error',
           title: 'Oops...',
           text: '관리자 권한이 없습니다!',

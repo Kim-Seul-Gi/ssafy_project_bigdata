@@ -177,7 +177,7 @@ export default {
   }),
   created() {
     if (this.$session.get('id')=="") {
-      Swal.fire({
+      this.$swal.fire({
           type: 'error',
           title: 'Oops...',
           text: '로그인을 해주세요!',
@@ -254,7 +254,7 @@ export default {
           this.modal = !(this.modal)
         else
           // alert("이미 등록하신 평점이 있습니다!")
-          Swal.fire({
+          this.$swal.fire({
             text: '이미 등록한 평점이 있어요.'
           })
       })
