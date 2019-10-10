@@ -2,19 +2,16 @@
 <template>
   <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-
       <!-- 검색 폼 by 영화이름-->
       <v-flex>
-        <div style="color:rgb(255,255,255)">No. {{movie_data[0].id}}</div>
+        <div style="color:rgb(255,255,255)">No. {{ movie_data[0].id }}</div>
         <v-card class="mx-auto" max-width="600px" color="#424242" dark>
-          <v-img :src="movie_data[0].url"
-            height="400px" contain
-          ></v-img>
+          <v-img :src="movie_data[0].url" height="400px" contain />
           <v-col>
-            <h1>{{movie_data[0].title}}</h1>
-            <div v-if="this.$session.get('id_number')!=''">
-              <v-btn icon v-if="!this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 남기기'}}</v-btn>
-              <v-btn icon v-if="this.rate_flag" @click="rate_show=!rate_show">{{rate_show ? 'cancel' : '평점 수정하기'}}</v-btn>
+            <h1>{{ movie_data[0].title }}</h1>
+            <div v-if="$session.get('id_number')!=''">
+              <v-btn v-if="!rate_flag" icon @click="rate_show=!rate_show">{{ rate_show ? 'cancel' : '평점 남기기' }}</v-btn>
+              <v-btn v-if="rate_flag" icon @click="rate_show=!rate_show">{{ rate_show ? 'cancel' : '평점 수정하기' }}</v-btn>
             </div>
             <v-flex v-show="rate_show">
               <div class="mx-auto" style="width:200px">
@@ -23,59 +20,50 @@
                   label="score"
                   :rules="scoreRules"
                   type="number"
-                  required>
-                </v-text-field>
-                <v-btn v-if="!this.rate_flag" @click="createRating(movie_data[0].id)">등록</v-btn>
-                <v-btn v-if="this.rate_flag" @click="deleteRating(movie_data[0].id)">삭제</v-btn>
-                <v-btn v-if="this.rate_flag" @click="updateRating(movie_data[0].id)">수정</v-btn>
+                  required
+                />
+                <v-btn v-if="!rate_flag" @click="createRating(movie_data[0].id)">등록</v-btn>
+                <v-btn v-if="rate_flag" @click="deleteRating(movie_data[0].id)">삭제</v-btn>
+                <v-btn v-if="rate_flag" @click="updateRating(movie_data[0].id)">수정</v-btn>
                 <v-btn @click="rate_show = !rate_show">취소</v-btn>
               </div>
             </v-flex>
-            <div class="grey--text">{{movie_data[0].averagerate}} ({{movie_data[0].watch_count}})</div>
-            <div class="grey--text">Director: {{movie_data[0].director}}</div>
+            <div class="grey--text">{{ movie_data[0].averagerate }} ({{ movie_data[0].watch_count }})</div>
+            <div class="grey--text">Director: {{ movie_data[0].director }}</div>
           </v-col>
-          <!-- {{this.movie_data[0].castings.split("|")}} -->
-          {{this.castingList}}
-          <!-- {{this.movie_data[0].castings}} -->
+          {{ castingList }}
           <br>
           <v-btn icon @click="show = !show">
             <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
           </v-btn>
-
           <v-expand-transition>
             <div v-show="show">
-              <v-card-text>{{movie_data[0].plot}}</v-card-text>
+              <v-card-text>{{ movie_data[0].plot }}</v-card-text>
             </div>
           </v-expand-transition>
         </v-card>
-        <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">
-          Similar Movies</p>
+        <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Movies</p>
       </v-flex>
-
-
-
       <v-flex>
         <carousel :per-page="4">
-          <slide v-for="movie in this.movie_data.slice(1)" style="height: 22rem; width: 15rem;">
+          <slide v-for="(movie, index) in movie_data.slice(1)" :key="index" style="height: 22rem; width: 15rem;">
             <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-              <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+              <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;" />
               <v-card-text>
-                <div class="movietitle">
-                  <!-- {{movie.title.substring(0, movie.title.indexOf("("))}}<br> -->
-                  <!-- <span class="hovertext">{{movie.title.substring(0, movie.title.indexOf("("))}}</span> -->
+                <div class="movietitle2" style="margin-left:0.3rem;">
+                  <!-- {{ movie.title.substring(0, movie.title.indexOf("(")) }}<br>
+                  <span class="hovertext">{{ movie.title.substring(0, movie.title.indexOf("(")) }}</span> -->
+                  <span style="margin-right:0.5rem;">{{ movie.title }}</span>
+                  <!-- <span class="hovertext2">{{ movie.title }}</span> -->
                 </div>
-                  <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
-                  <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
-                </v-card-text>
-              </v-card>
-            </slide>
-          </carousel>
-        </v-flex>
-
-
-
-      </v-layout>
-
+                <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;" /><span>평점 </span><span style="font-weight: bold;">{{ movie.averagerate }}</span>
+                <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_MovieDetail(movie)">explore</v-btn>
+              </v-card-text>
+            </v-card>
+          </slide>
+        </carousel>
+      </v-flex>
+    </v-layout>
     <v-btn @click="search()">검색으로 이동</v-btn>
   </v-container>
 </template>
@@ -91,8 +79,10 @@ export default {
     Slide
   },
   props: {
-    id : {type:Number | String},
-    // movie_data : {type:Object}
+    id : {
+      type: Number | String,
+      default: ''
+    },
   },
   data: () => ({
     score: 0.0,
@@ -118,27 +108,21 @@ export default {
   }),
   mounted() {
     this.fetchdata()
-    // this.castingList = movie_data[0].casting.split("|")
   },
   methods: {
     async fetchdata() {
         const apiUrl = '/api'
         const id = this.$route.params.id
-
         var movie = await axios.get(`${apiUrl}/movies/${id}`)
         this.movie_data = movie.data
         this.castingList = this.movie_data[0].castings.split("|")
-        // console.log(this.movie_data)
-
         if (this.$session.get('id_number')) {
-          // 내가 댓글을 남겼다면..? 해당점수를 가져와야죠!
           var myrate = await axios.get(`${apiUrl}/movies/${id}/${this.$session.get('id_number')}`)
           if (myrate.data.flag===true) {
             this.rate_flag = true
             this.score = myrate.data.rate
           }
         }
-
     },
     search() {
       router.push({name:'movie-search'})
@@ -151,15 +135,6 @@ export default {
       router.push({name:'movie-detail', params : {'id':movie_data.id, 'movie_data':movie_data}})
       window.location.reload()
     },
-    // checkRating(id) {
-    //   const apiUrl = '/api'
-    //   axios.post(`${apiUrl}/movie/${id}/score/check/`, {
-    //     user_pk:this.$session.get('id_number')
-    //   }).then(res => {
-    //     if(res==true) {alert("이미 평점을 남겼습니다.");}
-    //     else {this.rate_show = true;}
-    //   })
-    // },
     createRating(id) {
       const apiUrl = '/api'
       axios.post(`${apiUrl}/movie/${id}/score/cdu/`, {
@@ -188,7 +163,6 @@ export default {
       axios.delete(`${apiUrl}/movie/${id}/score/cdu/`, {
         data: {user_pk:this.$session.get('id_number')}
       }).then(res => {
-        console.log(res.data)
         if(res.data==false) alert("등록된 평점이 없습니다.")
         else alert("평점을 삭제했습니다.")
         this.rate_show = !this.rate_show
@@ -198,3 +172,29 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .movietitle2 {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    text-align:left !important;
+  }
+  .movietitle2 .hovertext2 {
+    visibility: hidden;
+    /* width: 80%; */
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px;
+    bottom: 20%;
+    right:0px;
+    white-space:normal;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+  .movietitle2:hover .hovertext2 {
+    visibility: visible;
+  }
+</style>

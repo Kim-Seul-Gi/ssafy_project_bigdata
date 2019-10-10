@@ -55,8 +55,6 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.$swal)
-    // this.usercheck();
   },
   created() {
     if (this.$session.get('id')!='') {

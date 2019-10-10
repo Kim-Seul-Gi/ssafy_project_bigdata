@@ -112,7 +112,7 @@ export default {
                   window.location.reload()
                 })
             } else {
-                Swal.fire({
+                this.$swal.fire({
                     title: '이미 평점등록을 하셨습니다!',
                     type: 'error'
                 })
