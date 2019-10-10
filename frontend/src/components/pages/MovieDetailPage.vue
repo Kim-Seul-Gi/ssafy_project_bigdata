@@ -39,16 +39,23 @@
               </div>
             </v-flex>
             <div class="grey--text">평점 : {{ movie_data[0].averagerate }} , 조회수 : {{ movie_data[0].watch_count }}</div>
-            <div class="grey--text">Director: {{ movie_data[0].director }}</div>
+            <div class="grey--text">Director: {{ movie_data[0].director }}</div><br>
+            <div class="grey--text" v-for="(genre, i) in this.genreList" v-bind:key="i">{{genre}}</div>
           </v-col>
-          {{ castingList }}
           <br>
           <v-btn icon @click="show = !show">
             <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
           </v-btn>
           <v-expand-transition>
             <div v-show="show">
-              <v-card-text>{{ movie_data[0].plot }}</v-card-text>
+              <p style="font-size: 1.5rem; color: white; font-family: 'Jua', sans-serif;">출연배우</p>
+              <div v-for="(casting, i) in this.castingList" v-bind:key="i">
+              <span class="grey--text" style="font-family: 'Jua', sans-serif;">
+                {{casting}}</span>
+              </div>
+              <p style="font-size: 1.5rem; color: white; font-family: 'Jua', sans-serif;"
+                  >줄거리</p>
+              <v-card-text>{{ movie_data[0].plot }}</v-card-text> 
             </div>
           </v-expand-transition>
         </v-card>
@@ -99,6 +106,7 @@ export default {
     show: false,
     rate_show: false,
     castingList: [],
+    genreList: [],
     movie_data:[
       {"id":''},
       {"averagerate":''},
@@ -124,6 +132,7 @@ export default {
         var movie = await axios.get(`${apiUrl}/movies/${id}`)
         this.movie_data = movie.data
         this.castingList = this.movie_data[0].castings.split("|")
+        this.genreList = this.movie_data[0].genres_array.split("|")
         if (this.$session.get('id_number')) {
           var myrate = await axios.get(`${apiUrl}/movies/${id}/${this.$session.get('id_number')}`)
           if (myrate.data.flag===true) {
