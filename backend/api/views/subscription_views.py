@@ -24,15 +24,16 @@ def create(request):
 
         check_subscription_request = Subscription_manager.objects.filter(Profile=profile, approval=False)
         if check_subscription_request:
-            message = {'message':'이미 구독 신청을 한 상태입니다.'}
+            message = {'create':False, 'message':'이미 구독 신청을 한 상태입니다.'}
             return Response(data=message, status=status.HTTP_200_OK)
         else:
+            message = {'create':True, 'message':'구독 신청이 되었습니다.'}
             subscription_request = Subscription_manager.objects.create(
                 Profile=profile,
                 request=request.data.get('request'),
                 approval=False,
             )
-            return Response(status=status.HTTP_200_OK)
+            return Response(data=message, status=status.HTTP_200_OK)
 
 @api_view(['GET','POST'])
 def manager(request):

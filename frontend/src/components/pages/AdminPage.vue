@@ -17,7 +17,7 @@
           <v-btn v-if="!create" @click="createMovie()">create</v-btn>
           <v-btn v-if="create" @click="createMovie()">cancel</v-btn>
           <CreateMovieForm v-if="create" />
-          <MovieSearchForm v-if="!create" :submit="searchMovies_admin" />
+          <MovieSearchForm v-if="!create" :submit="before_searchMovies" />
         </v-flex>
         <v-flex xs12>
           <AdminMovieList :movie-list-cards="movieList" />
@@ -26,7 +26,7 @@
       <v-flex v-if="switch2" xs12>
         <div class="display-2 pa-10" style="color:white">유저 검색</div>
         <v-flex xs6 offset-3>
-          <UserSearchForm :submit="searchUsers_admin" />
+          <UserSearchForm :submit="before_searchUsers" />
         </v-flex>
         <v-flex xs12>
           <AdminUserList :user-list-cards="userList" />
@@ -94,6 +94,28 @@ export default {
   },
   methods: {
     ...mapActions("data", ["searchMovies_admin", "searchUsers_admin"]),
+    async before_searchMovies(params) {
+      this.reset = !this.reset
+      var result = await this.searchMovies_admin(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
+    async before_searchUsers(params) {
+      this.reset = !this.reset
+      var result = await this.searchUsers_admin(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
     one() {
       this.switch1 = true
       this.switch2 = false

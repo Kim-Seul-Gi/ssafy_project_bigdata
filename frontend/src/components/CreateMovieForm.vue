@@ -175,7 +175,7 @@ export default {
         this.$swal.fire ({
           type: 'success',
           title: '영화가 등록되었습니다!'
-        }).then(resulst => {
+        }).then(result => {
           this.$refs.form.reset()
         })
       })
