@@ -66,8 +66,8 @@ export default {
       default: ""
     },
     genresarray: {
-      type: Array,
-      default: () => new Array()
+      type: String,
+      default: ''
     },
     img: {
       type: String,
@@ -150,7 +150,7 @@ export default {
       const apiUrl = '/api'
       var movie = await axios.get(`${apiUrl}/movies/${id}`)
       this.tmp_title = movie.data[0].title
-      this.tmp_genres_array = movie.data[0].genres_array
+      this.tmp_genres_array = movie.data[0].genres_array.split('|')
     },
     movie_cancel() {
       this.genres_array = this.tmp_genres
