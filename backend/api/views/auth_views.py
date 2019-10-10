@@ -151,9 +151,7 @@ def CheckCluster(Nearest, input_data):
     else:
       for i in range(5):
         EM_list[i] = table[2][i].index(max(table[2][i]))
-  print(K_list)
-  print(H_list)
-  print(EM_list)
+
   User_Cluster_Kmeans(UserID=input_data,
     K3=K_list[0], K4=K_list[1], K5=K_list[2], 
     K6=K_list[3], K7=K_list[4]).save()
@@ -169,14 +167,15 @@ def new_cluster(request):
   if request.method == 'POST':
     Users, users_pk = create_User()
     user = request.data.get('user_pk')
+    
     flag = False
     Users = pd.read_csv('./api/fixtures/user_rating.csv', header=0)
     Users = Users['user_pk']
     for user_pk in Users:
       if(user_pk==user):
         flag = True; break;
-    if(flag): return Response(data=False, status=status.HTTP_200_OK)
-
+    if(flag): return Response(data=1, status=status.HTTP_200_OK)
+    elif(user==""): return Response(data=0, status=status.HTTP_200_OK)
     movies = request.data.get('movies')
     profile = Profile.objects.get(user=user)
 
@@ -211,4 +210,4 @@ def new_cluster(request):
       users_distance[idx] = 100
     print(Nearest_user)
     CheckCluster(Nearest_user, profile)
-    return Response(data=True, status=status.HTTP_200_OK)
+    return Response(data=2, status=status.HTTP_200_OK)
