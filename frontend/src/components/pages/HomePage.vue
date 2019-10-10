@@ -6,67 +6,59 @@
           <p class="animated flash infinite a" style="margin-bottom: 2.5rem; color: #fff; font-size: 5rem; font-family: 'Monoton', cursive; -webkit-animation: neon1 1.5s ease-in-out infinite alternate; -moz-animation: neon1 1.5s ease-in-out infinite alternate; animation: neon1 1.5s ease-in-out infinite alternate;">Fluid</p>
           <p style="color: white; font-size: 1.7rem; font-family: 'Jua', sans-serif;">당신과 함께 울고 웃는 movie mate :)</p>
           <!-- 1. 로그인 여부 -->
-          <p v-if="!this.user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
+          <p v-if="!user"><router-link to="/users/signin" class="a">Let's start with us</router-link></p>
           <p v-else><a class="a" @click="logout()">See you again</a></p>
         </div>
       </v-layout>
-      <v-layout row wrap >
+      <v-layout row wrap>
         <v-flex xs12>
           <!-- <h1>(1) 로그인하셨습니까?</h1> -->
           <!-- 1. 로그인 여부 -->
-          <div v-if="this.user">
-
+          <div v-if="user">
+            <!-- 로그인 ID : {{this.user}}<br><br> -->
             <!-- 2, 3. 구독 여부 에 따른 (2), (3), (4) -->
             <div>
               <Subscription
                 :user="user"
-                :profile_data="profile_data"
-                :now_date="now_date"
-                :sub_date="subscription_date"
-                :approval="this.user_data.approval"
+                :profiledata="profile_data"
+                :nowdate="now_date"
+                :subdate="subscription_date"
+                :approval="user_data.approval"
               />
             </div>
-
           </div>
-
           <!-- (5) 단순한 영화 나열(조회수, 인기순) -->
           <!-- 대충 영화 10개 정도만..? 가져와봅시다! -->
-
           <v-layout row wrap pa-8>
             <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-movie</v-icon> Movie List</span>
             <v-flex>
               <carousel :per-page="pageNum">
-                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" style="height: 22rem; width: 16rem;">
+                <slide v-for="(movie, index) in this.$store.state.data.movieList_homepage" :key="index" style="height: 22rem; width: 16rem;">
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
-                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;"></v-img>
+                    <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;" />
                     <v-card-text>
-                      <!-- <v-container> -->
                       <div class="movietitle">
-                        {{movie.title.substring(0, movie.title.indexOf("("))}}<br>
-                        <span class="hovertext" style="vertical-align: middle;">{{movie.title.substring(0, movie.title.indexOf("("))}}</span>
+                        {{ movie.title.substring(0, movie.title.indexOf("(")) }}<br>
+                        <span class="hovertext" style="vertical-align: middle;">{{ movie.title.substring(0, movie.title.indexOf("(")) }}</span>
                       </div>
-                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;"></i><span>평점 </span><span style="font-weight: bold;">{{movie.averagerate}}</span>
-                      <v-btn text color="primary" @click="SELECT_MovieDetail(movie)" style="padding-right: 0; margin-left: 2rem; margin-right: 0;">explore</v-btn>
-                      <!-- </v-container> -->
+                      <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;" /><span>평점 </span><span style="font-weight: bold;">{{ movie.averagerate }}</span>
+                      <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_MovieDetail(movie)">explore</v-btn>
                     </v-card-text>
                   </v-card>
                 </slide>
               </carousel>
             </v-flex>
           </v-layout>
-
-          <div v-if="this.user && this.user != 'admin'">
+          <div v-if="user && user != 'admin'">
             <!-- (6) 유사 유저는 여기에서 가져올 수 있네요..?! -->
-
             <v-layout row wrap pa-8>
-
-            <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;"><v-icon size="2rem" color="white">mdi-account</v-icon> {{this.user}}님과 유사한 이용자</span>
-
+              <span style="color: white; font-size: 1.7rem; margin-left: 0.9rem; font-family: 'Jua', sans-serif;">
+                <v-icon size="2rem" color="white">mdi-account</v-icon> {{ user }}님과 유사한 이용자
+              </span>
               <v-flex xs12>
-                <div style="margin-top: 3rem;" v-if="typeof(profile_data[1])!='boolean'">
-                  <!-- <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p> -->
+                <div v-if="typeof(profile_data[1])!='boolean'" style="margin-top: 3rem;">
                   <carousel :per-page="pageNum">
-                    <slide v-for="person in this.profile_data.slice(1, 6)" style="height: 21rem; width: 15rem;" v-bind:key="person.username">
+                    <slide v-for="person in profile_data.slice(1, 6)" :key="person.username" style="height: 21rem; width: 15rem;">
                       <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
                         <v-card-text>
                           <v-container style="margin-top: 1.2rem;">
@@ -80,19 +72,11 @@
                     </slide>
                   </carousel>
                 </div>
-
-                <div style="margin-top: 3rem;" v-else>
-                  <p class="profile">
-                    <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
-                  </p>
-                  <p>
-                    <v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn>
-                  </p>
+                <div v-else style="margin-top: 4rem;">
+                  <p class="profile"><span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span></p>
+                  <p><v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn></p>
                 </div>
-
               </v-flex>
-
-
             </v-layout>
           </div>
         </v-flex>
@@ -102,7 +86,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import router from "../../router";
 import axios from 'axios'
 import Subscription from "../Subscription";
@@ -117,7 +101,7 @@ export default {
   data() {
     return {
       user:'',
-      profile_data:'',
+      profile_data:[],
       user_data:'',
       subscription_date:'',
       now_date:'',
@@ -139,8 +123,7 @@ export default {
         this.$session.set('id', '')
       }
       this.user = this.$session.get('id')
-      if (this.$session.get('id')=='') {
-      } else {
+      if (this.$session.get('id')!=='') {
         const apiUrl = '/api';
         const id = this.$session.get('id_number')
         var profile = await axios.get(`${apiUrl}/users/${id}`)
@@ -183,10 +166,7 @@ export default {
       router.push({name:"sign-in"})
     },
     logout() {
-      // let __this = this
-      let tmp = axios.get('/api/auth/logout').then(res => {
-        // console.log(res)
-      })
+      axios.get('/api/auth/logout')
       this.user = ''
       this.$session.set('id', '')
       this.$session.set('admin', false)

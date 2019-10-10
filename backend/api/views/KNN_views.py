@@ -31,8 +31,8 @@ def new_movie(request):
   Movie(title=title, genres='|'.join(genres), plot=plot, url=url, director=director, casting='|'.join(casting)).save()
 
 # 영화간의 거리 계산(장르, 감독, 배우)
-def distance_movie(input_movie, input_movie_genre, movie_genre, title):
-  movie = Movie.objects.get(title=title)
+def distance_movie(input_movie, input_movie_genre, movie_genre, movie_pk):
+  movie = Movie.objects.get(pk=movie_pk)
   dist = np.linalg.norm(input_movie_genre - movie_genre)
   for genre in movie.genres.split("|"):
     if genre in input_movie.genres.split("|"):
@@ -51,10 +51,10 @@ def find_near_movie(movie):
 # 영화 데이터 가져오기
 def create_Movie():
   Movies = pd.read_csv('./api/fixtures/movie_genre.csv', header=0)
-  titles = Movies['title']
+  movies_pk = Movies['movie_pk']
   Movies = Movies[label]
   Movies.head()
-  return Movies, titles
+  return Movies, movies_pk
 
 @api_view(['GET','POST'])
 def KNN_algorithm_movie(request):
@@ -66,18 +66,17 @@ def KNN_algorithm_movie(request):
     idx = label.index(genre)
     input_movie_genre[idx] = 1
 
-  Movies, titles = create_Movie()
-  dist_movie = [] # 영화간의 거리 리스트
+  Movies, movies_pk = create_Movie()
+  dist_movie = [0 for i in range(movies_pk.values[-1]+1)] # 영화간의 거리 리스트
   input_movie_genre = np.array(input_movie_genre)
-  for movie_genre, title in zip(Movies.values, titles):
-    temp = distance_movie(input_movie, input_movie_genre, movie_genre, title)
-    dist_movie.append(temp)
+  for movie_genre, movie_pk in zip(Movies.values, movies_pk):
+    temp = distance_movie(input_movie, input_movie_genre, movie_genre, movie_pk)
+    dist_movie[movie_pk] = temp # 거리 저장.
 
   Nearest_movie = [] # 가장 가까운 영화 리스트 7개
   for i in range(7):
     idx = find_near_movie(dist_movie)
-    pk = Movie.objects.get(title=titles.values[idx]).pk
-    Nearest_movie.append(pk)
+    Nearest_movie.append(idx)
     dist_movie[idx] = 100
   print(Nearest_movie)
   target = "MOVIE"

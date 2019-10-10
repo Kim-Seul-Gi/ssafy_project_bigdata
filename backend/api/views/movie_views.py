@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from api.models import Movie, Rate, Cluster, Profile,Movie_Cluster_Kmeans, Movie_Cluster_Hmeans, Movie_Cluster_EM
-from api.serializers import MovieSerializer, Movie_Age_Serializer
+from api.serializers import MovieSerializer, Movie_Age_Serializer, Movie_Genre_Serializer
 from rest_framework.response import Response
 from django.db.models import Avg
 import pandas as pd
@@ -38,9 +38,7 @@ def movies(request):
                 movies = movies[:12]
         else:
             canmore = False
-        # print(len(movies))
         serializer = MovieSerializer(movies, many=True)
-
         return Response(data=[serializer.data, canmore], status=status.HTTP_200_OK)
 
     if request.method == 'DELETE':
@@ -87,7 +85,7 @@ def genres(request):
         movies = movies.filter(title__icontains=title)
     if genre:
         movies = movies.filter(genres__icontains=genre)
-    serializer = MovieSerializer(movies, many=True)
+    serializer = Movie_Genre_Serializer(movies, many=True)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -178,7 +176,7 @@ def genders(request):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def detail(request, movie_id):
-    pprint.pprint(request.data)
+    # pprint.pprint(request.data)
     movie = Movie.objects.get(pk=movie_id)
     movie.watch_count += 1
     movie.save()
@@ -265,7 +263,7 @@ def getarray(request):
         tmp_array = [0]*19
 
         movie_genres = movies[i].genres.split('|')
-        tmp_array[18] = movies[i].title
+        tmp_array[18] = movies[i].pk
 
         for j in range(len(movie_genres)):
             tmp_array[genre_number[movie_genres[j]]] = 1
