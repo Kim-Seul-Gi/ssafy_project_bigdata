@@ -12,5 +12,6 @@ new Vue({
   vuetify,
   router,
   store,
+  VueSweetalert2,
   render: h => h(App)
 }).$mount('#app')

@@ -172,7 +172,10 @@ export default {
         casting:this.casting
       }).then(() => {
         preload.style.display = 'none'
-        alert("영화가 등록되었습니다!")
+        this.$swal.fire({
+            title: '영화 생성 완료!',
+            type: 'success'
+          })
         this.$refs.form.reset()
       })
     }

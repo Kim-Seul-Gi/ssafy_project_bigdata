@@ -112,6 +112,7 @@ export default {
       {"watch_count":''}
     ],
     rate_flag:false,
+    tmp_score:0,
   }),
   mounted() {
     this.fetchdata()
@@ -149,8 +150,19 @@ export default {
         user_pk:this.$session.get('id_number'),
         score:this.score
       }).then(res => {
-        if(res.data==false) alert("이미 평점을 등록하셨습니다.")
-        else alert("평점을 등록했습니다.")
+        if(res.data==false) {
+          this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '이미 평점을 등록하였습니다!',
+        })
+        } else {
+          this.$swal.fire({
+            title: '평점 등록 완료!',
+            type: 'success'
+          })
+          this.tmp_score = this.score
+        }
         this.rate_flag = !this.rate_flag
         this.rate_show = !this.rate_show
       })
@@ -161,10 +173,20 @@ export default {
         user_pk:this.$session.get('id_number'),
         score:this.score
       }).then(res => {
-        if(res.data==false) alert("등록된 평점이 없습니다.")
-        else alert("평점을 수정했습니다.")
+        if(res.data==false) {
+          this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '등록한 평점이 없습니다!',
+        })
+        } else {
+          this.$swal.fire({
+            title: '평점 수정 완료!',
+            type: 'success'
+          })
+          this.tmp_score = this.score
+        }
         this.rate_show = !this.rate_show
-        this.tmp_score = this.score
       })
     },
     deleteRating(id) {
@@ -172,8 +194,20 @@ export default {
       axios.delete(`${apiUrl}/movie/${id}/score/cdu/`, {
         data: {user_pk:this.$session.get('id_number')}
       }).then(res => {
-        if(res.data==false) alert("등록된 평점이 없습니다.")
-        else alert("평점을 삭제했습니다.")
+        if(res.data==false) {
+          this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '등록한 평점이 없습니다!',
+        })
+        } else {
+          this.$swal.fire({
+            title: '평점 삭제 완료!',
+            type: 'success'
+          })
+          this.tmp_score = 0
+          this.score = 0
+        }
         this.rate_show = !this.rate_show
         this.rate_flag = !this.rate_flag
       })
