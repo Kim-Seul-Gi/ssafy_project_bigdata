@@ -66,13 +66,13 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <v-text-field
+            <!-- <v-text-field
               v-model="username"
               :counter="10"
               label="Name"
               :rules="nameRules"
               required
-            />
+            /> -->
             <v-layout>
               <span style="vertical-align: middle; color: rgba(0, 0, 0, 0.54); padding-left: 0.3rem; padding-right: 2.5rem;">Gender</span>
               <v-radio-group v-model="user.gender" row>
@@ -84,11 +84,14 @@
               v-model="age"
               type="number"
               label="Age"
+              :rules="ageRules"
               required
             />
-            <v-text-field
+            <v-select
               v-model="occupation"
+              :items="occupations"
               label="Occupation"
+              :rules="occupationRules"
               required
             />
           </v-container>
@@ -96,7 +99,8 @@
         <v-card-actions>
           <v-spacer />
           <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false; edit()">Save</v-btn>
+          <v-btn v-if="ageRules[0](age)===true && occupationRules[0](occupation)===true" text @click="dialog = false; edit()">Save</v-btn>
+          <v-btn v-else disabled color="dark darken-1" text @click="dialog = false; edit()">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -118,6 +122,10 @@ export default {
     username: null,
     age: null,
     gender: null,
+    occupations: ["other","academic/educator","artist","clerical/admin","college/grad student",
+    "customer service","doctor/health care","executive/managerial","farmer","homemaker",
+    "K-12 student","lawyer","programmer","retired","sales/marketing","scientist",
+    "self-employed","technician/engineer","tradesman/craftsman","unemployed","writer"],
     occupation: null,
     profile_data:'',
     dialog: false,
@@ -128,6 +136,25 @@ export default {
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters'
+    ],
+    ageRules: [
+      function(v) {
+        if (!v) {
+          return 'Age is required'
+        }
+        if (v <= 0) {
+          return 'Age must be more than 0'
+        }
+        return !!v
+      }
+    ],
+    occupationRules: [
+      function(v) {
+        if (!v) {
+          return 'occupation is required'
+        }
+        return !!v
+      }
     ],
     user_data:'',
     subscription_date:'',
@@ -205,6 +232,7 @@ export default {
       })
     },
     async edit() {
+
       let __this = this;
       const id = this.$session.get('id_number');
       const apiUrl = '/api';
