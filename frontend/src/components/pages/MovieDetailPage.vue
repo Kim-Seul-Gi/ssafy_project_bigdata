@@ -53,8 +53,8 @@
                 <div class="movietitle2" style="margin-left:0.3rem;">
                   <!-- {{ movie.title.substring(0, movie.title.indexOf("(")) }}<br>
                   <span class="hovertext">{{ movie.title.substring(0, movie.title.indexOf("(")) }}</span> -->
+                  <span>{{ movie.title }}</span>
                   <span style="margin-right:0.5rem;">{{ movie.title }}</span>
-                  <!-- <span class="hovertext2">{{ movie.title }}</span> -->
                 </div>
                 <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;" /><span>평점 </span><span style="font-weight: bold;">{{ movie.averagerate }}</span>
                 <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_MovieDetail(movie)">explore</v-btn>
@@ -80,7 +80,7 @@ export default {
   },
   props: {
     id : {
-      type: Number | String,
+      type: [Number, String],
       default: ''
     },
   },

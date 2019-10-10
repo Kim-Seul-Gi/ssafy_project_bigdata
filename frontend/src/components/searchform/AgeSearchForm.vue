@@ -2,20 +2,13 @@
   <v-form ref="form">
     <div>
       <br>
-      <div v-for="age in ages" style="display:inline-block;">
-        <input type="radio" :value="age" v-model="picked">
-        <label style="font-size:10px;">{{age}}</label> &nbsp;
+      <div v-for="(age, index) in ages" :key="index" style="display:inline-block;">
+        <input v-model="picked" type="radio" :value="age">
+        <label style="font-size:10px;">{{ age }}</label> &nbsp;
       </div>
     </div>
     <br>
     <v-btn large color="indigo white--text" @click="onSubmit">Search</v-btn>
-    <!-- 	*  1:  "Under 18"
-    	* 18:  "18-24"
-    	* 25:  "25-34"
-    	* 35:  "35-44"
-    	* 45:  "45-49"
-    	* 50:  "50-55"
-    	* 56:  "56+" -->
   </v-form>
 </template>
 

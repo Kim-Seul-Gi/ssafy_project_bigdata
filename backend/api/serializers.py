@@ -19,7 +19,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return obj.user.is_staff
 
 class MovieSerializer(serializers.ModelSerializer):
-    genres_array = serializers.ReadOnlyField()
+    genres_array = serializers.SerializerMethodField('get_genres_array')
     averagerate = serializers.SerializerMethodField('get_averagerate')
     castings = serializers.SerializerMethodField('get_castings')
     
@@ -45,7 +45,8 @@ class MovieSerializer(serializers.ModelSerializer):
         else:
             return 0
         ##
-
+    def get_genres_array(self, obj):
+        return '|'.join(obj.genres_array)
         ## version 2
         # result = 0
         # count = 0
@@ -60,6 +61,37 @@ class MovieSerializer(serializers.ModelSerializer):
         # else:
         #     print(result/count, obj.title)
         #     return result/count
+
+class Movie_Genre_Serializer(serializers.ModelSerializer):
+    genres_array = serializers.SerializerMethodField('get_genres_array')
+    averagerate = serializers.SerializerMethodField('get_averagerate')
+    castings = serializers.SerializerMethodField('get_castings')
+    
+
+    class Meta:
+        model = Movie
+        fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director','castings')
+        # fields = ('id', 'title', 'genres_array', 'watch_count', 'score_users', 'averagerate','plot','url','director')
+
+    def get_castings(self, obj):
+        casting = Movie.objects.get(id=obj.id).casting
+        if casting.count('|') >= 3:
+            casting = casting.split('|')
+            casting = '|'.join(casting[:3])
+        return casting
+
+    def get_averagerate(self, obj):
+
+        ## version 1
+        average_rate = Rate.objects.filter(MovieID=obj.id).aggregate(Avg('rating'))
+        if average_rate['rating__avg']!=None:
+            return round(average_rate['rating__avg'], 2)
+        else:
+            return 0
+
+    def get_genres_array(self, obj):
+        return '|'.join(obj.genres_array)
+
 
 class Movie_Age_Serializer(serializers.ModelSerializer):
     id = serializers.SerializerMethodField('get_id')
