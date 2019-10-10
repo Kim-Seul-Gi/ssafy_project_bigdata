@@ -54,19 +54,6 @@ export default {
   }),
   mounted() {
       this.onSubmit();
-      const apiUrl = '/api'
-        axios.post(`${apiUrl}/signup/new_cluster/`, {
-            user_pk:this.$session.get("id_number"),
-            movies:this.rating_box,
-        }).then(res => {
-          if (res.data==false) {
-            this.$swal.fire({
-                title: '이미 평점등록을 하셨습니다!',
-                type: 'error'
-              })
-             router.push({name:"home"})
-          }
-        })
   },
   methods: {
     ...mapActions("data", ["searchMovies", "plusMovies"]),
@@ -108,7 +95,7 @@ export default {
             user_pk:this.$session.get("id_number"),
             movies:this.rating_box,
         }).then(res => {
-            if(res.data==true) {
+            if(res.data==2) {
                 this.$swal.fire({
                     title: '평점등록 성공!',
                     type: 'success'
@@ -117,9 +104,15 @@ export default {
                   router.push({name:"home"})
                   window.location.reload()
                 })
-            } else {
+            } else if(res.data==1) {
                 this.$swal.fire({
                     title: '이미 평점등록을 하셨습니다!',
+                    type: 'error'
+                })
+                router.push({name:"home"})
+            } else if(res.data==0) {
+              this.$swal.fire({
+                    title: '로그인부터 해주세요!',
                     type: 'error'
                 })
                 router.push({name:"home"})
