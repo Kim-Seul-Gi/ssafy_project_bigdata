@@ -54,6 +54,19 @@ export default {
   }),
   mounted() {
       this.onSubmit();
+      const apiUrl = '/api'
+        axios.post(`${apiUrl}/signup/new_cluster/`, {
+            user_pk:this.$session.get("id_number"),
+            movies:this.rating_box,
+        }).then(res => {
+          if (res.data==false) {
+            this.$swal.fire({
+                title: '이미 평점등록을 하셨습니다!',
+                type: 'error'
+              })
+             router.push({name:"home"})
+          }
+        })
   },
   methods: {
     ...mapActions("data", ["searchMovies", "plusMovies"]),
