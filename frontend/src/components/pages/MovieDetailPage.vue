@@ -50,11 +50,11 @@
             <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
               <v-img contain :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;" />
               <v-card-text>
-                <div class="movietitle2">
+                <div class="movietitle2" style="margin-left:0.3rem;">
                   <!-- {{ movie.title.substring(0, movie.title.indexOf("(")) }}<br>
                   <span class="hovertext">{{ movie.title.substring(0, movie.title.indexOf("(")) }}</span> -->
                   <span>{{ movie.title }}</span>
-                  <span class="hovertext">{{ movie.title }}</span>
+                  <span style="margin-right:0.5rem;">{{ movie.title }}</span>
                 </div>
                 <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;" /><span>평점 </span><span style="font-weight: bold;">{{ movie.averagerate }}</span>
                 <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_MovieDetail(movie)">explore</v-btn>
@@ -177,22 +177,24 @@ export default {
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+    text-align:left !important;
   }
-  .movietitle2 .hovertext {
+  .movietitle2 .hovertext2 {
     visibility: hidden;
-    /* width: 250px; */
+    /* width: 80%; */
     background-color: black;
     color: #fff;
-    text-align: center;
+    text-align: left;
     border-radius: 6px;
     padding: 5px;
     bottom: 20%;
+    right:0px;
     white-space:normal;
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
   }
-  .movietitle2:hover .hovertext {
+  .movietitle2:hover .hovertext2 {
     visibility: visible;
   }
 </style>

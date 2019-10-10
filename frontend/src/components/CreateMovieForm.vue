@@ -8,16 +8,16 @@
       <v-text-field
         v-model="title"
         :counter="30"
-        :rules="titleRules"
         label="Title"
+        :rules="titleRules"
         required
         dark
       />
       <v-select
         v-model="genres"
         :items="items"
-        :rules="[v => !!v || 'Item is required']"
         label="Genre"
+        :rules="genresRules"
         multiple
         required
         dark
@@ -25,19 +25,21 @@
       <v-text-field
         v-model="url"
         label="ImageURL"
+        :rules="urlRules"
         required
         dark
       />
       <v-text-field
         v-model="director"
-        :rules="titleRules"
         label="Director"
+        :rules="directorRules"
         required
         dark
       />
       <v-combobox
         v-model="casting"
         label="Casting"
+        :rules="castingRules"
         hint="Maximum of 5 tags"
         persistent-hint
         small-chips
@@ -50,14 +52,16 @@
         solo
         :counter="500"
         label="Plot"
+        :rules="plotRules"
         required
       />
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
+      <!-- <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn> -->
       <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
     </v-form>
     <v-dialog v-model="dialog" persistent max-width="700">
       <template v-slot:activator="{ on }">
-        <v-btn dark v-on="on">등록하기</v-btn>
+        <v-btn v-if="titleRules[0](title)===true && genresRules[0](genres)===true && urlRules[0](url)===true && directorRules[0](director)===true && castingRules[0](casting)===true && plotRules[0](plot)===true" color="success" class="mr-4" dark v-on="on">됨~등록하기</v-btn>
+        <v-btn v-else disabled color="dark" class="mr-4" dark v-on="on">안됨~등록하기</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">{{ title }}</v-card-title>
@@ -96,7 +100,47 @@ export default {
     titleRules: [
       v => !!v || 'This is required',
       v => (v && v.length <= 30) || 'Name must be less than 30 characters',
-    ]
+    ],
+    genresRules : [
+      function(v) {
+        if (v.length===0) {
+          return 'Genre is required'
+        }
+        return !!v
+      }
+    ],
+    urlRules : [
+      function(v) {
+        if (!v) {
+          return 'Url is required'
+        }
+        return !!v
+      }
+    ],
+    directorRules : [
+      function(v) {
+        if (!v) {
+          return 'Director is required'
+        }
+        return !!v
+      }
+    ],
+    castingRules : [
+      function(v) {
+        if (v.length===0) {
+          return 'Casting is required'
+        }
+        return !!v
+      }
+    ],
+    plotRules : [
+      function(v) {
+        if (!v) {
+          return 'Plot is required'
+        }
+        return !!v
+      }
+    ],
   }),
   watch: {
     casting (val) {
