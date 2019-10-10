@@ -263,7 +263,7 @@ def getarray(request):
         tmp_array = [0]*19
 
         movie_genres = movies[i].genres.split('|')
-        tmp_array[18] = movies[i].title
+        tmp_array[18] = movies[i].pk
 
         for j in range(len(movie_genres)):
             tmp_array[genre_number[movie_genres[j]]] = 1

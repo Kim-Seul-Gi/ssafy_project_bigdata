@@ -170,10 +170,16 @@ export default {
         url:this.url,
         director:this.director,
         casting:this.casting
-      }).then(() => {
+      }
+      
+      ).then(() => {
         preload.style.display = 'none'
-        alert("영화가 등록되었습니다!")
-        this.$refs.form.reset()
+        this.$swal.fire ({
+          type: 'success',
+          title: '영화가 등록되었습니다!'
+        }).then(resulst => {
+          this.$refs.form.reset()
+        })
       })
     }
   }
