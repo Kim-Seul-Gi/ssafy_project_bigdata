@@ -60,8 +60,8 @@
     </v-form>
     <v-dialog v-model="dialog" persistent max-width="700">
       <template v-slot:activator="{ on }">
-        <v-btn v-if="titleRules[0](title)===true && genresRules[0](genres)===true && urlRules[0](url)===true && directorRules[0](director)===true && castingRules[0](casting)===true && plotRules[0](plot)===true" color="success" class="mr-4" dark v-on="on">됨~등록하기</v-btn>
-        <v-btn v-else disabled color="dark" class="mr-4" dark v-on="on">안됨~등록하기</v-btn>
+        <v-btn v-if="titleRules[0](title)===true && genresRules[0](genres)===true && urlRules[0](url)===true && directorRules[0](director)===true && castingRules[0](casting)===true && plotRules[0](plot)===true" color="success" class="mr-4" dark v-on="on">영화 등록하기</v-btn>
+        <v-btn v-else disabled color="dark" class="mr-4" dark v-on="on">모든 data를 채워주세요!</v-btn>
       </template>
       <v-card>
         <v-card-title class="headline">{{ title }}</v-card-title>
@@ -170,13 +170,16 @@ export default {
         url:this.url,
         director:this.director,
         casting:this.casting
-      }).then(() => {
+      }
+
+      ).then(() => {
         preload.style.display = 'none'
-        this.$swal.fire({
-            title: '영화 생성 완료!',
-            type: 'success'
-          })
-        this.$refs.form.reset()
+        this.$swal.fire ({
+          type: 'success',
+          title: '영화가 등록되었습니다!'
+        }).then(result => {
+          this.$refs.form.reset()
+        })
       })
     }
   }
