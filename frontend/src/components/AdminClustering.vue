@@ -2,17 +2,17 @@
   <v-form ref="form">
     <div>
       <p style="font-size: 1rem; font-family: 'Jua', sans-serif;">Cluster 알고리즘 설정하기:</p>
-      <div v-for="(way, index) in ways" :key="index" style="display:inline-block;">
+      <div v-for="(way, index) in ways" style="display:inline-block;">
         <input v-model="picked_way" type="radio" :value="way">
         <label style="font-size:10px; ">{{ way }}</label> &nbsp;
       </div>
       <br><br>
       <p style="font-size: 1rem; font-family: 'Jua', sans-serif;">Cluster 개수 설정하기:</p>
-      <div v-for="(n_component, index) in n_components" :key="index" style="display:inline-block;">
+      <div v-for="(n_component, index) in n_components" style="display:inline-block;">
         <input v-model="picked_n" type="radio" :value="n_component">
         <label style="font-size:10px;">{{ n_component }}개</label> &nbsp;
       </div>
-      <br> 
+      <br>
     </div>
     <br>
     <v-btn v-if="saved_n!=picked_n || saved_way!=picked_way" large color="indigo white--text" @click="change()">변경하기</v-btn>

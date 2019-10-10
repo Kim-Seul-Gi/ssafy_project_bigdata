@@ -19,48 +19,42 @@
       <v-card flat class="text-xs-center ma-3" min-width="500">
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-card-text>
-            <v-text-field
+            {{username}}
+            <!-- <v-text-field
               id="username"
               v-model="username"
               hint="이름을 변경할 수 있습니다."
               name="username"
               label="Username"
               clearable
-            />
-            <v-text-field
+            /> -->
+            <!-- <v-text-field
               id="gender"
               v-model="gender"
               hint="성별을 변경할 수 있습니다."
               name="gender"
               label="Gender"
               clearable
-            />
+            /> -->
             <v-text-field
-              id="age"
               v-model="age"
-              hint="나이를 변경할 수 있습니다."
-              name="age"
+              type="number"
               label="Age"
-              clearable
+              :rules="ageRules"
+              required
             />
             <v-select
-              id="occupation"
               v-model="occupation"
-              hint="직업을 변경할 수 있습니다."
-              name="occupation"
-              label="Occupation"
               :items="occupations"
-              attach
-              occupation
+              label="Occupation"
+              :rules="occupationRules"
+              required
             />
           </v-card-text>
         </v-form>
-        <v-btn color="primary" text @click="profile_update(id); dialog=false">
-          수정하기
-        </v-btn>
-        <v-btn color="primary" text @click="dialog=false">
-          닫기
-        </v-btn>
+        <v-btn v-if="ageRules[0](age)===true && occupationRules[0](occupation)===true" text @click="profile_update(id); dialog=false">수정하기</v-btn>
+        <v-btn v-else disabled color="dark darken-1" text @click="dialog=false">수정하기</v-btn>
+        <v-btn color="primary" text @click="dialog=false">닫기</v-btn>
       </v-card>
     </v-dialog>
   </div>
@@ -89,7 +83,26 @@ export default {
     "self-employed","technician/engineer","tradesman/craftsman","unemployed","writer"],
     gender:'',
     age:'',
-    occupation:''
+    occupation:'',
+    ageRules: [
+      function(v) {
+        if (!v) {
+          return 'Age is required'
+        }
+        if (v <= 0) {
+          return 'Age must be more than 0'
+        }
+        return !!v
+      }
+    ],
+    occupationRules: [
+      function(v) {
+        if (!v) {
+          return 'occupation is required'
+        }
+        return !!v
+      }
+    ],
   }),
   methods: {
     SELECT_UserDetail() {

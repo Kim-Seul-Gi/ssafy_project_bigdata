@@ -17,7 +17,7 @@
           <v-btn v-if="!create" @click="createMovie()">create</v-btn>
           <v-btn v-if="create" @click="createMovie()">cancel</v-btn>
           <CreateMovieForm v-if="create" />
-          <MovieSearchForm :submit="searchMovies_admin" />
+          <MovieSearchForm v-if="!create" :submit="searchMovies_admin" />
         </v-flex>
         <v-flex xs12>
           <AdminMovieList :movie-list-cards="movieList" />
