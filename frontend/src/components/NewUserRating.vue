@@ -54,7 +54,10 @@ export default {
       }).then(() => {
         // 끝
         preload.style.display = 'none'
-        alert('평점을 등록했습니다!')
+        this.$swal.fire({
+            title: '평점 등록 완료!',
+            type: 'success'
+          })
       })
     }
   }

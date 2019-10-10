@@ -123,19 +123,19 @@ export default {
       type : Array,
       default: () => new Array()
     },
-    nowdate : { 
+    nowdate : {
       type : String,
       default: ''
     },
-    user : { 
+    user : {
       type : String,
       default: ''
     },
-    subdate : { 
+    subdate : {
       type : String,
       default: ''
     },
-    approval : { 
+    approval : {
       type : Boolean,
       default: true
     },
@@ -165,16 +165,34 @@ export default {
     async create_subscription() {
       const apiUrl = '/api'
       var subscription = await axios.post(`${apiUrl}/subscription/create/`, {user : this.$session.get('id'), request:this.picked_amount})
-      if (subscription.data) {
-        alert(subscription.data.message)
+      if (subscription.data.create) {
+        this.$swal.fire({
+            title: '구독 신청 완료!',
+            type: 'success'
+          })
+      } else {
+          this.$swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: '이미 구독을 신청한 상태입니다!',
+          })
       }
       this.before_create = false
     },
     async extend_subscription() {
       const apiUrl = '/api'
       var subscription = await axios.post(`${apiUrl}/subscription/create/`, {user : this.$session.get('id'), request:this.picked_amount})
-      if (subscription.data) {
-        alert(subscription.data.message)
+      if (subscription.data.create) {
+        this.$swal.fire({
+            title: '구독 신청 완료!',
+            type: 'success'
+          })
+      } else {
+          this.$swal.fire({
+            type: 'error',
+            title: 'Oops...',
+            text: '이미 구독을 신청한 상태입니다!',
+          })
       }
       this.before_extend = false
     },

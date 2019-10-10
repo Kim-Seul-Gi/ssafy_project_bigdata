@@ -15,7 +15,7 @@ const state = {
     username: '',
     cnt: 10,
     recent_SearchName:"",
-    canmore: true
+    canmore: true,
 }
 
 // actions
@@ -29,9 +29,6 @@ const actions = {
         state.canmore = resp.data[1]
         // console.log(resp)
         preload.style.display = 'none'
-        if (!resp.data[0].length) {
-            alert('해당 이름의 영화는 없습니다.')
-        }
         const movies = resp.data[0].map(d => ({
             id: d.id,
             title: d.title,
@@ -45,6 +42,7 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList', movies)
+        return movies
     },
     async plusMovies({ commit }, params) {
         // document.style.opacity = 0.1
@@ -72,12 +70,8 @@ const actions = {
     async searchMovies_admin({ commit }, params) {
         state.recent_SearchName = params.title
         var preload = document.querySelector('#searching')
-
         const resp = await api.searchMovies(params)
         state.canmore = resp.data[1]
-        if (!resp.data[0].length) {
-            alert('해당 이름의 영화는 없습니다.')
-        }
         const movies = resp.data[0].map(d => ({
             id: d.id,
             title: d.title,
@@ -91,15 +85,16 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList_admin', movies)
+        return movies
     },
     async getMovies_homepage({ commit }) {
         if (state.movieList_homepage.length !== 0) {
             return
         } else {
             const resp = await api.getMovies_homepage()
-            if (!resp.data.length) {
-                alert('해당 이름의 영화는 없습니다.')
-            }
+            // if (!resp.data.length) {
+            //     alert('해당 이름의 영화는 없습니다.')
+            // }
             const movies = resp.data.map(d => ({
                 id: d.id,
                 title: d.title,
@@ -174,9 +169,6 @@ const actions = {
         preload.style.display = 'block'
         const resp = await api.searchGenre(params)
         preload.style.display = 'none'
-        if (!resp.data.length) {
-            alert('해당 장르의 영화는 없습니다.')
-        }
         const movies = resp.data.map(d => ({
             id: d.id,
             title: d.title,
@@ -190,6 +182,7 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList', movies)
+        return movies
     },
     async searchAges({ commit }, params) {
         state.canmore = false
@@ -197,9 +190,6 @@ const actions = {
         preload.style.display = 'block'
         const resp = await api.searchAges(params)
         preload.style.display = 'none'
-        if (!resp.data.length) {
-            alert('해당 연령대의 데이터는 없습니다.')
-        }
         const movies = resp.data.map(d => ({
             id: d.id,
             title: d.title,
@@ -213,6 +203,7 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList', movies)
+        return movies
     },
     async searchOccupations({ commit }, params) {
         state.canmore = false
@@ -220,9 +211,6 @@ const actions = {
         preload.style.display = 'block'
         const resp = await api.searchOccupations(params)
         preload.style.display = 'none'
-        if (!resp.data.length) {
-            alert('해당 직업의 데이터는 없습니다.')
-        }
         const movies = resp.data.map(d => ({
             id: d.id,
             title: d.title,
@@ -236,6 +224,7 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList', movies)
+        return movies
     },
     async searchGenders({ commit }, params) {
         state.canmore = false
@@ -243,9 +232,6 @@ const actions = {
         preload.style.display = 'block'
         const resp = await api.searchGenders(params)
         preload.style.display = 'none'
-        if (!resp.data.length) {
-            alert('해당 성별의 데이터는 없습니다.')
-        }
         const movies = resp.data.map(d => ({
             id: d.id,
             title: d.title,
@@ -259,6 +245,7 @@ const actions = {
             casting: d.casting
         }))
         commit('setMovieSearchList', movies)
+        return movies
     },
     resetMovieList({ commit }, params) {
         commit('setMovieSearchList', [])
@@ -268,22 +255,24 @@ const actions = {
         preload.style.display = 'block'
         const resp = await api.searchUsers(params)
         preload.style.display = 'none'
-        if (!resp.data.length) {
-            alert('해당 이름의 유저는 없습니다.')
-        }
         const users = resp.data.map(d => ({
             user_id: d.id,
             username: d.username
         }))
         commit('setUserSearchList', users)
+        return users
     },
     async searchUsers_admin({ commit }, params) {
+        var preload = document.querySelector('#searching')
+        preload.style.display = 'block'
         const resp = await api.searchUsers(params)
+        preload.style.display = 'none'
         const users = resp.data.map(d => ({
             user_id: d.id,
             username: d.username
         }))
         commit('setUserSearchList_admin', users, params.approval)
+        return users
     },
 }
 
