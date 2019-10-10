@@ -1,10 +1,9 @@
 <template>
-<div>
-  <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">
-          여러분의 작은 후원이 모이면 큰 희망이 됩니다</p>
-  <p style="font-size: 1.5rem; color: orange;">고맙습니다.</p>
-  <p style="font-size: 2.5rem; color: red;">감사합니다.</p>
-  <v-alert
+  <div>
+    <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">여러분의 작은 후원이 모이면 큰 희망이 됩니다</p>
+    <p style="font-size: 1.5rem; color: orange;">고맙습니다.</p>
+    <p style="font-size: 2.5rem; color: red;">감사합니다.</p>
+    <v-alert
       v-model="alert"
       dismissible
       color="red"
@@ -14,59 +13,38 @@
       icon="mdi-cancel"
     >
       We stole your <strong>1000</strong> won. Thank you!!
-  </v-alert>
-  <v-row>
-    <v-col v-for="(user, i) in this.users"
-          v-bind:key=i
-          cols="3">
-        <v-card
-          class="mx-auto my-12"
-          max-width="374"
-        >
-          <v-img
-            :src="user.url"
-            height="250"
-          ></v-img>
-
-          <v-card-title>{{user.name}}</v-card-title>
+    </v-alert>
+    <v-row>
+      <v-col v-for="(user, i) in users" :key="i" cols="3">
+        <v-card class="mx-auto my-12" max-width="374">
+          <v-img :src="user.url" height="250" />
+          <v-card-title>{{ user.name }}</v-card-title>
           <v-card-text>
-
-            <div>{{user.title}}</div>
+            <div>{{ user.title }}</div>
           </v-card-text>
-
           <v-card-text>
             <div class="title text--primary">Availability</div>
-            <v-chip-group
-              active-class="deep-purple accent-4 white--text"
-              column
-            >
-              <v-chip v-for="(skill, i) in user.skills" v-bind:key=i>{{skill}}</v-chip>
+            <v-chip-group active-class="deep-purple accent-4 white--text" column>
+              <v-chip v-for="(skill, index) in user.skills" :key="index">{{ skill }}</v-chip>
             </v-chip-group>
           </v-card-text>
 
           <v-card-actions>
-            <v-btn
-              :href="user.bank"
-              color="deep-purple accent-4"
-              text
-            >
-              {{user.AccountNumber}}
+            <v-btn :href="user.bank" color="deep-purple accent-4" text>
+              {{ user.AccountNumber }}
             </v-btn>
           </v-card-actions>
-            <v-btn @click="support(i)" color="light-blue lighten-4">
-              후원하기
-            </v-btn>
-            {{user.cnt}}
+          <v-btn color="light-blue lighten-4" @click="support(i)">
+            후원하기
+          </v-btn>
+          {{ user.cnt }}
         </v-card>
-    </v-col>
-  </v-row>
-</div>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 <script>
 export default {
-  components: {
-
-  },
   data: () => ({
     alert: false,
     users:[
@@ -146,7 +124,7 @@ export default {
       this.$swal.fire({
         text: '1000원 후원에 성공하셨습니다!',
         type: 'success'
-      }).then((result) => {
+      }).then(() => {
         this.alert = !this.alert
         scroll(0,0);
       })

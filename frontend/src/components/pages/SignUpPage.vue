@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-md text-center style="width: 60rem;">
-    <SignUpForm/>
+    <SignUpForm />
   </v-container>
 </template>
 

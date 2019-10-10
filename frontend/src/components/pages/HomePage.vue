@@ -37,14 +37,12 @@
                   <v-card style="margin:10px; height: 21rem; width: 15rem; border-radius:15px;" color="#424242" dark>
                     <v-img :src="movie.url || 'https://cdn.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png'" style="height:16rem; width: 15rem;" />
                     <v-card-text>
-                      <!-- <v-container> -->
                       <div class="movietitle">
                         {{ movie.title.substring(0, movie.title.indexOf("(")) }}<br>
                         <span class="hovertext" style="vertical-align: middle;">{{ movie.title.substring(0, movie.title.indexOf("(")) }}</span>
                       </div>
                       <i class="fas fa-star" style="color: #FFB600; margin-right: 0.5rem;" /><span>평점 </span><span style="font-weight: bold;">{{ movie.averagerate }}</span>
                       <v-btn text color="primary" style="padding-right: 0; margin-left: 2rem; margin-right: 0;" @click="SELECT_MovieDetail(movie)">explore</v-btn>
-                      <!-- </v-container> -->
                     </v-card-text>
                   </v-card>
                 </slide>
@@ -59,7 +57,6 @@
               </span>
               <v-flex xs12>
                 <div v-if="typeof(profile_data[1])!='boolean'" style="margin-top: 3rem;">
-                  <!-- <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Similar Users</p> -->
                   <carousel :per-page="pageNum">
                     <slide v-for="person in profile_data.slice(1, 6)" :key="person.username" style="height: 21rem; width: 15rem;">
                       <v-card style="margin:10px; height: 20rem; width: 15rem; border-radius: 15px;" color="#424242" dark>
@@ -76,12 +73,8 @@
                   </carousel>
                 </div>
                 <div v-else style="margin-top: 4rem;">
-                  <p class="profile">
-                    <span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span>
-                  </p>
-                  <p>
-                    <v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn>
-                  </p>
+                  <p class="profile"><span style="margin-right: 1rem; font-weight: bold;">영화 평점을 등록해주세요!</span></p>
+                  <p><v-btn color="red lighten-2" dark style="margin-bottom: 1rem;" to="/choices/">평가하러 가기</v-btn></p>
                 </div>
               </v-flex>
             </v-layout>
