@@ -170,9 +170,7 @@ export default {
         url:this.url,
         director:this.director,
         casting:this.casting
-      }
-
-      ).then(() => {
+      }).then(() => {
         preload.style.display = 'none'
         this.$swal.fire ({
           type: 'success',
