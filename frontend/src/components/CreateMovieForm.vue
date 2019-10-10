@@ -4,16 +4,15 @@
       ref="form"
       v-model="valid"
       lazy-validation
-      >
+    >
       <v-text-field
         v-model="title"
         :counter="30"
         :rules="titleRules"
         label="Title"
         required
-        dark>
-      </v-text-field>
-
+        dark
+      />
       <v-select
         v-model="genres"
         :items="items"
@@ -21,22 +20,21 @@
         label="Genre"
         multiple
         required
-        dark>
-      </v-select>
-
+        dark
+      />
       <v-text-field
         v-model="url"
         label="ImageURL"
         required
-        dark>
-      </v-text-field>
+        dark
+      />
       <v-text-field
         v-model="director"
         :rules="titleRules"
         label="Director"
         required
-        dark>
-      </v-text-field>
+        dark
+      />
       <v-combobox
         v-model="casting"
         label="Casting"
@@ -45,44 +43,30 @@
         small-chips
         multiple
         required
-        dark>
-      </v-combobox>
+        dark
+      />
       <v-textarea
-        solo
         v-model="plot"
+        solo
         :counter="500"
         label="Plot"
-        required>
-      </v-textarea>
-
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="validate">
-        Validate
-      </v-btn>
-
-      <v-btn
-        color="error"
-        class="mr-4"
-        @click="reset">
-        Reset Form
-      </v-btn>
+        required
+      />
+      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
+      <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
     </v-form>
     <v-dialog v-model="dialog" persistent max-width="700">
       <template v-slot:activator="{ on }">
         <v-btn dark v-on="on">등록하기</v-btn>
       </template>
       <v-card>
-      <v-card-title class="headline">{{ title }}</v-card-title>
+        <v-card-title class="headline">{{ title }}</v-card-title>
         <v-card-text>장르: {{ genres }}</v-card-text>
         <v-card-text>이미지url: {{ url }}</v-card-text>
         <v-card-text>감독: {{ director }}</v-card-text>
         <v-card-text>배우: {{ casting }}</v-card-text>
         <v-card-text>줄거리: {{ plot }}</v-card-text>
         <v-card-actions>
-          <div class="flex-grow-1"></div>
           <v-btn color="green darken-1" text @click="createMovie();dialog=false">OK</v-btn>
           <v-btn color="green darken-1" text @click="dialog=false">Cancel</v-btn>
         </v-card-actions>
@@ -114,6 +98,13 @@ export default {
       v => (v && v.length <= 30) || 'Name must be less than 30 characters',
     ]
   }),
+  watch: {
+    casting (val) {
+      if (val.length > 5) {
+        this.$nextTick(() => this.casting.pop())
+      }
+    },
+  },
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
@@ -135,19 +126,12 @@ export default {
         url:this.url,
         director:this.director,
         casting:this.casting
-      }).then(res => {
+      }).then(() => {
         preload.style.display = 'none'
         alert("영화가 등록되었습니다!")
         this.$refs.form.reset()
       })
     }
-  },
-  watch: {
-    casting (val) {
-      if (val.length > 5) {
-        this.$nextTick(() => this.casting.pop())
-      }
-    },
-  },
+  }
 }
 </script>

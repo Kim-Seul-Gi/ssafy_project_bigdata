@@ -3,8 +3,8 @@
     <div>
       <br>
       <div v-for="(genre, i) in genres" :key="i" style="display:inline-block;">
-        <input type="radio" :value="genre" v-model="picked">
-        <label style="font-size:10px;">{{genre}}</label> &nbsp;
+        <input v-model="picked" type="radio" :value="genre">
+        <label style="font-size:10px;">{{ genre }}</label> &nbsp;
       </div>
     </div>
     <br>
