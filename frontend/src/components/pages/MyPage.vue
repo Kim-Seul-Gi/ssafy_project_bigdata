@@ -247,6 +247,12 @@ export default {
         this.user = this.profile_data[0]
       })
     },
+    SELECT_MovieDetail(movie) {
+      var movie_data = {'id':movie.id, 'title':movie.title, 'genres_array':movie.genres_array,
+                  'watch_count' : movie.watch_count, 'score_users':movie.score_users, 'averagerate':movie.averagerate,
+                  'plot':movie.plot,'url':movie.url,'director':movie.director,'casting':movie.casting}
+      router.push({name:'movie-detail', params : {'id':movie_data.id}})
+    }
   }
 }
 </script>
