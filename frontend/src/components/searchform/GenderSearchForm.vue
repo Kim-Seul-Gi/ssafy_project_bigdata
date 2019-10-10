@@ -2,9 +2,9 @@
   <v-form ref="form">
     <div>
       <br>
-      <div v-for="gender in genders" style="display:inline-block;">
-        <input type="radio" :value="gender" v-model="picked">
-        <label style="font-size:10px;">{{gender}}</label> &nbsp;
+      <div v-for="(gender, index) in genders" :key="index" style="display:inline-block;">
+        <input v-model="picked" type="radio" :value="gender">
+        <label style="font-size:10px;">{{ gender }}</label> &nbsp;
       </div>
     </div>
     <br>

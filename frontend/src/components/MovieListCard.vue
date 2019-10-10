@@ -30,8 +30,8 @@ export default {
       default: ""
     },
     genresarray: {
-      type: Array,
-      default: () => new Array()
+      type: String,
+      default: ''
     },
     averagerate: {
       type: Number,

@@ -4,15 +4,15 @@
       <v-card-text>
         <p style="text-align: center; font-size: 2.5rem; padding-bottom: 3rem; padding-top: 3rem;">Sign in</p>
         <form>
-            <v-text-field
+          <v-text-field
             v-model="username"
             :counter="10"
             label="Name"
             :rules="nameRules"
             required
             style="margin-left: 5rem; margin-right: 5rem;"
-            ></v-text-field>
-            <v-text-field
+          />
+          <v-text-field
             v-model="password"
             label="Password"
             :counter="20"
@@ -20,10 +20,8 @@
             type="password"
             required
             style="margin-left: 5rem; margin-right: 5rem;"
-            ></v-text-field>
-
-
-            <v-btn @click="login" style="margin-top: 2rem; margin-bottom: 1rem;">Sign in</v-btn>
+          />
+          <v-btn style="margin-top: 2rem; margin-bottom: 1rem;" @click="login">Sign in</v-btn>
         </form>
         <div style="padding-top: 1.5rem; padding-bottom: 3rem;">
           <router-link to="signup">아직 회원이 아니신가요?</router-link>
@@ -54,10 +52,6 @@ export default {
       ],
     }
   },
-  mounted() {
-    // console.log(this.$swal)
-    // this.usercheck();
-  },
   created() {
     if (this.$session.get('id')!='') {
       this.$swal.fire({
@@ -72,7 +66,7 @@ export default {
     async login() {
       const apiUrl = '/api'
       let __this = this
-      let tmp = await axios.post(`${apiUrl}/auth/signin/`, {
+      await axios.post(`${apiUrl}/auth/signin/`, {
         username: __this.username,
         password: __this.password
       }).then(async res => {
@@ -86,7 +80,7 @@ export default {
           this.$swal.fire({
             title: '로그인 완료!',
             type: 'success'
-          }).then((result) => {
+          }).then(() => {
             if (flag != 'boolean' || res.data.id_number < 6042) {
               router.push('/')
               window.location.reload()
