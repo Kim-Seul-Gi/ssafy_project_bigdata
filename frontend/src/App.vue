@@ -29,20 +29,10 @@
             </div>
           </div>
           <div id="check1" style="width:100%; height:100%; position:absolute; z-index:10; display:none; background-color:#a6a6a6; opacity:.6;">
-            <v-card class="d-flex justify-center"><p style="font-size:30px">영화 등록 중입니다!<br>잠시만 기다려주세요!</p></v-card>
-            <div style="width:100%;height:50%" class="lds-wedges">
-              <div style="width:100%;height:50%" class="lds-wedges">
-                <div><div><div /></div><div><div /></div><div><div /></div><div><div /></div></div>
-              </div>
+            <div style="width:100%;height:100%" class="lds-wedges">
+              <div><div><div /></div><div><div /></div><div><div /></div><div><div /></div></div>
             </div>
-          </div>
-          <div id="check2" style="width:100%; height:100%; position:absolute; z-index:10; display:none; background-color:#a6a6a6; opacity:.6;">
-            <v-card class="d-flex justify-center"><p style="font-size:30px">평점 등록 중입니다!<br>잠시만 기다려주세요!</p></v-card>
-            <div style="width:100%;height:50%" class="lds-wedges">
-              <div style="width:100%;height:50%" class="lds-wedges">
-                <div><div><div /></div><div><div /></div><div><div /></div><div><div /></div></div>
-              </div>
-            </div>
+            <v-card class="d-flex justify-center"><p style="font-size:30px">영화등록 중입니다!<br>잠시만 기다려주세요!</p></v-card>
           </div>
           <!-- each pages will be placed here -->
           <router-view />
