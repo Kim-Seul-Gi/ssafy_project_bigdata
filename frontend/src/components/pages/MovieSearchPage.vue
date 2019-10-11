@@ -2,48 +2,32 @@
 <template>
   <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-
       <!-- 검색 폼 by 영화이름-->
-      <v-flex xs6 v-if="bymoviename">
-
-        <div class="display-2 pa-10">영화 검색</div>
-
+      <v-flex v-if="bymoviename" xs6>
+        <div class="display-2 pa-10" style="color: white">영화 검색</div>
         <v-btn @click="changesearch1()">다른 검색</v-btn>
-
         <div>
-          <MovieSearchForm :submit="searchMovies" />
+          <MovieSearchForm :submit="before_searchMovies" />
         </div>
       </v-flex>
 
       <!-- 검색 폼 by 장르이름 -->
-      <v-flex xs6 v-if="!bymoviename">
+      <v-flex v-if="!bymoviename" xs6>
         <v-btn @click="changesearch1()">영화 이름으로 검색하기</v-btn><br>
-
         <v-btn @click="changesearch2()">장르 기준</v-btn>
         <v-btn @click="changesearch3()">연령대 기준</v-btn>
         <v-btn @click="changesearch4()">직업 기준</v-btn>
         <v-btn @click="changesearch5()">성별 기준</v-btn>
 
-        <div v-if="bygenre" class="display-2 pa-10">장르 검색
-          <GenreSearchForm :submit="searchGenres" />
-        </div>
-
-        <div v-if="byage" class="display-2 pa-10">연령대 검색
-          <AgeSearchForm :submit="searchAges" />
-        </div>
-
-        <div v-if="byoccupation" class="display-2 pa-10">직업 검색
-          <OccupationSearchForm :submit="searchOccupations" />
-        </div>
-
-        <div v-if="bygender" class="display-2 pa-10">성별 검색
-          <GenderSearchForm :submit="searchGenders" />
-        </div>
+        <div v-if="bygenre" class="display-2 pa-10" style="color: white">장르 검색<GenreSearchForm :submit="before_searchGenres" /></div>
+        <div v-if="byage" class="display-2 pa-10" style="color: white">연령대 검색<AgeSearchForm :submit="before_searchAges" /></div>
+        <div v-if="byoccupation" class="display-2 pa-10" style="color: white">직업 검색<OccupationSearchForm :submit="before_searchOccupations" /></div>
+        <div v-if="bygender" class="display-2 pa-10" style="color: white">성별 검색<GenderSearchForm :submit="before_searchGenders" /></div>
       </v-flex>
 
       <!-- 검색 결과 -->
       <v-flex xs12>
-        <MovieList :movie-list-cards="movieList" />
+        <MovieList :movie-list-cards="movieList" :reset="reset" />
       </v-flex>
     </v-layout>
   </v-container>
@@ -73,18 +57,70 @@ export default {
     byage:false,
     byoccupation:false,
     bygender:false,
-
+    reset : true,
   }),
   computed: {
     ...mapState({
       movieList: state => state.data.movieSearchList
     })
   },
-  mounted() {
-    // this.resetMovieList()
-  },
   methods: {
     ...mapActions("data", ["searchMovies", "searchGenres", "searchAges", "searchOccupations", "searchGenders", "resetMovieList"]),
+    async before_searchMovies(params) {
+      this.reset = !this.reset
+      var result = await this.searchMovies(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
+    async before_searchGenres(params) {
+      this.reset = !this.reset
+      var result = await this.searchGenres(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
+    async before_searchAges(params) {
+      this.reset = !this.reset
+      var result = await this.searchAges(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
+    async before_searchOccupations(params) {
+      this.reset = !this.reset
+      var result = await this.searchOccupations(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
+    async before_searchGenders(params) {
+      this.reset = !this.reset
+      var result = await this.searchGenders(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
     changesearch1() {
       this.bymoviename = !this.bymoviename
       this.bygenre = false

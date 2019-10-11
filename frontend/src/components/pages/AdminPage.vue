@@ -1,46 +1,48 @@
 <template>
-    <v-container grid-list-md text-center>
+  <v-container grid-list-md text-center>
     <v-layout justify-center wrap>
-    <span class="display-3 grey--text">Admin page</span>
-    <v-flex fluid row justify-center style="width:100%;">
-      <v-switch v-model="switch1" :label="`movie`" @click="one()" />
-      <v-switch v-model="switch2" :label="`user`" @click="two()" />
-      <v-switch v-model="switch3" :label="`clustering`" @click="three()" />
-      <v-switch v-model="switch4" :label="`subscription`" @click="four()" />
-      <v-btn @click="check()">초기화</v-btn>
-    </v-flex>
-    
-    <v-flex v-if="switch1" xs12 wrap>
-      <div class="display-2 pa-10">영화 검색</div>
-      <v-flex xs6 offset-3>
-        <v-btn @click="createMovie()" v-if="!create">create</v-btn>
-        <v-btn @click="createMovie()" v-if="create">cancel</v-btn>
-        <CreateMovieForm v-if="create"/>
-        <MovieSearchForm :submit="searchMovies_admin" />
+      <p style="font-size: 3rem; color: white; font-family: 'Jua', sans-serif;">Admin page</p>
+      <v-flex fluid row justify-center style="width:100%;">
+        <v-switch v-model="switch1" :label="`movie`" dark @click="one()" />
+        <v-switch v-model="switch2" :label="`user`" dark @click="two()" />
+        <v-switch v-model="switch3" :label="`clustering`" dark @click="three()" />
+        <v-switch v-model="switch4" :label="`subscription`" dark @click="four()" />
       </v-flex>
       <v-flex xs12>
-        <AdminMovieList :movie-list-cards="movieList" />
+        <v-btn @click="check()">초기화</v-btn>
       </v-flex>
-    </v-flex>
-    <v-flex v-if="switch2" xs12>
-      <div class="display-2 pa-10">유저 검색</div>
-      <v-flex xs6 offset-3>
-        <UserSearchForm :submit="searchUsers_admin" />
+      <v-flex v-if="switch1" xs12 wrap>
+        <div class="display-2 pa-10" style="color:white">영화 검색</div>
+        <v-flex xs6 offset-3>
+          <v-btn v-if="!create" @click="createMovie()">create</v-btn>
+          <v-btn v-if="create" @click="createMovie()">cancel</v-btn>
+          <CreateMovieForm v-if="create" />
+          <MovieSearchForm v-if="!create" :submit="before_searchMovies" />
+        </v-flex>
+        <v-flex xs12>
+          <AdminMovieList :movie-list-cards="movieList" />
+        </v-flex>
       </v-flex>
-      <v-flex xs12>
-        <AdminUserList :user-list-cards="userList" />
+      <v-flex v-if="switch2" xs12>
+        <div class="display-2 pa-10" style="color:white">유저 검색</div>
+        <v-flex xs6 offset-3>
+          <UserSearchForm :submit="before_searchUsers" />
+        </v-flex>
+        <v-flex xs12>
+          <AdminUserList :user-list-cards="userList" />
+        </v-flex>
       </v-flex>
-    </v-flex>
-    <v-flex v-if="switch3" xs12>
-      <p>clustering 파라미터 설정하기!</p>
-      여기에서 누르면 클러스터링 값이 변경될 것입니다.
-      <AdminClustering />
-    </v-flex>
-    <v-flex v-if="switch4" xs12>
-      <p>여기에서 사람들이 구독 신청한 것들을 관리합시다~</p>
-      <AdminSubscriptionList />
-    </v-flex>
-  </v-layout>
+      <v-flex v-if="switch3" xs8>
+        <v-card color="#424242" dark>
+          <p style="font-size: 3rem; font-family: 'Jua', sans-serif; color:black">Clustering 파라미터 설정하기</p>
+          <AdminClustering />
+        </v-card>
+      </v-flex>
+      <v-flex v-if="switch4" xs12>
+        <p style="font-size: 3rem; font-family: 'Jua', sans-serif; color:black">구독자들의 신청목록 관리</p>
+        <AdminSubscriptionList />
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -53,19 +55,17 @@ import AdminUserList from "../AdminUserList";
 import AdminClustering from "../AdminClustering";
 import AdminSubscriptionList from "../AdminSubscriptionList";
 import CreateMovieForm from "../CreateMovieForm";
+import router from "../../router";
 
 export default {
   components: {
     AdminMovieList,
     AdminUserList,
     AdminSubscriptionList,
-    
     MovieSearchForm,
     UserSearchForm,
-
     AdminClustering,
     CreateMovieForm,
-
   },
   data: () => ({
     switch1: false,
@@ -82,8 +82,40 @@ export default {
       userList: state => state.data.userSearchList_admin
     })
   },
+  created() {
+    if (this.$session.get('admin')!=true) {
+      this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '관리자 권한이 없습니다!',
+        })
+      router.push({name:"home"})
+    }
+  },
   methods: {
     ...mapActions("data", ["searchMovies_admin", "searchUsers_admin"]),
+    async before_searchMovies(params) {
+      this.reset = !this.reset
+      var result = await this.searchMovies_admin(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
+    async before_searchUsers(params) {
+      this.reset = !this.reset
+      var result = await this.searchUsers_admin(params)
+      if (result.length === 0) {
+        this.$swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: '해당 이름의 영화는 없습니다!',
+        })
+      }
+    },
     one() {
       this.switch1 = true
       this.switch2 = false

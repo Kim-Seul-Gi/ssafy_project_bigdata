@@ -1,29 +1,45 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from api.models import Movie, Rate, Cluster, Profile,Movie_Cluster_Kmeans, Movie_Cluster_Hmeans, Movie_Cluster_EM
-from api.serializers import MovieSerializer, Movie_Age_Serializer
+from api.serializers import MovieSerializer, Movie_Age_Serializer, Movie_Genre_Serializer
 from rest_framework.response import Response
 from django.db.models import Avg
 import pandas as pd
-import random
+import random, pprint
 
 @api_view(['GET', 'POST', 'DELETE'])
 def movies(request):
     if request.method == 'GET':
         id = request.GET.get('id', request.GET.get('movie_id', None))
         title = request.GET.get('title', None)
-        # genre = request.GET.get('genre', None)
-        # watch_count = request.GET.get('watch_count', None)
-        movies = Movie.objects.all().order_by('-watch_count')
+        # cnt = int(request.GET.get('cnt'))
+        # print(cnt)
+
+        movies = Movie.objects.all()
+        # pprint.pprint(movies)
 
         if id:
             movies = movies.filter(pk=id)
+
         if title:
             movies = movies.filter(title__icontains=title)
+        # else:
+        #     movies = Movie.objects.all()[cnt-10:cnt]
+        num = request.GET.get('num', None)
 
+        canmore = True
+        if len(movies) >= 12:
+            if num:
+                num = int(num)
+                movies = movies[num*12:(num+1)*12]
+                if len(movies) < 12:
+                    canmore = False
+            else:
+                movies = movies[:12]
+        else:
+            canmore = False
         serializer = MovieSerializer(movies, many=True)
-
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=[serializer.data, canmore], status=status.HTTP_200_OK)
 
     if request.method == 'DELETE':
         movie = Movie.objects.all()
@@ -69,7 +85,7 @@ def genres(request):
         movies = movies.filter(title__icontains=title)
     if genre:
         movies = movies.filter(genres__icontains=genre)
-    serializer = MovieSerializer(movies, many=True)
+    serializer = Movie_Genre_Serializer(movies, many=True)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -104,7 +120,7 @@ def ages(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -126,7 +142,7 @@ def occupations(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -149,7 +165,7 @@ def genders(request):
 
     # 3. 해당 영화들의 평점들을 annotate 잘 시킴.
     # rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
-    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count').annotate(Avg('rating'))
+    rates = rates.values('MovieID', 'MovieID__title', 'MovieID__genres', 'MovieID__watch_count', 'MovieID__plot', 'MovieID__url', 'MovieID__director', 'MovieID__casting').annotate(Avg('rating'))
     # rates = rates.order_by('-rating__avg')
     rates = rates.order_by('-MovieID__watch_count')
 
@@ -160,12 +176,14 @@ def genders(request):
 
 @api_view(['GET', 'POST', 'DELETE'])
 def detail(request, movie_id):
+    # pprint.pprint(request.data)
     movie = Movie.objects.get(pk=movie_id)
     movie.watch_count += 1
     movie.save()
     cluster = Cluster.objects.get(pk=1)
     result = []
     serializer = MovieSerializer(movie)
+    # rate = Rate.objects.get(UserID)
     result.append(serializer.data)
 
     # H clustering
@@ -215,7 +233,6 @@ def detail(request, movie_id):
         movie = Movie.objects.get(title=t.MovieId)
         serializer = MovieSerializer(movie)
         result.append(serializer.data)
-
     return Response(data=result, status=status.HTTP_200_OK)
 
 @api_view(['GET', 'POST', 'DELETE'])
@@ -246,7 +263,7 @@ def getarray(request):
         tmp_array = [0]*19
 
         movie_genres = movies[i].genres.split('|')
-        tmp_array[18] = movies[i].title
+        tmp_array[18] = movies[i].pk
 
         for j in range(len(movie_genres)):
             tmp_array[genre_number[movie_genres[j]]] = 1
@@ -258,3 +275,16 @@ def getarray(request):
     df.to_csv("answer.csv", header=None, index=None)
 
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getrate(request, movie_id, profile_id):
+    profile = Profile.objects.get(pk=profile_id)
+    movie = Movie.objects.get(pk=movie_id)
+    rate = Rate.objects.filter(UserID=profile, MovieID=movie)
+
+    if rate:
+        result = {'flag':True, 'rate':rate[0].rating}
+    else:
+        result = {'flag':False}
+
+    return Response(data=result, status=status.HTTP_200_OK)

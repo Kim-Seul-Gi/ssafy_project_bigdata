@@ -1,12 +1,12 @@
 <template>
   <v-container class="pa-2" fluid grid-list-md>
-    <div v-if="userListCards.length">
-      {{userListCards.length}}명이 조회되었습니다.
+    <div v-if="userListCards.length" style="color: white">
+      {{ userListCards.length }}명이 조회되었습니다.
     </div>
 
-    <div v-if="!userListCards.length">
+    <!-- <div v-if="!userListCards.length" style="color: white">
       검색하신 유저가 없습니다!
-    </div>
+    </div> -->
 
     <v-layout row wrap>
       <!-- {{userListCards}} -->

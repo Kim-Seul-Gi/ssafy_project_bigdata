@@ -4,80 +4,73 @@
       ref="form"
       v-model="valid"
       lazy-validation
-      >
+    >
       <v-text-field
         v-model="title"
         :counter="30"
-        :rules="titleRules"
         label="Title"
-        required>
-      </v-text-field>
-
+        :rules="titleRules"
+        required
+        dark
+      />
       <v-select
         v-model="genres"
         :items="items"
-        :rules="[v => !!v || 'Item is required']"
         label="Genre"
+        :rules="genresRules"
         multiple
-        required>
-      </v-select>
-
+        required
+        dark
+      />
       <v-text-field
         v-model="url"
         label="ImageURL"
-        required>
-      </v-text-field>
+        :rules="urlRules"
+        required
+        dark
+      />
       <v-text-field
         v-model="director"
-        :rules="titleRules"
         label="Director"
-        required>
-      </v-text-field>
+        :rules="directorRules"
+        required
+        dark
+      />
       <v-combobox
         v-model="casting"
         label="Casting"
+        :rules="castingRules"
         hint="Maximum of 5 tags"
         persistent-hint
         small-chips
         multiple
-        required>
-      </v-combobox>
+        required
+        dark
+      />
       <v-textarea
-        solo
         v-model="plot"
+        solo
         :counter="500"
         label="Plot"
-        required>
-      </v-textarea>
-
-      <v-btn
-        :disabled="!valid"
-        color="success"
-        class="mr-4"
-        @click="validate">
-        Validate
-      </v-btn>
-
-      <v-btn
-        color="error"
-        class="mr-4"
-        @click="reset">
-        Reset Form
-      </v-btn>
+        :rules="plotRules"
+        required
+      />
+      <!-- <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn> -->
+      <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
     </v-form>
     <v-dialog v-model="dialog" persistent max-width="700">
       <template v-slot:activator="{ on }">
-        <v-btn dark v-on="on">등록하기</v-btn>
+        <v-btn v-if="titleRules[0](title)===true && genresRules[0](genres)===true && urlRules[0](url)===true && directorRules[0](director)===true && castingRules[0](casting)===true && plotRules[0](plot)===true" color="success" class="mr-4" dark v-on="on">영화 등록하기</v-btn>
+        <v-btn v-else disabled color="dark" class="mr-4" dark v-on="on">모든 data를 채워주세요!</v-btn>
       </template>
       <v-card>
-      <v-card-title class="headline">{{ title }}</v-card-title>
+        <v-card-title class="headline">{{ title }}</v-card-title>
         <v-card-text>장르: {{ genres }}</v-card-text>
         <v-card-text>이미지url: {{ url }}</v-card-text>
         <v-card-text>감독: {{ director }}</v-card-text>
         <v-card-text>배우: {{ casting }}</v-card-text>
         <v-card-text>줄거리: {{ plot }}</v-card-text>
         <v-card-actions>
-          <div class="flex-grow-1"></div>
           <v-btn color="green darken-1" text @click="createMovie();dialog=false">OK</v-btn>
           <v-btn color="green darken-1" text @click="dialog=false">Cancel</v-btn>
         </v-card-actions>
@@ -107,8 +100,55 @@ export default {
     titleRules: [
       v => !!v || 'This is required',
       v => (v && v.length <= 30) || 'Name must be less than 30 characters',
-    ]
+    ],
+    genresRules : [
+      function(v) {
+        if (v.length===0) {
+          return 'Genre is required'
+        }
+        return !!v
+      }
+    ],
+    urlRules : [
+      function(v) {
+        if (!v) {
+          return 'Url is required'
+        }
+        return !!v
+      }
+    ],
+    directorRules : [
+      function(v) {
+        if (!v) {
+          return 'Director is required'
+        }
+        return !!v
+      }
+    ],
+    castingRules : [
+      function(v) {
+        if (v.length===0) {
+          return 'Casting is required'
+        }
+        return !!v
+      }
+    ],
+    plotRules : [
+      function(v) {
+        if (!v) {
+          return 'Plot is required'
+        }
+        return !!v
+      }
+    ],
   }),
+  watch: {
+    casting (val) {
+      if (val.length > 5) {
+        this.$nextTick(() => this.casting.pop())
+      }
+    },
+  },
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
@@ -130,19 +170,16 @@ export default {
         url:this.url,
         director:this.director,
         casting:this.casting
-      }).then(res => {
+      }).then(() => {
         preload.style.display = 'none'
-        alert("영화가 등록되었습니다!")
-        this.$refs.form.reset()
+        this.$swal.fire ({
+          type: 'success',
+          title: '영화가 등록되었습니다!'
+        }).then(result => {
+          this.$refs.form.reset()
+        })
       })
     }
-  },
-  watch: {
-    casting (val) {
-      if (val.length > 5) {
-        this.$nextTick(() => this.casting.pop())
-      }
-    },
-  },
+  }
 }
 </script>

@@ -6,19 +6,19 @@
           <v-btn color="primary" dark v-on="on">Let's get it!!</v-btn>
         </template>
         <v-card>
-          <v-form v-for="i in 18">
+          <v-form v-for="(i, index) in 18" :key="index">
             <div>
               <p>{{ items[i-1] }}</p>
               <v-text-field
-                  v-model="scores[i-1]"
-                  label="score"
-                  :rules="scoreRules"
-                  type="number"
-                  required>
-              </v-text-field>
+                v-model="scores[i-1]"
+                label="score"
+                :rules="scoreRules"
+                type="number"
+                required
+              />
             </div>
           </v-form>
-          <v-btn @click="modal=!modal, createScore()">register</v-btn>
+          <v-btn @click="modal=!modal; createScore()">register</v-btn>
           <v-btn @click="modal=!modal">cancel</v-btn>
         </v-card>
       </v-dialog>
@@ -44,7 +44,6 @@ export default {
   }),
   methods: {
     createScore() {
-      console.log(111)
       // 시작
       var preload = document.querySelector('#check2')
       preload.style.display = 'block'
@@ -52,12 +51,14 @@ export default {
       axios.post(`${apiUrl}/KNN/user/`, {
         scores:this.scores,
         pk:this.$session.get('id_number')
-      }).then(res => {
+      }).then(() => {
         // 끝
         preload.style.display = 'none'
-        alert('평점을 등록했습니다!')
+        this.$swal.fire({
+            title: '평점 등록 완료!',
+            type: 'success'
+          })
       })
-      // console.log(this.$session.getAll())
     }
   }
 }
