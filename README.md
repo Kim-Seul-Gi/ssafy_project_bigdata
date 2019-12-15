@@ -1,4 +1,10 @@
-# 빅데이터 스켈레톤(2주차)
+# 간략한 설명
+
+![2-1기획](./images/2-1기획.png)
+
+![2-2담당](./images/2-2담당.png)
+
+# SSAFY 2차 프로젝트 - 빅데이터
 
 ## 목차
 
@@ -15,12 +21,12 @@
 - Git clone (~/)
 
   ```bash
-  $ git clone https://lab.ssafy.com/Kim-Seul-Gi/bigdata-sub1.git
+  $ git clone https://github.com/Kim-Seul-Gi/ssafy_project_bigdata.git
   ```
 
 ### (2) Setting
 
-- Backend ( ~/bigdata-sub1/backend)
+- Backend ( ~/ssafy_project_bigdata/backend)
 
   ```bash
   $ pip install -r requirements.txt
@@ -29,7 +35,7 @@
   $ python manage.py runserver
   ```
 
-- Frontend ( ~/bigdata-sub1/frontend)
+- Frontend ( ~/ssafy_project_bigdata/frontend)
 
   ```bash
   $ npm install
